@@ -1,0 +1,88 @@
+using System;
+using System.IO;
+
+class WordSearch
+{
+    static void Main()
+    {
+        char[,] grid = LoadGridFromFile("grid.txt");
+
+        string word = "XMAS";
+        int occurrences = FindWordOccurrences(grid, word);
+        Console.WriteLine($"The word '{word}' was found {occurrences} times.");
+    }
+
+    static char[,] LoadGridFromFile(string filePath)
+    {
+        string[] lines = File.ReadAllLines(filePath);
+        int rows = lines.Length;
+        int cols = lines[0].Length;
+        char[,] grid = new char[rows, cols];
+
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                grid[r, c] = lines[r][c];
+            }
+        }
+
+        return grid;
+    }
+
+    static int FindWordOccurrences(char[,] grid, string word)
+    {
+        int rows = grid.GetLength(0);
+        int cols = grid.GetLength(1);
+        int wordLength = word.Length;
+        int count = 0;
+
+        int[][] directions =
+        {
+            new[] { 0, 1 },  // Right
+            new[] { 1, 0 },  // Down
+            new[] { 0, -1 }, // Left
+            new[] { -1, 0 }, // Up
+            new[] { 1, 1 },  // Down-right (Diagonal)
+            new[] { 1, -1 }, // Down-left (Diagonal)
+            new[] { -1, 1 }, // Up-right (Diagonal)
+            new[] { -1, -1 } // Up-left (Diagonal)
+        };
+
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                foreach (var direction in directions)
+                {
+                    if (IsWordPresent(grid, word, r, c, direction[0], direction[1]))
+                    {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    static bool IsWordPresent(char[,] grid, string word, int startRow, int startCol, int rowDir, int colDir)
+    {
+        int rows = grid.GetLength(0);
+        int cols = grid.GetLength(1);
+        int wordLength = word.Length;
+
+        for (int i = 0; i < wordLength; i++)
+        {
+            int newRow = startRow + i * rowDir;
+            int newCol = startCol + i * colDir;
+
+            if (newRow < 0 || newRow >= rows || newCol < 0 || newCol >= cols || grid[newRow, newCol] != word[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
