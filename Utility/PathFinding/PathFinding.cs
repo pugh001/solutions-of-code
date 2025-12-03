@@ -1,4 +1,4 @@
-namespace Utility;
+namespace Utility.PathFinding;
 
 /// <summary>
 ///   Common pathfinding and graph traversal algorithms for AOC problems
@@ -37,7 +37,7 @@ public static class PathFinding
   /// <summary>
   ///   Performs BFS in a grid context
   /// </summary>
-  public static Dictionary<Point2D<int>, int> BFS(Grid grid, Point2D<int> start, Func<char, bool> isValidCell)
+  public static Dictionary<Point2D<int>, int> BFS(Grid.Grid grid, Point2D<int> start, Func<char, bool> isValidCell)
   {
     return BFS(start, point => grid.IsInBounds(point) && isValidCell(grid[point]));
   }
@@ -223,7 +223,7 @@ public static class PathFinding
   /// <summary>
   ///   Flood fill in a grid context
   /// </summary>
-  public static HashSet<Point2D<int>> FloodFill(Grid grid, Point2D<int> start, char targetChar)
+  public static HashSet<Point2D<int>> FloodFill(Grid.Grid grid, Point2D<int> start, char targetChar)
   {
     if (!grid.IsInBounds(start) || grid[start] != targetChar)
       return new HashSet<Point2D<int>>();

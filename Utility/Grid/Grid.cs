@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Utility;
+namespace Utility.Grid;
 
 /// <summary>
 ///   A utility class for working with 2D character grids, commonly used in Advent of Code problems

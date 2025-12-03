@@ -16,7 +16,7 @@ static internal class Program
 
         // Create an instance of the Day## class dynamically
         object? dayInstance =
-          Activator.CreateInstance(Type.GetType($"AOC2024.Day{day}") ?? throw new InvalidOperationException());
+          Activator.CreateInstance(Type.GetType($"AOC2015.Day{day}") ?? throw new InvalidOperationException());
         if (!exists) //Class exists, so check if input exists
         {
           Console.WriteLine("Day " + day.ToString().PadLeft(2, ' ') + ": NO PUZZLE INPUT");

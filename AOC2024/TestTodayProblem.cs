@@ -70,7 +70,11 @@ public class TestProblems
     (bool exists, string filePart2) = TestFiles.GetInputData(day, year, "part2Example.txt");
     if (!exists)
     {
-      throw new InvalidOperationException($"Type AOC{year}.Day{day} not found.");
+      (exists, filePart2) = TestFiles.GetInputData(day, year, "part1Example.txt");
+      if (!exists)
+      {
+        throw new InvalidOperationException($"Type AOC{year}.Day{day} not found.");
+      }
     }
 
     var dayType = Type.GetType($"AOC{year}.Day{day}");
