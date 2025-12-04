@@ -10,7 +10,79 @@ public static class Letters
     const string vowels = "aeiou";
     return letters.Count(c => vowels.Contains(c));
   }
+  public static bool DoesItContainInvalidLetters(string letters, string disallowed)
+  {
+    return !letters.Any(c => disallowed.Contains(c));
+  }
+  public static string AddLetterToString(string data)
+  {
+    char[] letters = data.ToCharArray();
+    int index = letters.Length - 1;
 
+    // Start from the rightmost character and increment
+    while (index >= 0)
+    {
+      letters[index]++;
+
+      // If the letter goes beyond 'z', wrap to 'a' and carry over
+      if (letters[index] <= 'z')
+      {
+        break; // No carry needed, we're done
+      }
+
+      letters[index] = 'a';
+      index--; // Move to the previous position to carry over
+
+    }
+
+    return new string(letters);
+  }
+  public static bool DoesItContainStraight(string newPassword, int requiredInSequence = 3)
+  {
+    for (int i = 0; i <= newPassword.Length - requiredInSequence; i++)
+    {
+      bool isSequential = true;
+
+      for (int j = 1; j < requiredInSequence; j++)
+      {
+        if (newPassword[i + j] == newPassword[i + j - 1] + 1)
+          continue;
+
+        isSequential = false;
+        break;
+      }
+
+      if (isSequential)
+        return true;
+    }
+
+    return false;
+  }
+  public static bool DoesItContainNoneOverlappingDifferentPairs(string inputString)
+  {
+    var foundPairs = new HashSet<char>();
+    int i = 0;
+
+    while (i < inputString.Length - 1)
+    {
+      // Check if current character matches the next one
+      if (inputString[i] == inputString[i + 1])
+      {
+        foundPairs.Add(inputString[i]);
+        i += 2; // Skip both characters of the pair to avoid overlapping
+
+        // If we found 2 different pairs, we're done
+        if (foundPairs.Count >= 2)
+          return true;
+      }
+      else
+      {
+        i++; // Move to next character
+      }
+    }
+
+    return false;
+  }
   public static bool IsRepeatedLetter(string letters)
   {
     for (int i = 0; i < letters.Length - 1; i++)
