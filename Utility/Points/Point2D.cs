@@ -76,13 +76,11 @@ public record Point2D<T>(T X,
     yield return this + Up;
     yield return this + Left;
 
-    if (withDiagonal)
-    {
-      yield return this + Up + Left;
-      yield return this + Up + Right;
-      yield return this + Down + Left;
-      yield return this + Down + Right;
-    }
+    if (!withDiagonal)
+      yield break;
+
+    foreach (var diagonal in DiagonalNeighbours())
+      yield return diagonal;
   }
   public IEnumerable<Point2D<T>> DiagonalNeighbours()
   {

@@ -70,30 +70,19 @@ public class Coordinate4D
   }
 
 
-  public static Coordinate4D[] GetNeighbors()
-  {
-    if (_neighbors != null) return _neighbors;
-
-    List<Coordinate4D> neighborList = new();
-
-    for (int x = -1; x <= 1; x++)
+public static Coordinate4D[] GetNeighbors()
     {
-      for (int y = -1; y <= 1; y++)
-      {
-        for (int z = -1; z <= 1; z++)
-        {
-          for (int w = -1; w <= 1; w++)
-          {
-            if (!(0 == x && 0 == y && 0 == z && 0 == w))
-            {
-              neighborList.Add((x, y, z, w));
-            }
-          }
-        }
-      }
+      if (_neighbors != null) return _neighbors;
+    
+      _neighbors = Enumerable.Range(-1, 3)
+        .SelectMany(x => Enumerable.Range(-1, 3)
+          .SelectMany(y => Enumerable.Range(-1, 3)
+            .SelectMany(z => Enumerable.Range(-1, 3)
+              .Select(w => (x, y, z, w)))))
+        .Where(coord => coord != (0, 0, 0, 0))
+        .Select(coord => new Coordinate4D(coord.x, coord.y, coord.z, coord.w))
+        .ToArray();
+    
+      return _neighbors;
     }
-
-    _neighbors = neighborList.ToArray();
-    return _neighbors;
-  }
 }

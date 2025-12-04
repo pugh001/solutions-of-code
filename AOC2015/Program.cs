@@ -11,7 +11,7 @@ static internal class Program
     {
       try
       {
-        (bool exists, string inputFilePath) = TestFiles.GetInputData(day, 2015, "part1Example.txt");
+        (bool exists, string inputFilePath) = TestFiles.GetInputData(day, 2015, "puzzleInput.txt");
 
 
         // Create an instance of the Day## class dynamically
