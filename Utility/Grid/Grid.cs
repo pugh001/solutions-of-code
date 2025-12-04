@@ -128,6 +128,14 @@ public class Grid
   }
 
   /// <summary>
+  ///   Gets all valid neighbors of a position that match a specific character value (8-directional including diagonals)
+  /// </summary>
+  public IEnumerable<Point2D<int>> GetAllNeighborsOfValue(Point2D<int> point, char value)
+  {
+    return point.Neighbours(true).Where(neighbor => IsInBounds(neighbor) && this[neighbor] == value);
+  }
+
+  /// <summary>
   ///   Creates a copy of the grid
   /// </summary>
   public Grid Clone()
