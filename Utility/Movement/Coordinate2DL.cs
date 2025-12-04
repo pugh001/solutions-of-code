@@ -1,135 +1,135 @@
 namespace Utility;
 
-public class Coordinate2DL
+public class Coordinate2Dl
 {
-  public static readonly Coordinate2DL origin = new(0, 0);
-  public static readonly Coordinate2DL unit_x = new(1, 0);
-  public static readonly Coordinate2DL unit_y = new(0, 1);
-  public readonly long x;
-  public readonly long y;
+  public static readonly Coordinate2Dl Origin = new(0, 0);
+  public static readonly Coordinate2Dl UnitX = new(1, 0);
+  public static readonly Coordinate2Dl UnitY = new(0, 1);
+  public readonly long X;
+  public readonly long Y;
 
-  public Coordinate2DL(long x, long y)
+  public Coordinate2Dl(long x, long y)
   {
-    this.x = x;
-    this.y = y;
+    this.X = x;
+    this.Y = y;
   }
 
-  public Coordinate2DL((long x, long y) coord)
+  public Coordinate2Dl((long x, long y) coord)
   {
-    x = coord.x;
-    y = coord.y;
+    X = coord.x;
+    Y = coord.y;
   }
 
-  public Coordinate2DL RotateCW(int degrees, Coordinate2DL center)
+  public Coordinate2Dl RotateCw(int degrees, Coordinate2Dl center)
   {
     var offset = center - this;
-    return center + offset.RotateCW(degrees);
+    return center + offset.RotateCw(degrees);
   }
-  public Coordinate2DL RotateCW(int degrees)
+  public Coordinate2Dl RotateCw(int degrees)
   {
     return (degrees / 90 % 4) switch
     {
       0 => this,
-      1 => RotateCW(),
+      1 => RotateCw(),
       2 => -this,
-      3 => RotateCCW(),
+      3 => RotateCcw(),
       _ => this
     };
   }
 
-  private Coordinate2DL RotateCW()
+  private Coordinate2Dl RotateCw()
   {
-    return new Coordinate2DL(y, -x);
+    return new Coordinate2Dl(Y, -X);
   }
 
-  public Coordinate2DL RotateCCW(int degrees, Coordinate2DL center)
+  public Coordinate2Dl RotateCcw(int degrees, Coordinate2Dl center)
   {
     var offset = center - this;
-    return center + offset.RotateCCW(degrees);
+    return center + offset.RotateCcw(degrees);
   }
-  public Coordinate2DL RotateCCW(int degrees)
+  public Coordinate2Dl RotateCcw(int degrees)
   {
     return (degrees / 90 % 4) switch
     {
       0 => this,
-      1 => RotateCCW(),
+      1 => RotateCcw(),
       2 => -this,
-      3 => RotateCW(),
+      3 => RotateCw(),
       _ => this
     };
   }
 
-  private Coordinate2DL RotateCCW()
+  private Coordinate2Dl RotateCcw()
   {
-    return new Coordinate2DL(-y, x);
+    return new Coordinate2Dl(-Y, X);
   }
 
-  public static Coordinate2DL operator +(Coordinate2DL a)
+  public static Coordinate2Dl operator +(Coordinate2Dl a)
   {
     return a;
   }
-  public static Coordinate2DL operator +(Coordinate2DL a, Coordinate2DL b)
+  public static Coordinate2Dl operator +(Coordinate2Dl a, Coordinate2Dl b)
   {
-    return new Coordinate2DL(a.x + b.x, a.y + b.y);
+    return new Coordinate2Dl(a.X + b.X, a.Y + b.Y);
   }
-  public static Coordinate2DL operator -(Coordinate2DL a)
+  public static Coordinate2Dl operator -(Coordinate2Dl a)
   {
-    return new Coordinate2DL(-a.x, -a.y);
+    return new Coordinate2Dl(-a.X, -a.Y);
   }
-  public static Coordinate2DL operator -(Coordinate2DL a, Coordinate2DL b)
+  public static Coordinate2Dl operator -(Coordinate2Dl a, Coordinate2Dl b)
   {
     return a + -b;
   }
-  public static Coordinate2DL operator *(long scale, Coordinate2DL a)
+  public static Coordinate2Dl operator *(long scale, Coordinate2Dl a)
   {
-    return new Coordinate2DL(scale * a.x, scale * a.y);
+    return new Coordinate2Dl(scale * a.X, scale * a.Y);
   }
-  public static bool operator ==(Coordinate2DL a, Coordinate2DL b)
+  public static bool operator ==(Coordinate2Dl a, Coordinate2Dl b)
   {
-    return a.x == b.x && a.y == b.y;
+    return a.X == b.X && a.Y == b.Y;
   }
-  public static bool operator !=(Coordinate2DL a, Coordinate2DL b)
+  public static bool operator !=(Coordinate2Dl a, Coordinate2Dl b)
   {
-    return a.x != b.x || a.y != b.y;
-  }
-
-  public static implicit operator Coordinate2DL((long x, long y) a)
-  {
-    return new Coordinate2DL(a.x, a.y);
+    return a.X != b.X || a.Y != b.Y;
   }
 
-  public static implicit operator (long x, long y)(Coordinate2DL a)
+  public static implicit operator Coordinate2Dl((long x, long y) a)
   {
-    return (a.x, a.y);
+    return new Coordinate2Dl(a.x, a.y);
   }
 
-  public long ManDistance(Coordinate2DL other)
+  public static implicit operator (long x, long y)(Coordinate2Dl a)
   {
-    long x = Math.Abs(this.x - other.x);
-    long y = Math.Abs(this.y - other.y);
+    return (a.X, a.Y);
+  }
+
+  public long ManDistance(Coordinate2Dl other)
+  {
+    long x = Math.Abs(this.X - other.X);
+    long y = Math.Abs(this.Y - other.Y);
     return x + y;
   }
   public override bool Equals(object obj)
   {
     if (obj == null) return false;
-    if (obj.GetType() != typeof(Coordinate2DL)) return false;
+    if (obj.GetType() != typeof(Coordinate2Dl)) return false;
 
-    return this == (Coordinate2DL)obj;
+    return this == (Coordinate2Dl)obj;
   }
 
   public override int GetHashCode()
   {
-    return (100 * x + y).GetHashCode();
+    return (100 * X + Y).GetHashCode();
   }
 
   public override string ToString()
   {
-    return string.Concat("(", x, ", ", y, ")");
+    return string.Concat("(", X, ", ", Y, ")");
   }
 
   public void Deconstruct(out long xVal, out long yVal)
   {
-    xVal = x;
-    yVal = y;
+    xVal = X;
+    yVal = Y;
   }
 }

@@ -6,10 +6,10 @@ namespace LeetCode.problem_3427;
 
 public class Solution
 {
-  private readonly ITestOutputHelper testOutputHelper;
+  private readonly ITestOutputHelper _testOutputHelper;
   public Solution(ITestOutputHelper testOutputHelper)
   {
-    this.testOutputHelper = testOutputHelper;
+    this._testOutputHelper = testOutputHelper;
   }
 
   [Fact]
@@ -24,7 +24,7 @@ public class Solution
     int result = SubarraySum(nums);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -42,7 +42,7 @@ public class Solution
     int result = SubarraySum(nums);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);

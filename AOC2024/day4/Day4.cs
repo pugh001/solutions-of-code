@@ -26,14 +26,14 @@ public class Day4
       }
     }
 
-    resultPart1 = processGridPart1(grid, rowSize, colSize);
-    processGridPart2(grid, rowSize, colSize);
+    resultPart1 = ProcessGridPart1(grid, rowSize, colSize);
+    ProcessGridPart2(grid, rowSize, colSize);
     resultPart2 = CountAOccourance(rowSize, colSize);
     return (resultPart1.ToString(), resultPart2.ToString());
 
 
   }
-  private static long processGridPart1(char[,] grid, int rowSize, int colSize)
+  private static long ProcessGridPart1(char[,] grid, int rowSize, int colSize)
   {
 
     long counter = 0;
@@ -42,7 +42,7 @@ public class Day4
     {
       for (int c = 0; c < colSize; c++)
       {
-        foreach (int[] direction in Directions.allDirections)
+        foreach (int[] direction in Directions.AllDirections)
         {
           if (FoundWord(grid, r, c, direction[0], direction[1], "XMAS"))
           {
@@ -55,13 +55,13 @@ public class Day4
 
     return counter;
   }
-  private static void processGridPart2(char[,] grid, int rowSize, int colSize)
+  private static void ProcessGridPart2(char[,] grid, int rowSize, int colSize)
   {
     for (int r = 0; r < rowSize; r++)
     {
       for (int c = 0; c < colSize; c++)
       {
-        foreach (int[] direction in Directions.diagonals)
+        foreach (int[] direction in Directions.Diagonals)
         {
           FoundWord(grid, r, c, direction[0], direction[1], "MAS");
 

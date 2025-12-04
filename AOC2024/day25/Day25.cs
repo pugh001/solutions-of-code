@@ -4,8 +4,8 @@ namespace AOC2024;
 
 public class Day25
 {
-  private readonly List<List<int>> keys = new();
-  private readonly List<List<int>> locks = new();
+  private readonly List<List<int>> _keys = new();
+  private readonly List<List<int>> _locks = new();
 
   public (string, string) Process(string input)
   {
@@ -39,7 +39,7 @@ public class Day25
 
       if (IsLockSeparator(line, loadLine, isKey))
       {
-        locks.Add(pins);
+        _locks.Add(pins);
         continue;
       }
 
@@ -48,7 +48,7 @@ public class Day25
 
       if (loadLine == 7 && isKey)
       {
-        keys.Add(pins);
+        _keys.Add(pins);
       }
     }
   }
@@ -82,9 +82,9 @@ public class Day25
   private string CountFit()
   {
     int fit = 0;
-    foreach (var lck in locks)
+    foreach (var lck in _locks)
     {
-      foreach (var key in keys)
+      foreach (var key in _keys)
       {
         if (DoesKeyFit(lck, key))
         {

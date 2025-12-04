@@ -6,10 +6,10 @@ namespace LeetCode.problem_150;
 
 public class Solution
 {
-  private readonly ITestOutputHelper testOutputHelper;
+  private readonly ITestOutputHelper _testOutputHelper;
   public Solution(ITestOutputHelper testOutputHelper)
   {
-    this.testOutputHelper = testOutputHelper;
+    this._testOutputHelper = testOutputHelper;
   }
 
   [Fact]
@@ -21,10 +21,10 @@ public class Solution
     int expected = 9;
 
     // Act
-    int result = EvalRPN(tokens);
+    int result = EvalRpn(tokens);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -39,10 +39,10 @@ public class Solution
     int expected = 6;
 
     // Act
-    int result = EvalRPN(tokens);
+    int result = EvalRpn(tokens);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -57,17 +57,17 @@ public class Solution
     int expected = 22;
 
     // Act
-    int result = EvalRPN(tokens);
+    int result = EvalRpn(tokens);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
   }
 
 
-  public int EvalRPN(string[] tokens)
+  public int EvalRpn(string[] tokens)
   {
     //I originally used a switch and checked tokens, but as something different ChatGPT
     // suggested the Dictionary, it makes code more readable but think could be faster.

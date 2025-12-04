@@ -10,51 +10,51 @@ public class Coordinate3D
     (1, -1, -1), (1, -1, 0), (1, -1, 1), (1, 0, -1), (1, 0, 0), (1, 0, 1), (1, 1, -1), (1, 1, 0), (1, 1, 1)
   };
 
-  public readonly int x;
-  public readonly int y;
-  public readonly int z;
+  public readonly int X;
+  public readonly int Y;
+  public readonly int Z;
 
   public Coordinate3D(int x, int y, int z)
   {
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.X = x;
+    this.Y = y;
+    this.Z = z;
   }
 
   public Coordinate3D(string stringformat)
   {
     int[] n = stringformat.ExtractInts().ToArray();
-    x = n[0];
-    y = n[1];
-    z = n[2];
+    X = n[0];
+    Y = n[1];
+    Z = n[2];
   }
 
   public List<Coordinate3D> Rotations => new()
   {
-    (x, y, z),
-    (x, z, -y),
-    (x, -y, -z),
-    (x, -z, y),
-    (y, x, -z),
-    (y, z, x),
-    (y, -x, z),
-    (y, -z, -x),
-    (z, x, y),
-    (z, y, -x),
-    (z, -x, -y),
-    (z, -y, x),
-    (-x, y, -z),
-    (-x, z, y),
-    (-x, -y, z),
-    (-x, -z, -y),
-    (-y, x, z),
-    (-y, z, -x),
-    (-y, -x, -z),
-    (-y, -z, x),
-    (-z, x, -y),
-    (-z, y, x),
-    (-z, -x, y),
-    (-z, -y, -x)
+    (X, Y, Z),
+    (X, Z, -Y),
+    (X, -Y, -Z),
+    (X, -Z, Y),
+    (Y, X, -Z),
+    (Y, Z, X),
+    (Y, -X, Z),
+    (Y, -Z, -X),
+    (Z, X, Y),
+    (Z, Y, -X),
+    (Z, -X, -Y),
+    (Z, -Y, X),
+    (-X, Y, -Z),
+    (-X, Z, Y),
+    (-X, -Y, Z),
+    (-X, -Z, -Y),
+    (-Y, X, Z),
+    (-Y, Z, -X),
+    (-Y, -X, -Z),
+    (-Y, -Z, X),
+    (-Z, X, -Y),
+    (-Z, Y, X),
+    (-Z, -X, Y),
+    (-Z, -Y, -X)
   };
 
   public static implicit operator Coordinate3D((int x, int y, int z) a)
@@ -64,7 +64,7 @@ public class Coordinate3D
 
   public static implicit operator (int x, int y, int z)(Coordinate3D a)
   {
-    return (a.x, a.y, a.z);
+    return (a.X, a.Y, a.Z);
   }
   public static Coordinate3D operator +(Coordinate3D a)
   {
@@ -72,11 +72,11 @@ public class Coordinate3D
   }
   public static Coordinate3D operator +(Coordinate3D a, Coordinate3D b)
   {
-    return new Coordinate3D(a.x + b.x, a.y + b.y, a.z + b.z);
+    return new Coordinate3D(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
   }
   public static Coordinate3D operator -(Coordinate3D a)
   {
-    return new Coordinate3D(-a.x, -a.y, -a.z);
+    return new Coordinate3D(-a.X, -a.Y, -a.Z);
   }
   public static Coordinate3D operator -(Coordinate3D a, Coordinate3D b)
   {
@@ -84,20 +84,20 @@ public class Coordinate3D
   }
   public static bool operator ==(Coordinate3D a, Coordinate3D b)
   {
-    return a.x == b.x && a.y == b.y && a.z == b.z;
+    return a.X == b.X && a.Y == b.Y && a.Z == b.Z;
   }
   public static bool operator !=(Coordinate3D a, Coordinate3D b)
   {
-    return a.x != b.x || a.y != b.y || a.z != b.z;
+    return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
   }
 
   public int ManhattanDistance(Coordinate3D other)
   {
-    return Math.Abs(x - other.x) + Math.Abs(y - other.y) + Math.Abs(z - other.z);
+    return Math.Abs(X - other.X) + Math.Abs(Y - other.Y) + Math.Abs(Z - other.Z);
   }
   public int ManhattanMagnitude()
   {
-    return Math.Abs(x) + Math.Abs(y) + Math.Abs(z);
+    return Math.Abs(X) + Math.Abs(Y) + Math.Abs(Z);
   }
 
   public override bool Equals(object obj)
@@ -110,11 +110,11 @@ public class Coordinate3D
   public override int GetHashCode()
   {
     //Primes times coordinates for fewer collisions
-    return 137 * x + 149 * y + 163 * z;
+    return 137 * X + 149 * Y + 163 * Z;
   }
   public override string ToString()
   {
-    return $"{x}, {y}, {z}";
+    return $"{X}, {Y}, {Z}";
   }
 
   public static Coordinate3D[] GetNeighbors()
@@ -124,8 +124,8 @@ public class Coordinate3D
 
   internal void Deconstruct(out int x, out int y, out int z)
   {
-    x = this.x;
-    y = this.y;
-    z = this.z;
+    x = this.X;
+    y = this.Y;
+    z = this.Z;
   }
 }

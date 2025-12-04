@@ -246,38 +246,38 @@ public static class MainUtilities
     return a.ManhattanDistance((0, 0, 0));
   }
 
-  public static double FindGCD(double a, double b)
+  public static double FindGcd(double a, double b)
   {
     if (a == 0 || b == 0) return Math.Max(a, b);
 
     return a % b == 0 ?
       b :
-      FindGCD(b, a % b);
+      FindGcd(b, a % b);
   }
 
-  public static double FindLCM(double a, double b)
+  public static double FindLcm(double a, double b)
   {
-    return a * b / FindGCD(a, b);
+    return a * b / FindGcd(a, b);
   }
 
-  public static long FindGCD(long a, long b)
+  public static long FindGcd(long a, long b)
   {
     if (a == 0 || b == 0) return Math.Max(a, b);
 
     return a % b == 0 ?
       b :
-      FindGCD(b, a % b);
+      FindGcd(b, a % b);
   }
-  public static long FindLCM(long a, long b)
+  public static long FindLcm(long a, long b)
   {
-    return a * b / FindGCD(a, b);
+    return a * b / FindGcd(a, b);
   }
 
-  public static (long gcd, long x, long y) ExtendedGCD(long a, long b)
+  public static (long gcd, long x, long y) ExtendedGcd(long a, long b)
   {
     if (b == 0) return (a, 1, 0);
 
-    (long gcd0, long x0, long y0) = ExtendedGCD(b, b % a);
+    (long gcd0, long x0, long y0) = ExtendedGcd(b, b % a);
     return (gcd0, y0, x0 - a / b * y0);
   }
 
@@ -472,10 +472,10 @@ public static class MainUtilities
     }
   }
 
-  public static string HexStringToBinary(this string Hexstring)
+  public static string HexStringToBinary(this string hexstring)
   {
     return string.Join(string.Empty,
-      Hexstring.Select(c => Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0')));
+      hexstring.Select(c => Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0')));
   }
 
 
@@ -492,26 +492,26 @@ public static class MainUtilities
 
   public static T GetDirection<T>(this Dictionary<(int, int), T> values,
     (int, int) location,
-    CompassDirection Direction,
+    CompassDirection direction,
     T defaultVal)
   {
-    var n = location.MoveDirection(Direction);
+    var n = location.MoveDirection(direction);
     return values.GetValueOrDefault(n, defaultVal);
   }
 
   public static T GetDirection<T>(this Dictionary<Coordinate2D, T> values,
     Coordinate2D location,
-    CompassDirection Direction,
+    CompassDirection direction,
     T defaultVal)
   {
-    var n = location.MoveDirection(Direction);
+    var n = location.MoveDirection(direction);
     return values.GetValueOrDefault(n, defaultVal);
   }
 
 
-  public static List<K> KeyList<K, V>(this Dictionary<K, V> dictionary, bool sorted = false)
+  public static List<TK> KeyList<TK, TV>(this Dictionary<TK, TV> dictionary, bool sorted = false)
   {
-    List<K> keyList = [.. dictionary.Keys];
+    List<TK> keyList = [.. dictionary.Keys];
 
     if (sorted) keyList.Sort();
 
@@ -522,19 +522,19 @@ public static class MainUtilities
   {
     var tmp = new List<Coordinate2D>
     {
-      new(val.x - 1, val.y),
-      new(val.x + 1, val.y),
-      new(val.x, val.y - 1),
-      new(val.x, val.y + 1)
+      new(val.X - 1, val.Y),
+      new(val.X + 1, val.Y),
+      new(val.X, val.Y - 1),
+      new(val.X, val.Y + 1)
     };
     if (includeDiagonals)
     {
       tmp.AddRange(new List<Coordinate2D>
       {
-        new(val.x - 1, val.y - 1),
-        new(val.x + 1, val.y - 1),
-        new(val.x - 1, val.y + 1),
-        new(val.x + 1, val.y + 1)
+        new(val.X - 1, val.Y - 1),
+        new(val.X + 1, val.Y - 1),
+        new(val.X - 1, val.Y + 1),
+        new(val.X + 1, val.Y + 1)
       });
     }
 
@@ -543,20 +543,20 @@ public static class MainUtilities
 
   public static IEnumerable<Coordinate3D> GetImmediateNeighbors(this Coordinate3D self)
   {
-    yield return (self.x + 1, self.y, self.z);
-    yield return (self.x - 1, self.y, self.z);
-    yield return (self.x, self.y + 1, self.z);
-    yield return (self.x, self.y - 1, self.z);
-    yield return (self.x, self.y, self.z + 1);
-    yield return (self.x, self.y, self.z - 1);
+    yield return (self.X + 1, self.Y, self.Z);
+    yield return (self.X - 1, self.Y, self.Z);
+    yield return (self.X, self.Y + 1, self.Z);
+    yield return (self.X, self.Y - 1, self.Z);
+    yield return (self.X, self.Y, self.Z + 1);
+    yield return (self.X, self.Y, self.Z - 1);
   }
 
   public static List<Coordinate2D> AStar(Coordinate2D start,
     Coordinate2D goal,
     Dictionary<Coordinate2D, long> map,
-    out long Cost,
-    bool IncludeDiagonals = false,
-    bool IncludePath = true)
+    out long cost,
+    bool includeDiagonals = false,
+    bool includePath = true)
   {
     PriorityQueue<Coordinate2D, long> openSet = new();
     Dictionary<Coordinate2D, Coordinate2D> cameFrom = new();
@@ -572,13 +572,13 @@ public static class MainUtilities
     {
       if (cur.Equals(goal))
       {
-        Cost = gScore[cur];
-        return IncludePath ?
+        cost = gScore[cur];
+        return includePath ?
           ReconstructPath(cameFrom, cur) :
           null;
       }
 
-      foreach (var n in cur.Neighbors(IncludeDiagonals).Where(a => map.ContainsKey(a)))
+      foreach (var n in cur.Neighbors(includeDiagonals).Where(a => map.ContainsKey(a)))
       {
         long tentGScore = gScore[cur] + map[n];
         if (tentGScore < gScore.GetValueOrDefault(n, int.MaxValue))
@@ -590,7 +590,7 @@ public static class MainUtilities
       }
     }
 
-    Cost = long.MaxValue;
+    cost = long.MaxValue;
     return null;
   }
 
@@ -635,7 +635,7 @@ public static class MainUtilities
   public static string StringFromMap<TValue>(this Dictionary<Coordinate2D, TValue> self,
     int maxX,
     int maxY,
-    bool AssumeEmptyIsDot = true)
+    bool assumeEmptyIsDot = true)
   {
     StringBuilder sb = new();
     for (int y = 0; y <= maxY; y++)
@@ -646,7 +646,7 @@ public static class MainUtilities
         {
           sb.Append(val);
         }
-        else if (AssumeEmptyIsDot)
+        else if (assumeEmptyIsDot)
         {
           sb.Append(".");
         }
@@ -801,13 +801,13 @@ public static class MainUtilities
       if (repetitions < 2)
         continue;
 
-      if (checkRepeats(numberStr, repetitions, patternLength, pattern))
+      if (CheckRepeats(numberStr, repetitions, patternLength, pattern))
         return true;
     }
 
     return false; // No repeated pattern found
   }
-  private static bool checkRepeats(string numberStr, int repetitions, int patternLength, string pattern)
+  private static bool CheckRepeats(string numberStr, int repetitions, int patternLength, string pattern)
   {
     bool isRepeated = true;
     for (int i = 1; i < repetitions; i++)

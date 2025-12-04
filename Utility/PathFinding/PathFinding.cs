@@ -8,7 +8,7 @@ public static class PathFinding
   /// <summary>
   ///   Performs breadth-first search to find shortest path distances from a start point
   /// </summary>
-  public static Dictionary<Point2D<int>, int> BFS(Point2D<int> start, Func<Point2D<int>, bool> isValidMove)
+  public static Dictionary<Point2D<int>, int> Bfs(Point2D<int> start, Func<Point2D<int>, bool> isValidMove)
   {
     var distances = new Dictionary<Point2D<int>, int>();
     var queue = new Queue<Point2D<int>>();
@@ -37,9 +37,9 @@ public static class PathFinding
   /// <summary>
   ///   Performs BFS in a grid context
   /// </summary>
-  public static Dictionary<Point2D<int>, int> BFS(Grid.Grid grid, Point2D<int> start, Func<char, bool> isValidCell)
+  public static Dictionary<Point2D<int>, int> Bfs(Grid.Grid grid, Point2D<int> start, Func<char, bool> isValidCell)
   {
-    return BFS(start, point => grid.IsInBounds(point) && isValidCell(grid[point]));
+    return Bfs(start, point => grid.IsInBounds(point) && isValidCell(grid[point]));
   }
 
   /// <summary>

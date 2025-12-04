@@ -4,29 +4,29 @@ namespace Utility;
 
 public class StringMap<T> : IEnumerable<(Point2D<int> Index, T Value)>
 {
-  private readonly T[,] fValues;
+  private readonly T[,] _fValues;
 
   public StringMap(string input, Func<char, T> selector)
   {
     string[] lines = input.Lines().ToArray();
     int lineLen = lines[0].Length;
-    fValues = new T[lineLen, lines.Length];
+    _fValues = new T[lineLen, lines.Length];
     for (int y = 0; y < lines.Length; y++)
     {
       string line = lines[y];
       for (int x = 0; x < lineLen; x++)
-        fValues[x, y] = selector(line[x]);
+        _fValues[x, y] = selector(line[x]);
     }
   }
 
-  public int Width => fValues.GetLength(0);
-  public int Height => fValues.GetLength(1);
+  public int Width => _fValues.GetLength(0);
+  public int Height => _fValues.GetLength(1);
   public Point2D<int> Size => (Width, Height);
 
   public T this[Point2D<int> idx]
   {
-    get => fValues[idx.X, idx.Y];
-    set => fValues[idx.X, idx.Y] = value;
+    get => _fValues[idx.X, idx.Y];
+    set => _fValues[idx.X, idx.Y] = value;
   }
 
   public IEnumerator<(Point2D<int> Index, T Value)> GetEnumerator()
@@ -69,7 +69,7 @@ public class StringMap<T> : IEnumerable<(Point2D<int> Index, T Value)>
 
   public IEnumerable<IEnumerable<T>> Rows()
   {
-    return Enumerable.Range(0, Height).Select(y => Enumerable.Range(0, Width).Select(x => fValues[x, y]));
+    return Enumerable.Range(0, Height).Select(y => Enumerable.Range(0, Width).Select(x => _fValues[x, y]));
   }
 
 
@@ -77,6 +77,6 @@ public class StringMap<T> : IEnumerable<(Point2D<int> Index, T Value)>
   {
     for (int x = 0; x < Width; x++)
       for (int y = 0; y < Height; y++)
-        yield return ((x, y), fValues[x, y]);
+        yield return ((x, y), _fValues[x, y]);
   }
 }

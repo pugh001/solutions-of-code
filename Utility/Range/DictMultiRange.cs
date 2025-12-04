@@ -15,5 +15,5 @@ public class DictMultiRange<T>
     }
   }
 
-  public long len => Ranges.Aggregate(1L, (a, b) => a *= b.Value.Len);
+  public long Len => Ranges.Aggregate(1L, (a, b) => a *= b.Value.Len);
 }

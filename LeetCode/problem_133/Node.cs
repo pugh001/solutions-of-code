@@ -2,24 +2,24 @@ namespace LeetCode.problem_133;
 
 public class Node
 {
-  public IList<Node> neighbors;
-  public int val;
+  public IList<Node> Neighbors;
+  public int Val;
 
   public Node()
   {
-    val = 0;
-    neighbors = new List<Node>();
+    Val = 0;
+    Neighbors = new List<Node>();
   }
 
-  public Node(int _val)
+  public Node(int val)
   {
-    val = _val;
-    neighbors = new List<Node>();
+    Val = val;
+    Neighbors = new List<Node>();
   }
 
-  public Node(int _val, List<Node> _neighbors)
+  public Node(int val, List<Node> neighbors)
   {
-    val = _val;
-    neighbors = _neighbors;
+    Val = val;
+    Neighbors = neighbors;
   }
 }

@@ -9,8 +9,8 @@ public class Day18
   private static int _rows = 70;
   private static int _cols = 70;
   private static int _enough = 1024;
-  private static HashSet<(int, int)> Grid = []; // Stores corrupted locations (#)
-  private static List<(int, int)> ExtraList = [];
+  private static HashSet<(int, int)> _grid = []; // Stores corrupted locations (#)
+  private static List<(int, int)> _extraList = [];
 
 
   private static readonly (int, int)[] Directions =
@@ -28,8 +28,8 @@ public class Day18
       _rows = 6;
       _cols = 6;
       _enough = 12;
-      Grid = []; // Stores corrupted locations (#)
-      ExtraList = [];
+      _grid = []; // Stores corrupted locations (#)
+      _extraList = [];
     }
 
     // Load and parse input data
@@ -50,9 +50,9 @@ public class Day18
 
     // Add extra list obstacles and check paths incrementally
     string resultPart2 = "";
-    foreach (var position in ExtraList)
+    foreach (var position in _extraList)
     {
-      Grid.Add(position); // Add new obstacle
+      _grid.Add(position); // Add new obstacle
       int result = ProcessMaze();
       if (result >= 0)
         continue;
@@ -72,7 +72,7 @@ public class Day18
     bool[,] visited = new bool[_rows + 1, _cols + 1]; // Grid size based on _rows and _cols
 
     // Check if start or end is corrupted
-    if (Grid.Contains((0, 0)) || Grid.Contains((_rows, _cols)))
+    if (_grid.Contains((0, 0)) || _grid.Contains((_rows, _cols)))
     {
       return -1; // Impossible to start or finish
     }
@@ -98,7 +98,7 @@ public class Day18
         int newY = y + dy;
 
         // Check if the new position is within bounds and not corrupted
-        if (!IsValid(newX, newY) || visited[newX, newY] || Grid.Contains((newX, newY)))
+        if (!IsValid(newX, newY) || visited[newX, newY] || _grid.Contains((newX, newY)))
           continue;
 
         visited[newX, newY] = true;
@@ -128,11 +128,11 @@ public class Day18
 
       if (counter > _enough)
       {
-        ExtraList.Add((x, y));
+        _extraList.Add((x, y));
       }
       else
       {
-        Grid.Add((x, y)); // Mark as corrupted
+        _grid.Add((x, y)); // Mark as corrupted
       }
 
       counter++;

@@ -9,10 +9,10 @@ public class Solution
 
   private static Queue<int> _courseQueue = null!;
   private static Dictionary<int, List<int>> _courseGraph = null!;
-  private readonly ITestOutputHelper testOutputHelper;
+  private readonly ITestOutputHelper _testOutputHelper;
   public Solution(ITestOutputHelper testOutputHelper)
   {
-    this.testOutputHelper = testOutputHelper;
+    this._testOutputHelper = testOutputHelper;
   }
 
   [Fact]
@@ -28,7 +28,7 @@ public class Solution
     bool result = CanFinish(numCourses, prerequisites);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -47,7 +47,7 @@ public class Solution
     bool result = CanFinish(numCourses, prerequisites);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -65,7 +65,7 @@ public class Solution
     bool result = CanFinish(numCourses, prerequisites);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -85,7 +85,7 @@ public class Solution
     bool result = CanFinish(numCourses, prerequisites);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);

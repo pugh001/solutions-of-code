@@ -6,10 +6,10 @@ public static class MoveDirections
   private const CompassDirection S = CompassDirection.S;
   private const CompassDirection E = CompassDirection.E;
   private const CompassDirection W = CompassDirection.W;
-  private const CompassDirection NE = CompassDirection.NE;
-  private const CompassDirection NW = CompassDirection.NW;
-  private const CompassDirection SE = CompassDirection.SE;
-  private const CompassDirection SW = CompassDirection.SW;
+  private const CompassDirection Ne = CompassDirection.Ne;
+  private const CompassDirection Nw = CompassDirection.Nw;
+  private const CompassDirection Se = CompassDirection.Se;
+  private const CompassDirection Sw = CompassDirection.Sw;
 
   public static CompassDirection CompassDirectionFromArrow(char c)
   {
@@ -30,80 +30,80 @@ public static class MoveDirections
       S => N,
       E => W,
       W => E,
-      NE => SW,
-      SW => NE,
-      SE => NW,
-      NW => SE,
+      Ne => Sw,
+      Sw => Ne,
+      Se => Nw,
+      Nw => Se,
       _ => throw new ArgumentException()
     };
   }
   public static (int x, int y) MoveDirection(this (int, int) start,
-    CompassDirection Direction,
+    CompassDirection direction,
     bool flipY = false,
     int distance = 1)
   {
     if (flipY)
     {
-      return Direction switch
+      return direction switch
       {
         N => start.Add((0, -distance)),
-        NE => start.Add((distance, -distance)),
+        Ne => start.Add((distance, -distance)),
         E => start.Add((distance, 0)),
-        SE => start.Add((distance, distance)),
+        Se => start.Add((distance, distance)),
         S => start.Add((0, distance)),
-        SW => start.Add((-distance, distance)),
+        Sw => start.Add((-distance, distance)),
         W => start.Add((-distance, 0)),
-        NW => start.Add((-distance, -distance)),
-        _ => throw new ArgumentException("Direction is not valid", nameof(Direction))
+        Nw => start.Add((-distance, -distance)),
+        _ => throw new ArgumentException("Direction is not valid", nameof(direction))
       };
     }
 
-    return Direction switch
+    return direction switch
     {
       N => start.Add((0, distance)),
-      NE => start.Add((distance, distance)),
+      Ne => start.Add((distance, distance)),
       E => start.Add((distance, 0)),
-      SE => start.Add((distance, -distance)),
+      Se => start.Add((distance, -distance)),
       S => start.Add((0, -distance)),
-      SW => start.Add((-distance, -distance)),
+      Sw => start.Add((-distance, -distance)),
       W => start.Add((-distance, 0)),
-      NW => start.Add((-distance, distance)),
-      _ => throw new ArgumentException("Direction is not valid", nameof(Direction))
+      Nw => start.Add((-distance, distance)),
+      _ => throw new ArgumentException("Direction is not valid", nameof(direction))
     };
   }
 
   public static Coordinate2D MoveDirection(this Coordinate2D start,
-    CompassDirection Direction,
+    CompassDirection direction,
     bool flipY = false,
     int distance = 1)
   {
     if (flipY)
     {
-      return Direction switch
+      return direction switch
       {
         N => start + (0, -distance),
-        NE => start + (distance, -distance),
+        Ne => start + (distance, -distance),
         E => start + (distance, 0),
-        SE => start + (distance, distance),
+        Se => start + (distance, distance),
         S => start + (0, distance),
-        SW => start + (-distance, distance),
+        Sw => start + (-distance, distance),
         W => start + (-distance, 0),
-        NW => start + (-distance, -distance),
-        _ => throw new ArgumentException("Direction is not valid", nameof(Direction))
+        Nw => start + (-distance, -distance),
+        _ => throw new ArgumentException("Direction is not valid", nameof(direction))
       };
     }
 
-    return Direction switch
+    return direction switch
     {
       N => start + (0, distance),
-      NE => start + (distance, distance),
+      Ne => start + (distance, distance),
       E => start + (distance, 0),
-      SE => start + (distance, -distance),
+      Se => start + (distance, -distance),
       S => start + (0, -distance),
-      SW => start + (-distance, -distance),
+      Sw => start + (-distance, -distance),
       W => start + (-distance, 0),
-      NW => start + (-distance, distance),
-      _ => throw new ArgumentException("Direction is not valid", nameof(Direction))
+      Nw => start + (-distance, distance),
+      _ => throw new ArgumentException("Direction is not valid", nameof(direction))
     };
   }
   public static List<T> Get2dNeighborVals<T>(this Dictionary<(int, int), T> values,
@@ -121,10 +121,10 @@ public static class MoveDirections
 
     if (includeDiagonals)
     {
-      res.Add(values.GetDirection(location, NW, defaultVal));
-      res.Add(values.GetDirection(location, NE, defaultVal));
-      res.Add(values.GetDirection(location, SE, defaultVal));
-      res.Add(values.GetDirection(location, SW, defaultVal));
+      res.Add(values.GetDirection(location, Nw, defaultVal));
+      res.Add(values.GetDirection(location, Ne, defaultVal));
+      res.Add(values.GetDirection(location, Se, defaultVal));
+      res.Add(values.GetDirection(location, Sw, defaultVal));
     }
 
 
@@ -146,10 +146,10 @@ public static class MoveDirections
 
     if (includeDiagonals)
     {
-      res.Add(values.GetDirection(location, NW, defaultVal));
-      res.Add(values.GetDirection(location, NE, defaultVal));
-      res.Add(values.GetDirection(location, SE, defaultVal));
-      res.Add(values.GetDirection(location, SW, defaultVal));
+      res.Add(values.GetDirection(location, Nw, defaultVal));
+      res.Add(values.GetDirection(location, Ne, defaultVal));
+      res.Add(values.GetDirection(location, Se, defaultVal));
+      res.Add(values.GetDirection(location, Sw, defaultVal));
     }
 
     return res;

@@ -6,9 +6,9 @@ public class MultiRange
 
   public MultiRange() { }
 
-  public MultiRange(IEnumerable<Range> Ranges)
+  public MultiRange(IEnumerable<Range> ranges)
   {
-    this.Ranges = new List<Range>(Ranges);
+    this.Ranges = new List<Range>(ranges);
   }
 
   public MultiRange(MultiRange other)
@@ -20,5 +20,5 @@ public class MultiRange
     }
   }
 
-  public long len => Ranges.Aggregate(1L, (a, b) => a *= b.Len);
+  public long Len => Ranges.Aggregate(1L, (a, b) => a *= b.Len);
 }

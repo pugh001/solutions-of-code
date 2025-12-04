@@ -6,10 +6,10 @@ namespace LeetCode.problem_3;
 
 public class Solution
 {
-  private readonly ITestOutputHelper testOutputHelper;
+  private readonly ITestOutputHelper _testOutputHelper;
   public Solution(ITestOutputHelper testOutputHelper)
   {
-    this.testOutputHelper = testOutputHelper;
+    this._testOutputHelper = testOutputHelper;
   }
 
 
@@ -26,7 +26,7 @@ public class Solution
     int result = LengthOfLongestSubstring(s);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -45,7 +45,7 @@ public class Solution
     int result = LengthOfLongestSubstring(s);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -63,7 +63,7 @@ public class Solution
     int result = LengthOfLongestSubstring(s);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);

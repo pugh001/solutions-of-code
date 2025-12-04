@@ -4,10 +4,10 @@ namespace AOC2024;
 
 public class Day16
 {
-  private static (Dictionary<Coordinate2D, char> map, int maxX, int maxY) map;
-  private static Coordinate2D Start = new(0, 0);
-  private static Coordinate2D End = new(0, 0);
-  private static int Shortest = int.MaxValue;
+  private static (Dictionary<Coordinate2D, char> map, int maxX, int maxY) _map;
+  private static Coordinate2D _start = new(0, 0);
+  private static Coordinate2D _end = new(0, 0);
+  private static int _shortest = int.MaxValue;
   private static readonly Queue<(Coordinate2D, CompassDirection, int, List<Coordinate2D>)> moves = new();
   private static readonly Dictionary<(Coordinate2D, CompassDirection), int> seen = new();
   private static readonly Dictionary<long, List<Coordinate2D>> Routes = new();
@@ -17,9 +17,9 @@ public class Day16
     string? data = File.ReadAllText(input);
     long result1 = 0;
     long result2 = 0;
-    map = data.GenerateMap(false);
-    Start = map.map.First(q => q.Value == 'S').Key;
-    End = map.map.First(q => q.Value == 'E').Key;
+    _map = data.GenerateMap(false);
+    _start = _map.map.First(q => q.Value == 'S').Key;
+    _end = _map.map.First(q => q.Value == 'E').Key;
     result1 = ProcessPart1();
     result2 = ProcessInput2();
     return (result1.ToString(), result2.ToString());
@@ -31,22 +31,22 @@ public class Day16
 
     long sum = 0;
     //ShortestPath(Start, CompassDirection.N, 0, new List<Coordinate2D>());
-    moves.Enqueue((Start, CompassDirection.E, 0, new List<Coordinate2D> { Start }));
+    moves.Enqueue((_start, CompassDirection.E, 0, new List<Coordinate2D> { _start }));
 
     while (moves.TryDequeue(out var move))
     {
-      if (move.Item1.x > -1 && move.Item1.y > -1 && move.Item1.x < map.maxX && move.Item1.y < map.maxX)
+      if (move.Item1.X > -1 && move.Item1.Y > -1 && move.Item1.X < _map.maxX && move.Item1.Y < _map.maxX)
       {
-        if (move.Item3 > Shortest)
+        if (move.Item3 > _shortest)
         {
           continue;
         }
 
-        if (map.map[move.Item1] == 'E')
+        if (_map.map[move.Item1] == 'E')
         {
-          if (move.Item3 <= Shortest)
+          if (move.Item3 <= _shortest)
           {
-            Shortest = move.Item3;
+            _shortest = move.Item3;
             if (!Routes.TryAdd(move.Item3, move.Item4))
             {
               Routes[move.Item3] = Routes[move.Item3].Union(move.Item4).Distinct().ToList();
@@ -56,25 +56,25 @@ public class Day16
           continue;
         }
 
-        if (map.map[move.Item1] != '#')
+        if (_map.map[move.Item1] != '#')
         {
           var movement = move.Item1.MoveDirection(move.Item2);
           var newlist = new List<Coordinate2D>(move.Item4);
           newlist.Add(movement);
-          addIfShorter((movement, move.Item2, move.Item3 + 1, newlist));
+          AddIfShorter((movement, move.Item2, move.Item3 + 1, newlist));
         }
 
         var cw = TurnClockwise(move.Item2);
         var ccw = TurnCounterClockwise(move.Item2);
-        addIfShorter((move.Item1, cw, move.Item3 + 1000, move.Item4));
-        addIfShorter((move.Item1, ccw, move.Item3 + 1000, move.Item4));
+        AddIfShorter((move.Item1, cw, move.Item3 + 1000, move.Item4));
+        AddIfShorter((move.Item1, ccw, move.Item3 + 1000, move.Item4));
       }
     }
 
-    return Shortest;
+    return _shortest;
   }
 
-  private static void addIfShorter((Coordinate2D, CompassDirection, int, List<Coordinate2D>) cur)
+  private static void AddIfShorter((Coordinate2D, CompassDirection, int, List<Coordinate2D>) cur)
   {
     if (!seen.TryAdd((cur.Item1, cur.Item2), cur.Item3))
     {
@@ -114,11 +114,11 @@ public class Day16
   {
     //if (seenRoutes.Contains(cur)) return;
     //if (map.map[cur] == '#') return;
-    if (cur == End)
+    if (cur == _end)
     {
-      if (visited < Shortest)
+      if (visited < _shortest)
       {
-        Shortest = visited;
+        _shortest = visited;
       }
 
       return;

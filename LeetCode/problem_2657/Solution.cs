@@ -6,10 +6,10 @@ namespace LeetCode.problem_2657;
 
 public class Solution
 {
-  private readonly ITestOutputHelper testOutputHelper;
+  private readonly ITestOutputHelper _testOutputHelper;
   public Solution(ITestOutputHelper testOutputHelper)
   {
-    this.testOutputHelper = testOutputHelper;
+    this._testOutputHelper = testOutputHelper;
   }
 
   [Fact]
@@ -17,15 +17,15 @@ public class Solution
   {
     var stopWatch = Stopwatch.StartNew();
     // Arrange
-    int[] A = [1, 3, 2, 4];
-    int[] B = [3, 1, 2, 4];
+    int[] a = [1, 3, 2, 4];
+    int[] b = [3, 1, 2, 4];
     int[] expected = [0, 2, 3, 4];
 
     // Act
-    int[] result = FindThePrefixCommonArray(A, B);
+    int[] result = FindThePrefixCommonArray(a, b);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -36,15 +36,15 @@ public class Solution
   {
     var stopWatch = Stopwatch.StartNew();
     // Arrange
-    int[] A = [2, 3, 1];
-    int[] B = [3, 1, 2];
+    int[] a = [2, 3, 1];
+    int[] b = [3, 1, 2];
     int[] expected = [0, 1, 3];
 
     // Act
-    int[] result = FindThePrefixCommonArray(A, B);
+    int[] result = FindThePrefixCommonArray(a, b);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -54,22 +54,22 @@ public class Solution
   {
     var stopWatch = Stopwatch.StartNew();
     // Arrange
-    int[] A = [4, 3, 2, 1];
-    int[] B = [1, 2, 3, 4];
+    int[] a = [4, 3, 2, 1];
+    int[] b = [1, 2, 3, 4];
     int[] expected = [0, 0, 2, 4];
 
     // Act
-    int[] result = FindThePrefixCommonArray(A, B);
+    int[] result = FindThePrefixCommonArray(a, b);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
   }
-  public int[] FindThePrefixCommonArrayMine(int[] A, int[] B)
+  public int[] FindThePrefixCommonArrayMine(int[] a, int[] b)
   {
-    int n = A.Length;
+    int n = a.Length;
     int[] result = new int[n];
     var seenInA = new HashSet<int>();
     var seenInB = new HashSet<int>();
@@ -77,11 +77,11 @@ public class Solution
 
     for (int j = 0; j < n; j++)
     {
-      if (seenInB.Contains(A[j])) matches++;
-      seenInA.Add(A[j]);
+      if (seenInB.Contains(a[j])) matches++;
+      seenInA.Add(a[j]);
 
-      if (seenInA.Contains(B[j])) matches++;
-      seenInB.Add(B[j]);
+      if (seenInA.Contains(b[j])) matches++;
+      seenInB.Add(b[j]);
 
       result[j] = matches;
     }
@@ -91,17 +91,17 @@ public class Solution
   //This is the fastest solution on LeetCode,
   //so better as I use Contains
   // they directly check array for speed.
-  public int[] FindThePrefixCommonArray(int[] A, int[] B)
+  public int[] FindThePrefixCommonArray(int[] a, int[] b)
   {
-    int[] state = new int[A.Length];
-    int[] res = new int[A.Length];
+    int[] state = new int[a.Length];
+    int[] res = new int[a.Length];
 
     int count = 0;
 
-    for (int i = 0; i < A.Length; i++)
+    for (int i = 0; i < a.Length; i++)
     {
-      int ai = A[i] - 1; //Convert to 0 index
-      int bi = B[i] - 1;
+      int ai = a[i] - 1; //Convert to 0 index
+      int bi = b[i] - 1;
 
       state[ai]++; //Sets value seen count (Once 2 seen in both)
       state[bi]++;

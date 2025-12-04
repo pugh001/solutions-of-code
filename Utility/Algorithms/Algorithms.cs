@@ -8,7 +8,7 @@ public static class Algorithms
   /// <summary>
   ///   Calculates the Greatest Common Divisor of two numbers
   /// </summary>
-  public static long GCD(long a, long b)
+  public static long Gcd(long a, long b)
   {
     while (b != 0)
     {
@@ -23,25 +23,25 @@ public static class Algorithms
   /// <summary>
   ///   Calculates the Least Common Multiple of two numbers
   /// </summary>
-  public static long LCM(long a, long b)
+  public static long Lcm(long a, long b)
   {
-    return Math.Abs(a * b) / GCD(a, b);
+    return Math.Abs(a * b) / Gcd(a, b);
   }
 
   /// <summary>
   ///   Calculates the LCM of multiple numbers
   /// </summary>
-  public static long LCM(params long[] numbers)
+  public static long Lcm(params long[] numbers)
   {
-    return numbers.Aggregate(LCM);
+    return numbers.Aggregate(Lcm);
   }
 
   /// <summary>
   ///   Calculates the LCM of multiple numbers
   /// </summary>
-  public static long LCM(IEnumerable<long> numbers)
+  public static long Lcm(IEnumerable<long> numbers)
   {
-    return numbers.Aggregate(LCM);
+    return numbers.Aggregate(Lcm);
   }
 
   /// <summary>
@@ -179,7 +179,7 @@ public static class Algorithms
   /// </summary>
   public static long ModInverse(long a, long m)
   {
-    if (GCD(a, m) != 1) throw new ArgumentException("Modular inverse doesn't exist");
+    if (Gcd(a, m) != 1) throw new ArgumentException("Modular inverse doesn't exist");
 
     long m0 = m, x0 = 0, x1 = 1;
 

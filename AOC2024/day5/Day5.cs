@@ -69,12 +69,12 @@ public class Day5
   {
     var position = update.Select((value, index) => (value, index)).ToDictionary(x => x.value, x => x.index);
 
-    foreach ((int X, int Y) in rules)
+    foreach ((int x, int y) in rules)
     {
-      if (!position.ContainsKey(X) || !position.ContainsKey(Y))
+      if (!position.ContainsKey(x) || !position.ContainsKey(y))
         continue;
 
-      if (position[X] < position[Y])
+      if (position[x] < position[y])
         continue;
 
       return false;

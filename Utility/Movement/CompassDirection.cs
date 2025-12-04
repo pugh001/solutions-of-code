@@ -3,11 +3,11 @@ namespace Utility;
 public enum CompassDirection
 {
   N = 0,
-  NE = 45,
+  Ne = 45,
   E = 90,
-  SE = 135,
+  Se = 135,
   S = 180,
-  SW = 225,
+  Sw = 225,
   W = 270,
-  NW = 315
+  Nw = 315
 }

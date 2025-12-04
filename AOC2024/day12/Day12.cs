@@ -40,7 +40,7 @@ public class Day12
       for (int c = 0; c < cols; c++)
       {
         grid[r, c] = data[r][c];
-        GridLine[(r, c)] = new LineChecker { value = data[r][c], visited = "    " };
+        GridLine[(r, c)] = new LineChecker { Value = data[r][c], Visited = "    " };
 
       }
     }
@@ -135,7 +135,7 @@ public class Day12
       foreach (int[] direction in Directions)
       {
         char goingIn = DirectionList[counter];
-        bool skip = GridLine[(row, col)].visited[counter] == goingIn;
+        bool skip = GridLine[(row, col)].Visited[counter] == goingIn;
         int newRow = row + direction[0], newCol = col + direction[1];
         bool isOutOfBounds = newRow < 0 || newRow >= rows || newCol < 0 || newCol >= cols;
 
@@ -160,7 +160,7 @@ public class Day12
 
       foreach ((int sameRow, int sameCol) in sameDirection)
       {
-        GridLine[(sameRow, sameCol)].visited = CombineStrings(GridLine[(sameRow, sameCol)].visited, updateDirection);
+        GridLine[(sameRow, sameCol)].Visited = CombineStrings(GridLine[(sameRow, sameCol)].Visited, updateDirection);
       }
     }
 
@@ -205,6 +205,6 @@ public class Day12
 
 public class LineChecker
 {
-  public char value { get; set; }
-  public string visited { get; set; }
+  public char Value { get; set; }
+  public string Visited { get; set; }
 }

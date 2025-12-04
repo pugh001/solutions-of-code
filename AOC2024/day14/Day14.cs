@@ -9,7 +9,7 @@ public class Day14
   private static int _yMax = 103;
   private static readonly int[,] Grid = new int[_xMax, _yMax];
   private static readonly List<((int, int), (int, int))> robots = new();
-  private static Dictionary<(int, int), int> robotTree = new();
+  private static Dictionary<(int, int), int> _robotTree = new();
   public (string, string) Process(string input)
   {
     if (input.Contains("Example"))
@@ -38,17 +38,17 @@ public class Day14
 
     if (!input.Contains("Example"))
     {
-      result2 = processPart2();
+      result2 = ProcessPart2();
       return ("", result2.ToString());
     }
 
-    result1 = processPart1(data);
+    result1 = ProcessPart1(data);
 
 
     return (result1.ToString(), result2.ToString());
   }
 
-  private static long processPart1(IEnumerable<string> data)
+  private static long ProcessPart1(IEnumerable<string> data)
   {
     var regex = new Regex(@"p=(\d+),(\d+) v=(-?\d+),(-?\d+)");
 
@@ -67,21 +67,21 @@ public class Day14
     }
 
 
-    int Qx = _xMax / 2, Qy = _yMax / 2;
+    int qx = _xMax / 2, qy = _yMax / 2;
     int quad1 = 0, quad2 = 0, quad3 = 0, quad4 = 0;
 
     for (int i = 0; i < _xMax; i++)
     {
-      if (i == Qx) continue;
+      if (i == qx) continue;
 
       for (int j = 0; j < _yMax; j++)
       {
-        if (j == Qy) continue;
+        if (j == qy) continue;
 
-        if (i < Qx && j < Qy) quad1 += Grid[i, j];
-        else if (i > Qx && j < Qy) quad2 += Grid[i, j];
-        else if (i < Qx && j > Qy) quad3 += Grid[i, j];
-        else if (i > Qx && j > Qy) quad4 += Grid[i, j];
+        if (i < qx && j < qy) quad1 += Grid[i, j];
+        else if (i > qx && j < qy) quad2 += Grid[i, j];
+        else if (i < qx && j > qy) quad3 += Grid[i, j];
+        else if (i > qx && j > qy) quad4 += Grid[i, j];
       }
     }
 
@@ -90,7 +90,7 @@ public class Day14
 
   }
 
-  private static long processPart2()
+  private static long ProcessPart2()
   {
     long sum = 0;
     int totalRobots = robots.Count;
@@ -99,7 +99,7 @@ public class Day14
     bool overlap = true;
     while (overlap)
     {
-      robotTree = new Dictionary<(int, int), int>();
+      _robotTree = new Dictionary<(int, int), int>();
       sum++;
       foreach (var robot in robots)
       {
@@ -112,13 +112,13 @@ public class Day14
           height + y % height :
           y % height;
 
-        if (!robotTree.TryAdd((Convert.ToInt32(Math.Abs(newx)), Convert.ToInt32(Math.Abs(newy))), 1))
+        if (!_robotTree.TryAdd((Convert.ToInt32(Math.Abs(newx)), Convert.ToInt32(Math.Abs(newy))), 1))
         {
           break;
         }
       }
 
-      if (robotTree.Count == totalRobots)
+      if (_robotTree.Count == totalRobots)
       {
         overlap = false;
       }

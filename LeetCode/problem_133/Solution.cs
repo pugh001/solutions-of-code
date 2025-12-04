@@ -6,13 +6,13 @@ namespace LeetCode.problem_133;
 
 public class Solution
 {
-  private readonly ITestOutputHelper testOutputHelper;
+  private readonly ITestOutputHelper _testOutputHelper;
 
 
-  private readonly Dictionary<Node, Node> visited = new();
+  private readonly Dictionary<Node, Node> _visited = new();
   public Solution(ITestOutputHelper testOutputHelper)
   {
-    this.testOutputHelper = testOutputHelper;
+    this._testOutputHelper = testOutputHelper;
   }
   [Fact]
   public void Solution_Test1()
@@ -27,7 +27,7 @@ public class Solution
     var result = CloneGraph(adjList);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     AssertDeepClone(expected, result);
@@ -47,7 +47,7 @@ public class Solution
     var result = CloneGraph(adjList);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     AssertDeepClone(expected, result);
@@ -66,7 +66,7 @@ public class Solution
     var result = CloneGraph(adjList);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     AssertDeepClone(expected, result);
@@ -82,19 +82,19 @@ public class Solution
   // Helper function to perform DFS and clone the graph but inside so can use 
   private Node CloneNode(Node n)
   {
-    if (visited.ContainsKey(n))
+    if (_visited.ContainsKey(n))
     {
-      return visited[n]; // Return the already cloned node
+      return _visited[n]; // Return the already cloned node
     }
 
     // Clone the node
-    var clone = new Node(n.val);
-    visited[n] = clone;
+    var clone = new Node(n.Val);
+    _visited[n] = clone;
 
     // Clone all neighbors
-    foreach (var neighbor in n.neighbors)
+    foreach (var neighbor in n.Neighbors)
     {
-      clone.neighbors.Add(CloneNode(neighbor));
+      clone.Neighbors.Add(CloneNode(neighbor));
     }
 
     return clone;
@@ -131,7 +131,7 @@ public class Solution
           nodeMap[neighborVal] = value;
         }
 
-        currentNode.neighbors.Add(value);
+        currentNode.Neighbors.Add(value);
       }
     }
 
@@ -159,16 +159,16 @@ public class Solution
       visitedClone.Add(cloneNode);
 
       // Check value equality
-      Assert.Equal(originalNode.val, cloneNode.val);
+      Assert.Equal(originalNode.Val, cloneNode.Val);
 
       // Check neighbors count
-      Assert.Equal(originalNode.neighbors.Count, cloneNode.neighbors.Count);
+      Assert.Equal(originalNode.Neighbors.Count, cloneNode.Neighbors.Count);
 
       // Check neighbors recursively
-      for (int i = 0; i < originalNode.neighbors.Count; i++)
+      for (int i = 0; i < originalNode.Neighbors.Count; i++)
       {
-        var origNeighbor = originalNode.neighbors[i];
-        var cloneNeighbor = cloneNode.neighbors[i];
+        var origNeighbor = originalNode.Neighbors[i];
+        var cloneNeighbor = cloneNode.Neighbors[i];
 
         // Ensure no shared references
         Assert.NotSame(origNeighbor, cloneNeighbor);

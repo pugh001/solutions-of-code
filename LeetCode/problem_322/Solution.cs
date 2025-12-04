@@ -6,10 +6,10 @@ namespace LeetCode.problem_322;
 
 public class Solution
 {
-  private readonly ITestOutputHelper testOutputHelper;
+  private readonly ITestOutputHelper _testOutputHelper;
   public Solution(ITestOutputHelper testOutputHelper)
   {
-    this.testOutputHelper = testOutputHelper;
+    this._testOutputHelper = testOutputHelper;
   }
 
   [Fact]
@@ -25,7 +25,7 @@ public class Solution
     int result = CoinChange(coins, amount);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -44,7 +44,7 @@ public class Solution
     int result = CoinChange(coins, amount);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -62,7 +62,7 @@ public class Solution
     int result = CoinChange(coins, amount);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -82,7 +82,7 @@ public class Solution
     int result = CoinChange(coins, amount);
 
     stopWatch.Stop();
-    testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
+    _testOutputHelper.WriteLine($"  Time:  {stopWatch.Elapsed}");
     // Assert
 
     Assert.Equal(expected, result);
@@ -91,7 +91,7 @@ public class Solution
   //Updated based on Competitive Programmers Handbook version
   public int CoinChange(int[] coins, int amount)
   {
-    const int INF = int.MaxValue; // Representing infinity
+    const int inf = int.MaxValue; // Representing infinity
     int[] dp = new int[amount + 1]; // DP array to store the minimum coins for each amount
 
     dp[0] = 0; // Base case: 0 coins needed to make amount 0
@@ -99,12 +99,12 @@ public class Solution
     // Iterate over each amount from 1 to the target amount
     for (int x = 1; x <= amount; x++)
     {
-      dp[x] = INF; // Initialize to "infinity"
+      dp[x] = inf; // Initialize to "infinity"
 
       // Iterate over each coin
       foreach (int coin in coins)
       {
-        if (x - coin >= 0 && dp[x - coin] != INF) // Check if the coin can contribute
+        if (x - coin >= 0 && dp[x - coin] != inf) // Check if the coin can contribute
         {
           dp[x] = Math.Min(dp[x], dp[x - coin] + 1);
         }
@@ -112,7 +112,7 @@ public class Solution
     }
 
     // If the target amount is still unreachable, return -1
-    return dp[amount] == INF ?
+    return dp[amount] == inf ?
       -1 :
       dp[amount];
   }

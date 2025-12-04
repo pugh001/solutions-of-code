@@ -4,18 +4,18 @@ public class Coordinate4D
 {
 
 
-  private static Coordinate4D[] neighbors;
-  private readonly int w;
-  private readonly int x;
-  private readonly int y;
-  private readonly int z;
+  private static Coordinate4D[] _neighbors;
+  private readonly int _w;
+  private readonly int _x;
+  private readonly int _y;
+  private readonly int _z;
 
   public Coordinate4D(int x, int y, int z, int w)
   {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    this.w = w;
+    this._x = x;
+    this._y = y;
+    this._z = z;
+    this._w = w;
   }
 
   public static implicit operator Coordinate4D((int x, int y, int z, int w) a)
@@ -25,7 +25,7 @@ public class Coordinate4D
 
   public static implicit operator (int x, int y, int z, int w)(Coordinate4D a)
   {
-    return (a.x, a.y, a.z, a.w);
+    return (a._x, a._y, a._z, a._w);
   }
   public static Coordinate4D operator +(Coordinate4D a)
   {
@@ -33,11 +33,11 @@ public class Coordinate4D
   }
   public static Coordinate4D operator +(Coordinate4D a, Coordinate4D b)
   {
-    return new Coordinate4D(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+    return new Coordinate4D(a._x + b._x, a._y + b._y, a._z + b._z, a._w + b._w);
   }
   public static Coordinate4D operator -(Coordinate4D a)
   {
-    return new Coordinate4D(-a.x, -a.y, -a.z, -a.w);
+    return new Coordinate4D(-a._x, -a._y, -a._z, -a._w);
   }
   public static Coordinate4D operator -(Coordinate4D a, Coordinate4D b)
   {
@@ -45,16 +45,16 @@ public class Coordinate4D
   }
   public static bool operator ==(Coordinate4D a, Coordinate4D b)
   {
-    return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;
+    return a._x == b._x && a._y == b._y && a._z == b._z && a._w == b._w;
   }
   public static bool operator !=(Coordinate4D a, Coordinate4D b)
   {
-    return a.x != b.x || a.y != b.y || a.z != b.z || a.z != b.z;
+    return a._x != b._x || a._y != b._y || a._z != b._z || a._z != b._z;
   }
 
   public int ManhattanDistance(Coordinate4D other)
   {
-    return Math.Abs(x - other.x) + Math.Abs(y - other.y) + Math.Abs(z - other.z) + Math.Abs(w - other.w);
+    return Math.Abs(_x - other._x) + Math.Abs(_y - other._y) + Math.Abs(_z - other._z) + Math.Abs(_w - other._w);
   }
 
   public override bool Equals(object obj)
@@ -66,13 +66,13 @@ public class Coordinate4D
 
   public override int GetHashCode()
   {
-    return 137 * x + 149 * y + 163 * z + 179 * w;
+    return 137 * _x + 149 * _y + 163 * _z + 179 * _w;
   }
 
 
   public static Coordinate4D[] GetNeighbors()
   {
-    if (neighbors != null) return neighbors;
+    if (_neighbors != null) return _neighbors;
 
     List<Coordinate4D> neighborList = new();
 
@@ -93,7 +93,7 @@ public class Coordinate4D
       }
     }
 
-    neighbors = neighborList.ToArray();
-    return neighbors;
+    _neighbors = neighborList.ToArray();
+    return _neighbors;
   }
 }

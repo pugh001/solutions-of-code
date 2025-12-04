@@ -2,73 +2,73 @@ namespace Utility;
 
 public class Coordinate2D
 {
-  public static readonly Coordinate2D origin = new(0, 0);
-  public static readonly Coordinate2D unit_x = new(1, 0);
-  public static readonly Coordinate2D unit_y = new(0, 1);
-  public readonly int x;
-  public readonly int y;
+  public static readonly Coordinate2D Origin = new(0, 0);
+  public static readonly Coordinate2D UnitX = new(1, 0);
+  public static readonly Coordinate2D UnitY = new(0, 1);
+  public readonly int X;
+  public readonly int Y;
 
   public Coordinate2D(int x, int y)
   {
-    this.x = x;
-    this.y = y;
+    this.X = x;
+    this.Y = y;
   }
 
   public Coordinate2D((int x, int y) coord)
   {
-    x = coord.x;
-    y = coord.y;
+    X = coord.x;
+    Y = coord.y;
   }
 
-  public Coordinate2D(string StringPair)
+  public Coordinate2D(string stringPair)
   {
-    string[] t = StringPair.Split(',');
-    x = int.Parse(t[0]);
-    y = int.Parse(t[1]);
+    string[] t = stringPair.Split(',');
+    X = int.Parse(t[0]);
+    Y = int.Parse(t[1]);
   }
 
-  public Coordinate2D RotateCW(int degrees, Coordinate2D center)
+  public Coordinate2D RotateCw(int degrees, Coordinate2D center)
   {
     var offset = center - this;
-    return center + offset.RotateCW(degrees);
+    return center + offset.RotateCw(degrees);
   }
-  public Coordinate2D RotateCW(int degrees)
+  public Coordinate2D RotateCw(int degrees)
   {
     return (degrees / 90 % 4) switch
     {
       0 => this,
-      1 => RotateCW(),
+      1 => RotateCw(),
       2 => -this,
-      3 => RotateCCW(),
+      3 => RotateCcw(),
       _ => this
     };
   }
 
-  private Coordinate2D RotateCW()
+  private Coordinate2D RotateCw()
   {
-    return new Coordinate2D(y, -x);
+    return new Coordinate2D(Y, -X);
   }
 
-  public Coordinate2D RotateCCW(int degrees, Coordinate2D center)
+  public Coordinate2D RotateCcw(int degrees, Coordinate2D center)
   {
     var offset = center - this;
-    return center + offset.RotateCCW(degrees);
+    return center + offset.RotateCcw(degrees);
   }
-  public Coordinate2D RotateCCW(int degrees)
+  public Coordinate2D RotateCcw(int degrees)
   {
     return (degrees / 90 % 4) switch
     {
       0 => this,
-      1 => RotateCCW(),
+      1 => RotateCcw(),
       2 => -this,
-      3 => RotateCW(),
+      3 => RotateCw(),
       _ => this
     };
   }
 
-  private Coordinate2D RotateCCW()
+  private Coordinate2D RotateCcw()
   {
-    return new Coordinate2D(-y, x);
+    return new Coordinate2D(-Y, X);
   }
 
   public static Coordinate2D operator +(Coordinate2D a)
@@ -77,11 +77,11 @@ public class Coordinate2D
   }
   public static Coordinate2D operator +(Coordinate2D a, Coordinate2D b)
   {
-    return new Coordinate2D(a.x + b.x, a.y + b.y);
+    return new Coordinate2D(a.X + b.X, a.Y + b.Y);
   }
   public static Coordinate2D operator -(Coordinate2D a)
   {
-    return new Coordinate2D(-a.x, -a.y);
+    return new Coordinate2D(-a.X, -a.Y);
   }
   public static Coordinate2D operator -(Coordinate2D a, Coordinate2D b)
   {
@@ -89,15 +89,15 @@ public class Coordinate2D
   }
   public static Coordinate2D operator *(int scale, Coordinate2D a)
   {
-    return new Coordinate2D(scale * a.x, scale * a.y);
+    return new Coordinate2D(scale * a.X, scale * a.Y);
   }
   public static bool operator ==(Coordinate2D a, Coordinate2D b)
   {
-    return a.x == b.x && a.y == b.y;
+    return a.X == b.X && a.Y == b.Y;
   }
   public static bool operator !=(Coordinate2D a, Coordinate2D b)
   {
-    return a.x != b.x || a.y != b.y;
+    return a.X != b.X || a.Y != b.Y;
   }
 
   public static implicit operator Coordinate2D((int x, int y) a)
@@ -107,13 +107,13 @@ public class Coordinate2D
 
   public static implicit operator (int x, int y)(Coordinate2D a)
   {
-    return (a.x, a.y);
+    return (a.X, a.Y);
   }
 
   public int ManDistance(Coordinate2D other)
   {
-    int x = Math.Abs(this.x - other.x);
-    int y = Math.Abs(this.y - other.y);
+    int x = Math.Abs(this.X - other.X);
+    int y = Math.Abs(this.Y - other.Y);
     return x + y;
   }
 
@@ -127,16 +127,16 @@ public class Coordinate2D
 
   public override int GetHashCode()
   {
-    return (100 * x + y).GetHashCode();
+    return (100 * X + Y).GetHashCode();
   }
 
   public override string ToString()
   {
-    return string.Concat("(", x, ", ", y, ")");
+    return string.Concat("(", X, ", ", Y, ")");
   }
   public void Deconstruct(out int xVal, out int yVal)
   {
-    xVal = x;
-    yVal = y;
+    xVal = X;
+    yVal = Y;
   }
 }

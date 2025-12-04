@@ -4,12 +4,12 @@ namespace AOC2024;
 
 public class Day15
 {
-  private static (Dictionary<Coordinate2D, char> map, int maxX, int maxY) map;
-  private static (Dictionary<Coordinate2D, char> map, int maxX, int maxY) map2;
-  private static List<List<Coordinate2D>> boxesToMove = new();
-  private static List<Coordinate2D> movedPositions = new();
+  private static (Dictionary<Coordinate2D, char> map, int maxX, int maxY) _map;
+  private static (Dictionary<Coordinate2D, char> map, int maxX, int maxY) _map2;
+  private static List<List<Coordinate2D>> _boxesToMove = new();
+  private static List<Coordinate2D> _movedPositions = new();
   private static readonly Queue<char> Moves = new();
-  private static string movestring;
+  private static string _movestring;
 
   public (string, string) Process(string input)
   {
@@ -27,8 +27,8 @@ public class Day15
     split[0] = split[0].Replace(".", "..");
     split[0] = split[0].Replace("@", "@.");
 
-    map2 = split[0].GenerateMap(false);
-    movestring = split[1];
+    _map2 = split[0].GenerateMap(false);
+    _movestring = split[1];
 
 
     char[,] grid = null;
@@ -41,7 +41,7 @@ public class Day15
 
     foreach (string line in data)
     {
-      if (line.StartsWith("#"))
+      if (line.StartsWith('#'))
       {
         gridLines.Add(line); // Remove the # and add to grid lines
         continue;
@@ -75,7 +75,7 @@ public class Day15
       }
     }
 
-    result1 = processPart1(grid, robotPosition, instructions);
+    result1 = ProcessPart1(grid, robotPosition, instructions);
 
     (scaledGrid, robotPosition) = ScaleUpGrid(gridLines);
     //printOutGrid(scaledGrid);
@@ -88,7 +88,7 @@ public class Day15
 
     ;
   }
-  private static void printOutGrid(char[,] grid)
+  private static void PrintOutGrid(char[,] grid)
   {
 
     int rows = grid.GetLength(0);
@@ -105,7 +105,7 @@ public class Day15
 
   }
 
-  private static long processPart1(char[,] grid, (int, int) robotPosition, string instructions)
+  private static long ProcessPart1(char[,] grid, (int, int) robotPosition, string instructions)
   {
     var moveTo = (0, 0);
 
@@ -211,7 +211,7 @@ public class Day15
 
     return CalculateScore(grid);
   }
-  private static long processPart2a(char[,] grid, (int, int) robotPosition, string instructions)
+  private static long ProcessPart2B(char[,] grid, (int, int) robotPosition, string instructions)
   {
     foreach (char move in instructions)
     {
@@ -313,7 +313,7 @@ public class Day15
   {
     long sum = 0;
     SetupMoves();
-    var cur = map2.map.First(q => q.Value == '@').Key;
+    var cur = _map2.map.First(q => q.Value == '@').Key;
     CompassDirection movedir;
     while (Moves.TryDequeue(out char move))
     {
@@ -326,62 +326,62 @@ public class Day15
       };
 
       var next = cur.MoveDirection(movedir);
-      if (map2.map[next] == '[' || map2.map[next] == ']')
+      if (_map2.map[next] == '[' || _map2.map[next] == ']')
       {
         bool canmove = TryMoveBox(movedir, cur, next, true);
         if (canmove)
         {
           char edge1 = '[';
           char edge2 = ']';
-          for (int x = boxesToMove.Count - 1; x >= 0; x--)
+          for (int x = _boxesToMove.Count - 1; x >= 0; x--)
           {
-            var curbox = boxesToMove[x];
+            var curbox = _boxesToMove[x];
             var nextpos1 = curbox[0].MoveDirection(movedir);
             var nextpos2 = curbox[1].MoveDirection(movedir);
-            if (nextpos1.x < nextpos2.x)
+            if (nextpos1.X < nextpos2.X)
             {
-              map2.map[nextpos1] = edge1;
-              map2.map[nextpos2] = edge2;
+              _map2.map[nextpos1] = edge1;
+              _map2.map[nextpos2] = edge2;
             }
             else
             {
-              map2.map[nextpos1] = edge2;
-              map2.map[nextpos2] = edge1;
+              _map2.map[nextpos1] = edge2;
+              _map2.map[nextpos2] = edge1;
             }
 
-            movedPositions.Add(nextpos1);
-            movedPositions.Add(nextpos2);
+            _movedPositions.Add(nextpos1);
+            _movedPositions.Add(nextpos2);
           }
 
-          var newEmpty = boxesToMove.SelectMany(q => q.Where(e => !movedPositions.Contains(e))).ToList();
+          var newEmpty = _boxesToMove.SelectMany(q => q.Where(e => !_movedPositions.Contains(e))).ToList();
 
           foreach (var empty in newEmpty)
           {
-            map2.map[empty] = '.';
+            _map2.map[empty] = '.';
           }
 
-          map2.map[cur] = '.';
-          map2.map[next] = '@';
+          _map2.map[cur] = '.';
+          _map2.map[next] = '@';
           cur = next;
         }
 
-        movedPositions = new List<Coordinate2D>();
-        boxesToMove = new List<List<Coordinate2D>>();
+        _movedPositions = new List<Coordinate2D>();
+        _boxesToMove = new List<List<Coordinate2D>>();
       }
-      else if (map2.map[next] == '.')
+      else if (_map2.map[next] == '.')
       {
-        map2.map[cur] = '.';
-        map2.map[next] = '@';
+        _map2.map[cur] = '.';
+        _map2.map[next] = '@';
         cur = next;
       }
 
     }
 
-    var boxes = map2.map.Where(q => q.Value == '[').ToList();
+    var boxes = _map2.map.Where(q => q.Value == '[').ToList();
 
     foreach (var box in boxes)
     {
-      sum += 100 * box.Key.y + box.Key.x;
+      sum += 100 * box.Key.Y + box.Key.X;
     }
 
     return sum;
@@ -392,17 +392,17 @@ public class Day15
     bool canmove = false;
     if (partTwo)
     {
-      if (map2.map[next] == '.')
+      if (_map2.map[next] == '.')
       {
         return true;
       }
 
-      if (map2.map[next] == '[' || map2.map[next] == ']')
+      if (_map2.map[next] == '[' || _map2.map[next] == ']')
       {
         if (dir == CompassDirection.N || dir == CompassDirection.S)
         {
           Coordinate2D otherpart;
-          if (map2.map[next] == '[')
+          if (_map2.map[next] == '[')
           {
             otherpart = next.MoveDirection(CompassDirection.E);
           }
@@ -411,37 +411,37 @@ public class Day15
             otherpart = next.MoveDirection(CompassDirection.W);
           }
 
-          boxesToMove.Add(new List<Coordinate2D> { next, otherpart });
+          _boxesToMove.Add(new List<Coordinate2D> { next, otherpart });
           canmove = TryMoveBox(dir, cur, otherpart.MoveDirection(dir), partTwo) &&
                     TryMoveBox(dir, cur, next.MoveDirection(dir), partTwo);
         }
         else
         {
           var nextbox = next.MoveDirection(dir);
-          boxesToMove.Add(new List<Coordinate2D> { next, nextbox });
+          _boxesToMove.Add(new List<Coordinate2D> { next, nextbox });
           canmove = TryMoveBox(dir, cur, nextbox.MoveDirection(dir), partTwo);
         }
       }
-      else if (map2.map[next] == '#')
+      else if (_map2.map[next] == '#')
       {
         return false;
       }
     }
     else
     {
-      if (map.map[next] == '.')
+      if (_map.map[next] == '.')
       {
-        map.map[cur] = '.';
-        map.map[next] = 'O';
+        _map.map[cur] = '.';
+        _map.map[next] = 'O';
         return true;
       }
 
-      if (map.map[next] == 'O')
+      if (_map.map[next] == 'O')
       {
         var nextbox = next.MoveDirection(dir);
         canmove = TryMoveBox(dir, cur, nextbox);
       }
-      else if (map.map[next] == '#')
+      else if (_map.map[next] == '#')
       {
         return false;
       }
@@ -475,7 +475,7 @@ public class Day15
 
   private static void SetupMoves()
   {
-    foreach (char c in movestring)
+    foreach (char c in _movestring)
     {
       if (c == '>' || c == '<' || c == '^' || c == 'v')
       {

@@ -5,10 +5,10 @@ public class Range
   public long End;
   public long Start;
 
-  public Range(long Start, long End)
+  public Range(long start, long end)
   {
-    this.Start = Start;
-    this.End = End;
+    this.Start = start;
+    this.End = end;
   }
 
   //Forced Deep Copy

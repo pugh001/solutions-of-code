@@ -6,8 +6,8 @@ namespace AOC2025;
 
 public class Day4
 {
-  long sumPart1 = 0, sumPart2 = 0;
-  int pass = 0;
+  private long _sumPart1 = 0, _sumPart2 = 0;
+  private int _pass = 0;
   public (string, string) Process(string input)
   {
     var grid = new Grid(File.ReadAllText(input).Split('\n'));
@@ -15,7 +15,7 @@ public class Day4
     {
       var atPositions = grid.FindAll('@');
       var positionsToRemove = new List<Point2D<int>>();
-      pass++;
+      _pass++;
 
       GetPositionsToRemove(atPositions, grid, positionsToRemove);
 
@@ -27,7 +27,7 @@ public class Day4
       }
     }
 
-    return (sumPart1.ToString(), sumPart2.ToString());
+    return (_sumPart1.ToString(), _sumPart2.ToString());
   }
   private void GetPositionsToRemove(List<Point2D<int>> atPositions, Grid grid, List<Point2D<int>> positionsToRemove)
   {
@@ -37,8 +37,8 @@ public class Day4
       if (NeighborAtCount(grid, position) >= 4)
         continue;
 
-      if (pass == 1) sumPart1++;
-      sumPart2++;
+      if (_pass == 1) _sumPart1++;
+      _sumPart2++;
       positionsToRemove.Add(position);
     }
   }

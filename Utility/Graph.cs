@@ -111,11 +111,11 @@ public class Graph
   {
     var graph = update.ToDictionary(page => page, page => new List<int>());
 
-    foreach ((int X, int Y) in rules)
+    foreach ((int x, int y) in rules)
     {
-      if (graph.ContainsKey(X) && graph.ContainsKey(Y))
+      if (graph.ContainsKey(x) && graph.ContainsKey(y))
       {
-        graph[X].Add(Y);
+        graph[x].Add(y);
       }
     }
 
