@@ -8,5 +8,5 @@ Day|Answer1|Answer2
 8|12|19
 9|605|982
 10|82350|1520986
-11|ghjaabcc|0
+11|ghjaabcc|ghjbbcdd
 12|12|6
