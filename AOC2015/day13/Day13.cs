@@ -1,123 +1,87 @@
 using Utility;
 using Utility.Algorithms;
+using Utility.Parsing;
 
 namespace AOC2015;
 
 public class Day13
 {
-  private long _sumPart1;
-  private long _sumPart2;
   public (string, string) Process(string input)
   {
     var data = SetupInputFile.OpenFile(input);
+    var happiness = ParseHappinessData(data);
+    var people = happiness.Keys.SelectMany(k => new[] { k.Item1, k.Item2 }).Distinct().ToList();
 
-    // Parse the happiness into a dictionary
+    var part1 = CalculateMaxHappiness(people, happiness);
+    
+    // Add myself with neutral happiness
+    AddNeutralPerson("me", people, happiness);
+    var part2 = CalculateMaxHappiness(people, happiness);
+
+    return (part1.ToString(), part2.ToString());
+  }
+
+  private static Dictionary<(string, string), int> ParseHappinessData(IEnumerable<string> data)
+  {
     var happiness = new Dictionary<(string, string), int>();
     
-    var personList = GetThePeople(data, happiness);
-    _sumPart1  = Allhappiness(personList, happiness);
-
-    AddPerson(personList,  happiness);
-    personList.Add("me");
-    _sumPart2 = Allhappiness(personList, happiness);
-
-    return (_sumPart1.ToString(), _sumPart2.ToString());
-  }
-  private void AddPerson(List<string> personList, Dictionary<(string, string), int> happiness)
-  {
-    
-    foreach (var person in personList)
-    {
-      happiness[("me", person)] = 0;
-      happiness[(person, "me")] = 0;
-    }
-    
-  }
-  private static long Allhappiness(List<string> personList, Dictionary<(string, string), int> happiness)
-  {
-
-    var allPermutations = Algorithms.GetPermutations(personList);
-
-    var allhappiness = new List<int>();
-
-    foreach (var permutation in allPermutations)
-    {
-      int totalhappyValue = 0;
-      bool validPath = true;
-      int end = 0;
-      int start = 0;
-      // Calculate total happyValue for this route
-      for (int i = 0; i < permutation.Count; i++)
-        
-      {
-        //0-1,1-2,2-3,3-0
-        //1-0,2-1,3-2,0-3
-        start = i;
-        end = i + 1;
-        if (end > permutation.Count-1) { end = 0;}
-        var key = (permutation[start], permutation[end]);
-        if (happiness.ContainsKey(key))
-        {
-          totalhappyValue += happiness[key];
-        }
-        else
-        {
-          validPath = false;
-          break;
-        }
-        key = (permutation[end],permutation[start]);
-        if (happiness.ContainsKey(key))
-        {
-          totalhappyValue += happiness[key];
-        }
-        else
-        {
-          validPath = false;
-          break;
-        }
-      }
-
-      if (validPath)
-      {
-        allhappiness.Add(totalhappyValue);
-      }
-    }
-
-    return allhappiness.Max();
-  }
-  private static List<string> GetThePeople(IEnumerable<string> data, Dictionary<(string, string), int> happiness)
-  {
-
-    var people = new HashSet<string>();
-
     foreach (string line in data)
     {
-      string person1 = SplitValues(line, out string person2, out int happyValue);
-      happiness[(person1, person2)] = happyValue;
-
-
-      people.Add(person1);
-      people.Add(person2);
+      var (person1, person2, value) = ParseHappinessLine(line);
+      happiness[(person1, person2)] = value;
     }
-
-    var personList = people.ToList();
-    return personList;
+    
+    return happiness;
   }
-  private static string SplitValues(string line, out string person2, out int happyValue)
-  {
 
-    // Parse lines like "Alice would gain 54 happiness units by sitting next to Bob."
-    string[] parts = line.Split(" would ");
+  private static (string person1, string person2, int happiness) ParseHappinessLine(string line)
+  {
+    // Example: "Alice would gain 54 happiness units by sitting next to Bob."
+    var parts = line.Split(" would ");
     string person1 = parts[0];
-    string[] remaining = parts[1].Split(" happiness units by sitting next to ");
-    person2 = remaining[1][..^1];
-    string[] gainOrLose = remaining[0].Split(" ");
-    int multipler = 1;
-    if (gainOrLose[0] == "lose")
+    
+    var remaining = parts[1].Split(" happiness units by sitting next to ");
+    string person2 = remaining[1].TrimEnd('.');
+    
+    var gainOrLose = remaining[0].Split(' ');
+    int multiplier = gainOrLose[0] == "lose" ? -1 : 1;
+    int value = int.Parse(gainOrLose[1]) * multiplier;
+    
+    return (person1, person2, value);
+  }
+
+  private static void AddNeutralPerson(string newPerson, List<string> people, Dictionary<(string, string), int> happiness)
+  {
+    foreach (var person in people)
     {
-      multipler = -1;
+      happiness[(newPerson, person)] = 0;
+      happiness[(person, newPerson)] = 0;
     }
-    happyValue = int.Parse(gainOrLose[1]) * multipler;
-    return person1;
+    people.Add(newPerson);
+  }
+
+  private static long CalculateMaxHappiness(List<string> people, Dictionary<(string, string), int> happiness)
+  {
+    return Algorithms.GetPermutations(people)
+      .Select(arrangement => CalculateArrangementHappiness(arrangement, happiness))
+      .Max();
+  }
+
+  private static long CalculateArrangementHappiness(IList<string> arrangement, Dictionary<(string, string), int> happiness)
+  {
+    long totalHappiness = 0;
+    int count = arrangement.Count;
+    
+    for (int i = 0; i < count; i++)
+    {
+      string current = arrangement[i];
+      string next = arrangement[(i + 1) % count]; // Circular seating
+      
+      // Add happiness in both directions (person views their neighbors)
+      totalHappiness += happiness.GetValueOrDefault((current, next), 0);
+      totalHappiness += happiness.GetValueOrDefault((next, current), 0);
+    }
+    
+    return totalHappiness;
   }
 }
