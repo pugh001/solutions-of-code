@@ -4,29 +4,35 @@ namespace AOC2015;
 
 public class Day11
 {
-  private readonly long _sumPart2 = 0;
+  private string _sumPart2 = "";
 
   private string _sumPart1 = "";
   public (string, string) Process(string input)
   {
 
     string? data = SetupInputFile.OpenFile(input).First();
-    _sumPart1 = data;
+    _sumPart1 = RunPassword(data);
+    _sumPart2 = RunPassword(_sumPart1);
+    return (_sumPart1, _sumPart2);
+  }
+  private static string RunPassword(string  password)
+  {
+
     bool isValid = false;
     while (!isValid)
     {
-      _sumPart1 = Letters.AddLetterToString(_sumPart1);
-      if (!Letters.DoesItContainInvalidLetters(_sumPart1, "iol"))
+      password = Letters.AddLetterToString(password);
+      if (!Letters.DoesItContainInvalidLetters(password, "iol"))
         continue;
-      if (!Letters.DoesItContainStraight(_sumPart1))
+      if (!Letters.DoesItContainStraight(password))
         continue;
 
-      if (Letters.DoesItContainNoneOverlappingDifferentPairs(_sumPart1))
+      if (Letters.DoesItContainNoneOverlappingDifferentPairs(password))
       {
         isValid = true;
       }
     }
 
-    return (_sumPart1, _sumPart2.ToString());
+    return password;
   }
 }
