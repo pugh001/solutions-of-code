@@ -10,8 +10,8 @@ public class Coordinate2D
 
   public Coordinate2D(int x, int y)
   {
-    this.X = x;
-    this.Y = y;
+    X = x;
+    Y = y;
   }
 
   public Coordinate2D((int x, int y) coord)
@@ -112,8 +112,8 @@ public class Coordinate2D
 
   public int ManDistance(Coordinate2D other)
   {
-    int x = Math.Abs(this.X - other.X);
-    int y = Math.Abs(this.Y - other.Y);
+    int x = Math.Abs(X - other.X);
+    int y = Math.Abs(Y - other.Y);
     return x + y;
   }
 

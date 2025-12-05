@@ -10,8 +10,8 @@ public class Coordinate2Dl
 
   public Coordinate2Dl(long x, long y)
   {
-    this.X = x;
-    this.Y = y;
+    X = x;
+    Y = y;
   }
 
   public Coordinate2Dl((long x, long y) coord)
@@ -105,8 +105,8 @@ public class Coordinate2Dl
 
   public long ManDistance(Coordinate2Dl other)
   {
-    long x = Math.Abs(this.X - other.X);
-    long y = Math.Abs(this.Y - other.Y);
+    long x = Math.Abs(X - other.X);
+    long y = Math.Abs(Y - other.Y);
     return x + y;
   }
   public override bool Equals(object obj)

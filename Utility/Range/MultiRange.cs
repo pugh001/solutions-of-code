@@ -2,50 +2,88 @@ namespace Utility;
 
 public class MultiRange
 {
-  public List<Range> Ranges = new();
+  private List<Range>? _merged;
+  private List<Range> _ranges = new();
+  private List<Range>? _sorted;
 
   public MultiRange() { }
 
-  //public MultiRange(IEnumerable<Range> ranges)
-  //{
-  //  this.Ranges = new List<Range>(ranges);
-  //}
-  
-  public void AddRange(Range range)
-  {
-    this.Ranges.Add(range);
-  }
   public MultiRange(MultiRange other)
   {
     foreach (var r in other.Ranges)
     {
       Range n = new(r);
-      Ranges.Add(n);
+      _ranges.Add(n);
     }
   }
-  public bool Contains(long value)
+
+  public List<Range> Ranges
   {
-    return Ranges.Any(range => value >= range.Start && value <= range.End);
+    get => _ranges;
+    set
+    {
+      _ranges = value;
+      InvalidateCache();
+    }
   }
+
+  public List<Range> Sorted
+  {
+    get
+    {
+      if (_sorted == null)
+      {
+        _sorted = _ranges.OrderBy(r => r.Start).ToList();
+      }
+
+      return _sorted;
+    }
+  }
+
+  public List<Range> Merged
+  {
+    get
+    {
+      if (_merged == null)
+      {
+        _merged = CalculateMergedRanges();
+      }
+
+      return _merged;
+    }
+  }
+
   public long Len => Ranges.Aggregate(1L, (a, b) => a += b.Len);
-  public long SumOfRanges()
+
+  public long Sum => Ranges.Sum(range => range.Len);
+
+  public long UniqueSum => Merged.Sum(range => range.Len);
+
+  public void AddRange(Range range)
   {
-    return Ranges.Sum(range => range.Len);
+    _ranges.Add(range);
+    InvalidateCache();
   }
-  public long SumOfNoneOverlappingRanges()
+
+  private void InvalidateCache()
   {
-    if (Ranges.Count == 0) return 0;
-    
-    // Sort ranges by start position
-    var sortedRanges = Ranges.OrderBy(r => r.Start).ToList();
+    _sorted = null;
+    _merged = null;
+  }
+
+  private List<Range> CalculateMergedRanges()
+  {
+    if (_ranges.Count == 0) return new List<Range>();
+
+    var sortedRanges = Sorted;
     var mergedRanges = new List<Range>();
-    
+
     var currentRange = new Range(sortedRanges[0]);
-    
+
     for (int i = 1; i < sortedRanges.Count; i++)
     {
       var nextRange = sortedRanges[i];
-      
+
       // Check if ranges overlap or are adjacent
       if (nextRange.Start <= currentRange.End + 1)
       {
@@ -59,11 +97,15 @@ public class MultiRange
         currentRange = new Range(nextRange);
       }
     }
-    
+
     // Don't forget to add the last range
     mergedRanges.Add(currentRange);
-    
-    // Calculate sum of merged ranges
-    return mergedRanges.Sum(range => range.Len);
+
+    return mergedRanges;
+  }
+
+  public bool Contains(long value)
+  {
+    return Ranges.Any(range => value >= range.Start && value <= range.End);
   }
 }

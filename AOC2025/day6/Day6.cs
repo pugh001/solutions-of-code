@@ -14,6 +14,7 @@ public class Day6
     foreach (string line in data)
     {
     }
+
     return (_sumPart1.ToString(), _sumPart2.ToString());
   }
 }

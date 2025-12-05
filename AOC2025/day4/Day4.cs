@@ -6,8 +6,8 @@ namespace AOC2025;
 
 public class Day4
 {
-  private long _sumPart1 = 0, _sumPart2 = 0;
-  private int _pass = 0;
+  private int _pass;
+  private long _sumPart1, _sumPart2;
   public (string, string) Process(string input)
   {
     var grid = new Grid(File.ReadAllText(input).Split('\n'));

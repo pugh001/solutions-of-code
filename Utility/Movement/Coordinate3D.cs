@@ -16,9 +16,9 @@ public class Coordinate3D
 
   public Coordinate3D(int x, int y, int z)
   {
-    this.X = x;
-    this.Y = y;
-    this.Z = z;
+    X = x;
+    Y = y;
+    Z = z;
   }
 
   public Coordinate3D(string stringformat)
@@ -124,8 +124,8 @@ public class Coordinate3D
 
   internal void Deconstruct(out int x, out int y, out int z)
   {
-    x = this.X;
-    y = this.Y;
-    z = this.Z;
+    x = X;
+    y = Y;
+    z = Z;
   }
 }

@@ -1,13 +1,12 @@
 using System.Text;
 using Utility;
-using Utility.Algorithms;
 
 namespace AOC2015;
 
 public class Day10
 {
-  private long _sumPart1 = 0;
-  private long _sumPart2 = 0;
+  private long _sumPart1;
+  private long _sumPart2;
   public (string, string) Process(string input)
   {
     string? data = SetupInputFile.OpenFile(input).First();
@@ -24,7 +23,7 @@ public class Day10
     for (int i = 0; i < loops; i++)
     {
       char current = data[0];
-      var counter = 1;
+      int counter = 1;
       var next = new StringBuilder();
 
       for (int j = 1; j < data.Length; j++)
@@ -50,5 +49,4 @@ public class Day10
 
     return data.Length;
   }
-
 }

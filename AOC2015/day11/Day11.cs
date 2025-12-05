@@ -4,9 +4,9 @@ namespace AOC2015;
 
 public class Day11
 {
+  private readonly long _sumPart2 = 0;
 
   private string _sumPart1 = "";
-  private readonly long _sumPart2 = 0;
   public (string, string) Process(string input)
   {
 
@@ -18,7 +18,7 @@ public class Day11
       _sumPart1 = Letters.AddLetterToString(_sumPart1);
       if (!Letters.DoesItContainInvalidLetters(_sumPart1, "iol"))
         continue;
-      if (!Letters.DoesItContainStraight(_sumPart1, 3))
+      if (!Letters.DoesItContainStraight(_sumPart1))
         continue;
 
       if (Letters.DoesItContainNoneOverlappingDifferentPairs(_sumPart1))
@@ -29,6 +29,4 @@ public class Day11
 
     return (_sumPart1, _sumPart2.ToString());
   }
-
-
 }

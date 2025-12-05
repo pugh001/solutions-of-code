@@ -10,7 +10,7 @@ public class Range(long start,
   public Range(Range other) : this(other.Start, other.End)
   {
   }
-  public long Len => (End - Start + 1);
+  public long Len => End - Start + 1;
 
   public override string ToString()
   {

@@ -12,10 +12,10 @@ public class Coordinate4D
 
   public Coordinate4D(int x, int y, int z, int w)
   {
-    this._x = x;
-    this._y = y;
-    this._z = z;
-    this._w = w;
+    _x = x;
+    _y = y;
+    _z = z;
+    _w = w;
   }
 
   public static implicit operator Coordinate4D((int x, int y, int z, int w) a)
@@ -70,19 +70,15 @@ public class Coordinate4D
   }
 
 
-public static Coordinate4D[] GetNeighbors()
-    {
-      if (_neighbors != null) return _neighbors;
-    
-      _neighbors = Enumerable.Range(-1, 3)
-        .SelectMany(x => Enumerable.Range(-1, 3)
-          .SelectMany(y => Enumerable.Range(-1, 3)
-            .SelectMany(z => Enumerable.Range(-1, 3)
-              .Select(w => (x, y, z, w)))))
-        .Where(coord => coord != (0, 0, 0, 0))
-        .Select(coord => new Coordinate4D(coord.x, coord.y, coord.z, coord.w))
-        .ToArray();
-    
-      return _neighbors;
-    }
+  public static Coordinate4D[] GetNeighbors()
+  {
+    if (_neighbors != null) return _neighbors;
+
+    _neighbors = Enumerable.Range(-1, 3)
+      .SelectMany(x => Enumerable.Range(-1, 3)
+        .SelectMany(y => Enumerable.Range(-1, 3).SelectMany(z => Enumerable.Range(-1, 3).Select(w => (x, y, z, w)))))
+      .Where(coord => coord != (0, 0, 0, 0)).Select(coord => new Coordinate4D(coord.x, coord.y, coord.z, coord.w)).ToArray();
+
+    return _neighbors;
+  }
 }

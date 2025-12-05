@@ -5,8 +5,8 @@ namespace AOC2015;
 
 public class Day9
 {
-  private long _sumPart1 = 0;
-  private long _sumPart2 = 0;
+  private long _sumPart1;
+  private long _sumPart2;
   public (string, string) Process(string input)
   {
     var data = SetupInputFile.OpenFile(input);
@@ -23,7 +23,7 @@ public class Day9
       // Add both directions since distance is symmetric
       distances[(city1, city2)] = distance;
       distances[(city2, city1)] = distance;
-      
+
       cities.Add(city1);
       cities.Add(city2);
     }

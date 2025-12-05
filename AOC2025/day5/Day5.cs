@@ -6,13 +6,13 @@ namespace AOC2025;
 
 public class Day5
 {
-  private long _sumPart1 = 0;
-  private long _sumPart2 = 0;
+  private long _sumPart1;
+  private long _sumPart2;
   public (string, string) Process(string input)
   {
 
     var data = SetupInputFile.OpenFile(input);
-var ranges = new MultiRange();
+    var ranges = new MultiRange();
     bool isRange = true;
     foreach (string line in data)
     {
@@ -21,6 +21,7 @@ var ranges = new MultiRange();
         isRange = false;
         continue;
       }
+
       if (isRange)
       {
         var rangeValues = line.Split("-").ToList();
@@ -29,14 +30,15 @@ var ranges = new MultiRange();
         continue;
       }
 
-      var inRangeCheckValue = long.Parse(line);
+      long inRangeCheckValue = long.Parse(line);
       if (ranges.Contains(inRangeCheckValue))
       {
         _sumPart1++;
       }
     }
 
-    _sumPart2 = ranges.SumOfNoneOverlappingRanges();
+    _sumPart2 = ranges.UniqueSum;
     return (_sumPart1.ToString(), _sumPart2.ToString());
+    //Day  5:(607, 342433357244012) 
   }
 }

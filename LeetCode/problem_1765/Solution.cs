@@ -12,7 +12,7 @@ public class Solution
   private readonly ITestOutputHelper _testOutputHelper;
   public Solution(ITestOutputHelper testOutputHelper)
   {
-    this._testOutputHelper = testOutputHelper;
+    _testOutputHelper = testOutputHelper;
   }
 
 

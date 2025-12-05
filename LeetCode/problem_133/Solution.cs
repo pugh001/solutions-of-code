@@ -12,7 +12,7 @@ public class Solution
   private readonly Dictionary<Node, Node> _visited = new();
   public Solution(ITestOutputHelper testOutputHelper)
   {
-    this._testOutputHelper = testOutputHelper;
+    _testOutputHelper = testOutputHelper;
   }
   [Fact]
   public void Solution_Test1()
