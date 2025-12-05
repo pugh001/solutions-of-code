@@ -1,23 +1,16 @@
 namespace Utility;
 
-public class Range
+public class Range(long start,
+  long end)
 {
-  public long End;
-  public long Start;
-
-  public Range(long start, long end)
-  {
-    this.Start = start;
-    this.End = end;
-  }
+  public long End = end;
+  public long Start = start;
 
   //Forced Deep Copy
-  public Range(Range other)
+  public Range(Range other) : this(other.Start, other.End)
   {
-    Start = other.Start;
-    End = other.End;
   }
-  public long Len => End - Start + 1;
+  public long Len => (End - Start + 1);
 
   public override string ToString()
   {
