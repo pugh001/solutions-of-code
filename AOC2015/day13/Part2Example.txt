@@ -1,16 +1,12 @@
-Button A: X+94, Y+34
-Button B: X+22, Y+67
-Prize: X=8400, Y=5400
-
-Button A: X+26, Y+66
-Button B: X+67, Y+21
-Prize: X=12748, Y=12176
-
-Button A: X+17, Y+86
-Button B: X+84, Y+37
-Prize: X=7870, Y=6450
-
-Button A: X+69, Y+23
-Button B: X+27, Y+71
-Prize: X=18641, Y=10279
-
+Alice would gain 54 happiness units by sitting next to Bob.
+Alice would lose 79 happiness units by sitting next to Carol.
+Alice would lose 2 happiness units by sitting next to David.
+Bob would gain 83 happiness units by sitting next to Alice.
+Bob would lose 7 happiness units by sitting next to Carol.
+Bob would lose 63 happiness units by sitting next to David.
+Carol would lose 62 happiness units by sitting next to Alice.
+Carol would gain 60 happiness units by sitting next to Bob.
+Carol would gain 55 happiness units by sitting next to David.
+David would gain 46 happiness units by sitting next to Alice.
+David would lose 7 happiness units by sitting next to Bob.
+David would gain 41 happiness units by sitting next to Carol.
