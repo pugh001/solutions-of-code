@@ -30,6 +30,8 @@ public class Grid
     }
   }
 
+  public Grid(IEnumerable<string> lines) : this(lines.ToArray()) { }
+
   public Grid(char[,] grid)
   {
     Rows = grid.GetLength(0);
@@ -128,6 +130,14 @@ public class Grid
   }
 
   /// <summary>
+  ///   Gets all valid neighbors of a position that match a specific character value (4-directional)
+  /// </summary>
+  public IEnumerable<Point2D<int>> GetNeighborsOfValue(Point2D<int> point, char value)
+  {
+    return point.Neighbours().Where(neighbor => IsInBounds(neighbor) && this[neighbor] == value);
+  }
+
+  /// <summary>
   ///   Gets all valid neighbors of a position that match a specific character value (8-directional including diagonals)
   /// </summary>
   public IEnumerable<Point2D<int>> GetAllNeighborsOfValue(Point2D<int> point, char value)
@@ -144,6 +154,22 @@ public class Grid
   }
 
   /// <summary>
+  ///   Gets a specific row as a string
+  /// </summary>
+  public string GetRow(int row)
+  {
+    if (row < 0 || row >= Rows)
+      throw new ArgumentOutOfRangeException(nameof(row));
+      
+    var sb = new StringBuilder(Cols);
+    for (int c = 0; c < Cols; c++)
+    {
+      sb.Append(_grid[row, c]);
+    }
+    return sb.ToString();
+  }
+
+  /// <summary>
   ///   Converts the grid back to an array of strings
   /// </summary>
   public string[] ToStringArray()
@@ -151,13 +177,7 @@ public class Grid
     string[] result = new string[Rows];
     for (int r = 0; r < Rows; r++)
     {
-      var sb = new StringBuilder(Cols);
-      for (int c = 0; c < Cols; c++)
-      {
-        sb.Append(_grid[r, c]);
-      }
-
-      result[r] = sb.ToString();
+      result[r] = GetRow(r);
     }
 
     return result;
@@ -171,6 +191,27 @@ public class Grid
     char[,] copy = new char[Rows, Cols];
     Array.Copy(_grid, copy, _grid.Length);
     return copy;
+  }
+
+  /// <summary>
+  ///   Gets all unique characters in the grid, optionally excluding specified characters
+  /// </summary>
+  public HashSet<char> GetUniqueCharacters(params char[] exclude)
+  {
+    var excludeSet = new HashSet<char>(exclude);
+    var unique = new HashSet<char>();
+    
+    for (int r = 0; r < Rows; r++)
+    {
+      for (int c = 0; c < Cols; c++)
+      {
+        char ch = _grid[r, c];
+        if (!excludeSet.Contains(ch))
+          unique.Add(ch);
+      }
+    }
+    
+    return unique;
   }
 
   /// <summary>
