@@ -1,4 +1,4 @@
-namespace Utility.Grid;
+namespace Utility;
 
 /// <summary>
 /// Light operations enum

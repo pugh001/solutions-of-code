@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Utility.Grid;
+namespace Utility;
 
 /// <summary>
 /// Utility for managing light grids with on/off and brightness operations

@@ -1,4 +1,4 @@
-namespace Utility.Grid;
+namespace Utility;
 
 /// <summary>
 /// Utility for antenna and antinode calculations

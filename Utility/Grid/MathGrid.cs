@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
-using Utility.Parsing;
 
-namespace Utility.Grid;
+namespace Utility;
 
 /// <summary>
 /// Utility for processing mathematical grids with operations and numbers

@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Utility.Parsing;
+namespace Utility;
 
 /// <summary>
 ///   Common parsing utilities for Advent of Code problems

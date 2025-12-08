@@ -1,5 +1,4 @@
 using Utility;
-using Utility.Algorithms;
 
 namespace AOC2015;
 

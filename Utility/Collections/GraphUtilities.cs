@@ -7,7 +7,7 @@ namespace Utility;
 /// <summary>
 /// Graph utilities for topological sorting and graph construction
 /// </summary>
-public static class GraphUtilities
+public static partial class GraphUtilities
 {
   public static Dictionary<int, List<int>> BuildGraph(List<int> update, List<(int X, int Y)> rules)
   {

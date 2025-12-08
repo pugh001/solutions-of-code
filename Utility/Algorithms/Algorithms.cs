@@ -1,4 +1,4 @@
-namespace Utility.Algorithms;
+namespace Utility;
 
 /// <summary>
 ///   Common mathematical and algorithmic utilities for Advent of Code problems
