@@ -21,12 +21,12 @@ public class Day2
       long end = numbers[1];
 
       // Part 1: Use the optimized generation method
-      sumPart1 += MainUtilities.GeneratePalindromicHalfNumbers(start, end).Sum();
+      sumPart1 += MathUtilities.GeneratePalindromicHalfNumbers(start, end).Sum();
 
       // Part 2: Find numbers with repeated sequences
       for (long i = start; i <= end; i++)
       {
-        if (MainUtilities.HasRepeatedSequence(i.ToString()))
+        if (Sequences.HasRepeatedSequence(i.ToString()))
         {
           sumPart2 += i;
         }

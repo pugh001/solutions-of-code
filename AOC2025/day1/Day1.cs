@@ -84,7 +84,7 @@ public class Day1
     }
 
     // Update position using proper modular arithmetic
-    _current = MainUtilities.Mod(newPosition, 100);
+    _current = MathUtilities.Mod(newPosition, 100);
   }
 
   private void MoveRight(int steps)
@@ -96,6 +96,6 @@ public class Day1
     _zeroCrossings += newPosition / 100;
 
     // Update position using proper modular arithmetic
-    _current = MainUtilities.Mod(newPosition, 100);
+    _current = MathUtilities.Mod(newPosition, 100);
   }
 }

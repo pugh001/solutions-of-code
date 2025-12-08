@@ -131,7 +131,7 @@ public static class PathFinding
   }
 
   /// <summary>
-  ///   A* pathfinding algorithm
+  ///   A* pathfinding algorithm using Point2D
   /// </summary>
   public static List<Point2D<int>>? AStar(Point2D<int> start,
     Point2D<int> goal,
@@ -190,6 +190,65 @@ public static class PathFinding
     }
 
     return null; // No path found
+  }
+
+  /// <summary>
+  ///   A* pathfinding algorithm using Coordinate2D for compatibility
+  /// </summary>
+  public static List<Coordinate2D> AStar(Coordinate2D start,
+    Coordinate2D goal,
+    Dictionary<Coordinate2D, long> map,
+    out long cost,
+    bool includeDiagonals = false,
+    bool includePath = true)
+  {
+    PriorityQueue<Coordinate2D, long> openSet = new();
+    Dictionary<Coordinate2D, Coordinate2D> cameFrom = new();
+
+    Dictionary<Coordinate2D, long> gScore = new()
+    {
+      [start] = 0
+    };
+
+    openSet.Enqueue(start, 0);
+
+    while (openSet.TryDequeue(out var cur, out long _))
+    {
+      if (cur.Equals(goal))
+      {
+        cost = gScore[cur];
+        return includePath ?
+          ReconstructPath(cameFrom, cur) :
+          null;
+      }
+
+      foreach (var n in cur.Neighbors(includeDiagonals).Where(a => map.ContainsKey(a)))
+      {
+        long tentGScore = gScore[cur] + map[n];
+        if (tentGScore < gScore.GetValueOrDefault(n, int.MaxValue))
+        {
+          cameFrom[n] = cur;
+          gScore[n] = tentGScore;
+          openSet.Enqueue(n, tentGScore + cur.ManDistance(goal));
+        }
+      }
+    }
+
+    cost = long.MaxValue;
+    return null;
+  }
+
+  private static List<Coordinate2D> ReconstructPath(Dictionary<Coordinate2D, Coordinate2D> cameFrom, Coordinate2D current)
+  {
+    List<Coordinate2D> res = [current];
+    while (cameFrom.ContainsKey(current))
+    {
+      current = cameFrom[current];
+      res.Add(current);
+    }
+
+    res.Reverse();
+    return res;
   }
 
   /// <summary>

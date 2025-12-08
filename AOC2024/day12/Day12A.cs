@@ -95,14 +95,16 @@ public class Day12A
       foreach (int[]? direction in directions)
       {
         int newRow = row + direction[0], newCol = col + direction[1];
-        if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols)
-        {
-          if (grid[newRow, newCol] == plantType && !visited[newRow, newCol])
-          {
-            visited[newRow, newCol] = true;
-            queue.Enqueue((newRow, newCol));
-          }
-        }
+        if (newRow < 0 ||
+            newRow >= rows ||
+            newCol < 0 ||
+            newCol >= cols ||
+            grid[newRow, newCol] != plantType ||
+            visited[newRow, newCol])
+          continue;
+
+        visited[newRow, newCol] = true;
+        queue.Enqueue((newRow, newCol));
       }
     }
 

@@ -26,7 +26,7 @@ public static class Letters
     if (DisallowedCache.TryGetValue(disallowed, out var disallowedSet))
       return letters.All(c => !disallowedSet.Contains(c));
 
-    disallowedSet = new HashSet<char>(disallowed);
+    disallowedSet = (HashSet<char>)[..disallowed];
     DisallowedCache[disallowed] = disallowedSet;
 
     // Early termination with O(1) lookup

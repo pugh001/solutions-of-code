@@ -30,7 +30,7 @@ public class Day3
     {
       case >= 12:
       {
-        string highest12Digit = MainUtilities.GetHighestSubsequence(line, 12);
+        var highest12Digit = Sequences.GetHighestSubsequence(line, 12);
         return long.Parse(highest12Digit);
       }
       case > 0:

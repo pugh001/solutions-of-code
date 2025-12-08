@@ -1,7 +1,12 @@
-// Refactored and Cleaned Code for Map and Graph functionality
+// Specialized Graph class for pathfinding and maze analysis
+
+using Utility.Extensions;
 
 namespace Utility;
 
+/// <summary>
+/// Graph class specialized for maze/pathfinding problems with start/end points
+/// </summary>
 public class Graph
 {
   // Constructor to initialize graph and calculate initial paths
@@ -107,50 +112,28 @@ public class Graph
       .ToList();
   }
 
-  public static Dictionary<int, List<int>> BuildGraph(List<int> update, List<(int X, int Y)> rules)
+  // Static methods for backward compatibility with existing code
+  /// <summary>
+  /// Builds a graph from a list of nodes and dependency rules
+  /// </summary>
+  /// <typeparam name="T">Type of graph nodes</typeparam>
+  /// <param name="nodes">Collection of nodes to include in graph</param>
+  /// <param name="rules">Dependency rules as (parent, child) tuples</param>
+  /// <returns>Dictionary representing adjacency list graph structure</returns>
+  public static Dictionary<T, List<T>> BuildGraph<T>(IEnumerable<T> nodes, IEnumerable<(T X, T Y)> rules) where T : notnull
   {
-    var graph = update.ToDictionary(page => page, page => new List<int>());
-
-    foreach ((int x, int y) in rules)
-    {
-      if (graph.ContainsKey(x) && graph.ContainsKey(y))
-      {
-        graph[x].Add(y);
-      }
-    }
-
-    return graph;
+    return Extensions.GraphUtilities.BuildGraph(nodes, rules);
   }
-  public static List<int> TopologicalSort(Dictionary<int, List<int>> graph, List<int> nodes)
+
+  /// <summary>
+  /// Performs topological sort on a graph using Kahn's algorithm
+  /// </summary>
+  /// <typeparam name="T">Type of graph nodes</typeparam>
+  /// <param name="graph">Graph as adjacency list</param>
+  /// <param name="nodes">Collection of nodes to sort</param>
+  /// <returns>Topologically sorted list of nodes</returns>
+  public static List<T> TopologicalSort<T>(Dictionary<T, List<T>> graph, IEnumerable<T> nodes) where T : notnull
   {
-    var inDegree = graph.ToDictionary(kvp => kvp.Key, kvp => 0);
-
-    foreach (var neighbors in graph.Values)
-    {
-      foreach (int neighbor in neighbors)
-      {
-        inDegree[neighbor]++;
-      }
-    }
-
-    var queue = new Queue<int>(nodes.Where(node => inDegree[node] == 0));
-    var sorted = new List<int>();
-
-    while (queue.Count > 0)
-    {
-      int current = queue.Dequeue();
-      sorted.Add(current);
-
-      foreach (int neighbor in graph[current])
-      {
-        inDegree[neighbor]--;
-        if (inDegree[neighbor] == 0)
-        {
-          queue.Enqueue(neighbor);
-        }
-      }
-    }
-
-    return sorted;
+    return Extensions.GraphUtilities.TopologicalSort(graph, nodes);
   }
 }
