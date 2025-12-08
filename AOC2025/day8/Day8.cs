@@ -48,94 +48,120 @@ public class Day8
     var connectionsToProcess = 1000;
     if (input.Contains("Example")) connectionsToProcess = 10;
     
-    List<Coordinate3D> space = new List<Coordinate3D>();
+    List<Coordinate3D> space = data.Select(line => line.Split(',').ToIntArray()).Select(xyz => new Coordinate3D(xyz[0], xyz[1], xyz[2])).ToList();
     
-    // Load all coordinates
-    foreach (var line in data)
-    {
-      var xyz = line.Split(',').ToIntArray();
-      space.Add(new Coordinate3D(xyz[0], xyz[1], xyz[2]));
-    }
-
+    // Track which coordinates have been connected
+    Dictionary<Coordinate3D, bool> connectedCoordinates = space.ToDictionary(coord => coord, coord => false);
     // Calculate all possible connections using GetCombinations (more elegant)
     var allConnections = Algorithms.GetCombinations(space, 2)
       .Select(pair => new Connection(pair[0], pair[1]))
       .OrderBy(c => c.Distance)
       .ToList();
 
-    // Build connection chains, processing exactly the specified number of shortest connections
-    List<ConnectionChain> chains = new List<ConnectionChain>();
+     List<ConnectionChain> chains = new List<ConnectionChain>();
     int connectionsProcessed = 0;
+    int part1Product = -1;
+    int part2Product = -1;
     
     foreach (var connection in allConnections)
     {
-      if (connectionsProcessed >= connectionsToProcess) break;
-      
-      // Find chains that contain each point
-      var chainsWithPointA = chains.Where(c => c.ConnectedPoints.Contains(connection.PointA)).ToList();
-      var chainsWithPointB = chains.Where(c => c.ConnectedPoints.Contains(connection.PointB)).ToList();
-      
-      if (chainsWithPointA.Count == 0 && chainsWithPointB.Count == 0)
+      if (connectionsProcessed >= connectionsToProcess && part1Product == -1)
       {
-        // Neither point exists - create new chain
-        var newChain = new ConnectionChain();
-        newChain.AddConnection(connection);
-        chains.Add(newChain);
+         part1Product = Part1Product(chains);
       }
-      else if (chainsWithPointA.Count == 1 && chainsWithPointB.Count == 0)
+      bool connectionWasProcessed = ProcessConnection(connection, chains, connectedCoordinates);
+      if (connectionWasProcessed && chains.Count == 1 && AllCoordinatesConnected(connectedCoordinates))
       {
-        // Only point A exists - extend that chain
-        chainsWithPointA[0].AddConnection(connection);
+        part2Product = connection.PointA.X * connection.PointB.X;
+       break;
       }
-      else if (chainsWithPointA.Count == 0 && chainsWithPointB.Count == 1)
-      {
-        // Only point B exists - extend that chain
-        chainsWithPointB[0].AddConnection(connection);
-      }
-      else if (chainsWithPointA.Count == 1 && chainsWithPointB.Count == 1 && 
-               chainsWithPointA[0] != chainsWithPointB[0])
-      {
-        // Points are in different chains - merge them
-        var chainA = chainsWithPointA[0];
-        var chainB = chainsWithPointB[0];
-        
-        // Add the connection to chainA
-        chainA.AddConnection(connection);
-        
-        // Merge chainB into chainA
-        chainA.MergeChain(chainB);
-        
-        // Remove chainB from the list
-        chains.Remove(chainB);
-      }
-      // If both points are in the same chain, "nothing happens!" but we still count this connection as processed
-      
-      // Always count this connection as processed, regardless of whether it changed the circuit structure
+
       connectionsProcessed++;
     }
     
-    // Sort chains by connected points count (descending) and get the top 3
-    var topChainsBySize = chains.OrderByDescending(c => c.ConnectedPoints.Count).Take(3).ToList();
     
-    // Calculate part1 as the product of the top 3 chains' connected points count
-    int part1Product = topChainsBySize.Select(c => c.ConnectedPoints.Count).Aggregate(1, (acc, count) => acc * count);
-    
-    // Sort chains by total distance and get the 3 shortest for part2
-    var shortestChains = chains.OrderBy(c => c.TotalDistance).Take(3).ToList();
-    
-    // Count unique connections in the 3 shortest chains
-    var uniqueConnections = new HashSet<Connection>();
-    foreach (var chain in shortestChains)
-    {
-      foreach (var connection in chain.Connections)
-      {
-        uniqueConnections.Add(connection);
-      }
-    }
-    
+
+
     string part1 = $"{part1Product}";
-    string part2 = $"3 shortest chains have {uniqueConnections.Count} unique connections";
+    string part2 = $"{part2Product}";
     
     return (part1, part2);
+  }
+  private static int Part1Product(List<ConnectionChain> chains)
+  {
+    // Sort chains by connected points count (descending) and get the top 3
+    var topChainsBySize = chains.OrderByDescending(c => c.ConnectedPoints.Count).Take(3).ToList();
+    // Calculate part1 as the product of the top 3 chains' connected points count
+    int part1Product = topChainsBySize.Select(c => c.ConnectedPoints.Count).Aggregate(1, (acc, count) => acc * count);
+    return part1Product;
+  }
+
+  private bool ProcessConnection(Connection connection, List<ConnectionChain> chains, Dictionary<Coordinate3D, bool> connectedCoordinates)
+  {
+    var chainsWithPointA = GetChainsContaining(connection.PointA, chains);
+    var chainsWithPointB = GetChainsContaining(connection.PointB, chains);
+    switch (chainsWithPointA.Count)
+    {
+      // Neither point exists - create new chain
+      case 0 when chainsWithPointB.Count == 0:
+        CreateNewChain(connection, chains);
+        MarkCoordinatesAsConnected(connection, connectedCoordinates);
+        return true;
+      // Only point A exists - extend that chain
+      case 1 when chainsWithPointB.Count == 0:
+        chainsWithPointA[0].AddConnection(connection);
+        MarkCoordinatesAsConnected(connection, connectedCoordinates);
+        return true;
+      // Only point B exists - extend that chain
+      case 0 when chainsWithPointB.Count == 1:
+        chainsWithPointB[0].AddConnection(connection);
+        MarkCoordinatesAsConnected(connection, connectedCoordinates);
+        return true;
+      // Points are in different chains - merge them
+      case 1 when chainsWithPointB.Count == 1 && 
+                  chainsWithPointA[0] != chainsWithPointB[0]:
+        MergeChains(connection, chainsWithPointA[0], chainsWithPointB[0], chains);
+        MarkCoordinatesAsConnected(connection, connectedCoordinates);
+        return true;
+      default:
+        // If both points are in the same chain, nothing happens
+        return false;
+    }
+
+  }
+
+  private static List<ConnectionChain> GetChainsContaining(Coordinate3D point, List<ConnectionChain> chains)
+  {
+    return chains.Where(c => c.ConnectedPoints.Contains(point)).ToList();
+  }
+
+  private static void CreateNewChain(Connection connection, List<ConnectionChain> chains)
+  {
+    var newChain = new ConnectionChain();
+    newChain.AddConnection(connection);
+    chains.Add(newChain);
+  }
+
+  private static void MergeChains(Connection connection, ConnectionChain chainA, ConnectionChain chainB, List<ConnectionChain> chains)
+  {
+    // Add the connection to chainA
+    chainA.AddConnection(connection);
+    
+    // Merge chainB into chainA
+    chainA.MergeChain(chainB);
+    
+    // Remove chainB from the list
+    chains.Remove(chainB);
+  }
+
+  private static void MarkCoordinatesAsConnected(Connection connection, Dictionary<Coordinate3D, bool> connectedCoordinates)
+  {
+    connectedCoordinates[connection.PointA] = true;
+    connectedCoordinates[connection.PointB] = true;
+  }
+
+  private static bool AllCoordinatesConnected(Dictionary<Coordinate3D, bool> connectedCoordinates)
+  {
+    return connectedCoordinates.Values.All(connected => connected);
   }
 }
