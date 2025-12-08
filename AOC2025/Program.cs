@@ -7,7 +7,7 @@ static internal class Program
 {
   public static void Main(string[] args)
   {
-    for (int day = 26; day > 0; day--)
+    for (int day = 12; day > 0; day--)
     {
       try
       {
@@ -30,7 +30,7 @@ static internal class Program
       catch (InvalidOperationException)
       {
         //No Day# code yet
-        Console.Write("");
+        Console.Write(".");
       }
       catch (Exception ex)
       {
