@@ -1,11 +1,15 @@
 namespace Utility;
 
-public class Connection(Coordinate3D pointA,
-  Coordinate3D pointB)
+public interface IDistanceCalculable<T>
 {
-  public Coordinate3D PointA { get; set; } = pointA;
-  public Coordinate3D PointB { get; set; } = pointB;
-  public double Distance { get; set; } = pointA.EuclideanDistance(pointB);
+  double DistanceTo(T other);
+}
+
+public class Connection<T>(T pointA, T pointB) where T : IDistanceCalculable<T>
+{
+  public T PointA { get; set; } = pointA;
+  public T PointB { get; set; } = pointB;
+  public double Distance { get; set; } = pointA.DistanceTo(pointB);
 
   public override string ToString()
   {

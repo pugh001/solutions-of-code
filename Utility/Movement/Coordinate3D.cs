@@ -1,6 +1,6 @@
 namespace Utility;
 
-public class Coordinate3D
+public class Coordinate3D : IDistanceCalculable<Coordinate3D>
 {
 
   private static readonly Coordinate3D[] neighbors3D =
@@ -108,6 +108,11 @@ public class Coordinate3D
   public double EuclideanMagnitude()
   {
     return Math.Sqrt(X * X + Y * Y + Z * Z);
+  }
+
+  public double DistanceTo(Coordinate3D other)
+  {
+    return EuclideanDistance(other);
   }
 
   public override bool Equals(object obj)

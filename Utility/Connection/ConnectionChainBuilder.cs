@@ -12,10 +12,10 @@ public class ConnectionChainBuilder
   /// <param name="coordinates">All coordinates that should eventually be connected</param>
   /// <param name="maxConnections">Maximum number of connections to process (optional)</param>
   /// <returns>Tuple of (chains, connectionsProcessed, allConnected)</returns>
-  public static (List<ConnectionChain> chains, int connectionsProcessed, bool allConnected) 
-    BuildChains(List<Connection> connections, List<Coordinate3D> coordinates, int? maxConnections = null)
+  public static (List<ConnectionChain<T>> chains, int connectionsProcessed, bool allConnected) 
+    BuildChains<T>(List<Connection<T>> connections, List<T> coordinates, int? maxConnections = null) where T : IDistanceCalculable<T>
   {
-    var chains = new List<ConnectionChain>();
+    var chains = new List<ConnectionChain<T>>();
     var connectedCoordinates = coordinates.ToDictionary(coord => coord, coord => false);
     int connectionsProcessed = 0;
 
@@ -40,8 +40,8 @@ public class ConnectionChainBuilder
   /// <summary>
   /// Process a single connection and update chains accordingly
   /// </summary>
-  public static bool ProcessConnection(Connection connection, List<ConnectionChain> chains, 
-    Dictionary<Coordinate3D, bool> connectedCoordinates)
+  public static bool ProcessConnection<T>(Connection<T> connection, List<ConnectionChain<T>> chains, 
+    Dictionary<T, bool> connectedCoordinates) where T : IDistanceCalculable<T>
   {
     var chainsWithPointA = GetChainsContaining(connection.PointA, chains);
     var chainsWithPointB = GetChainsContaining(connection.PointB, chains);
@@ -78,34 +78,36 @@ public class ConnectionChainBuilder
     }
   }
 
-  private static List<ConnectionChain> GetChainsContaining(Coordinate3D point, List<ConnectionChain> chains)
+  private static List<ConnectionChain<T>> GetChainsContaining<T>(T point, List<ConnectionChain<T>> chains) where T : IDistanceCalculable<T>
   {
     return chains.Where(c => c.ConnectedPoints.Contains(point)).ToList();
   }
 
-  private static void CreateNewChain(Connection connection, List<ConnectionChain> chains)
+  private static void CreateNewChain<T>(Connection<T> connection, List<ConnectionChain<T>> chains) where T : IDistanceCalculable<T>
   {
-    var newChain = new ConnectionChain();
+    var newChain = new ConnectionChain<T>();
     newChain.AddConnection(connection);
     chains.Add(newChain);
   }
 
-  private static void MergeChains(Connection connection, ConnectionChain chainA, ConnectionChain chainB, 
-    List<ConnectionChain> chains)
+  private static void MergeChains<T>(Connection<T> connection, ConnectionChain<T> chainA, ConnectionChain<T> chainB, 
+    List<ConnectionChain<T>> chains) where T : IDistanceCalculable<T>
   {
     chainA.AddConnection(connection);
     chainA.MergeChain(chainB);
     chains.Remove(chainB);
   }
 
-  private static void MarkCoordinatesAsConnected(Connection connection, Dictionary<Coordinate3D, bool> connectedCoordinates)
+  private static void MarkCoordinatesAsConnected<T>(Connection<T> connection, Dictionary<T, bool> connectedCoordinates) where T : IDistanceCalculable<T>
   {
     connectedCoordinates[connection.PointA] = true;
     connectedCoordinates[connection.PointB] = true;
   }
 
-  private static bool AllCoordinatesConnected(Dictionary<Coordinate3D, bool> connectedCoordinates)
+  private static bool AllCoordinatesConnected<T>(Dictionary<T, bool> connectedCoordinates) where T : IDistanceCalculable<T>
   {
     return connectedCoordinates.Values.All(connected => connected);
   }
+
+
 }

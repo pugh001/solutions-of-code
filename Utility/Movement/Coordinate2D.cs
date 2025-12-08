@@ -1,6 +1,6 @@
 namespace Utility;
 
-public class Coordinate2D
+public class Coordinate2D : IDistanceCalculable<Coordinate2D>
 {
   public static readonly Coordinate2D Origin = new(0, 0);
   public static readonly Coordinate2D UnitX = new(1, 0);
@@ -115,6 +115,16 @@ public class Coordinate2D
     int x = Math.Abs(X - other.X);
     int y = Math.Abs(Y - other.Y);
     return x + y;
+  }
+
+  public double EuclideanDistance(Coordinate2D other)
+  {
+    return Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
+  }
+
+  public double DistanceTo(Coordinate2D other)
+  {
+    return EuclideanDistance(other);
   }
 
   public override bool Equals(object obj)

@@ -4,7 +4,7 @@ using System.Numerics;
 namespace Utility;
 
 public record Point2D<T>(T X,
-  T Y) : IComparable<Point2D<T>> where T : INumber<T>, INumberBase<T>
+  T Y) : IComparable<Point2D<T>>, IDistanceCalculable<Point2D<T>> where T : INumber<T>, INumberBase<T>
 {
   private static readonly T TwoT = T.One + T.One;
   public static readonly Point2D<T> Origin = (T.Zero, T.Zero);
@@ -93,6 +93,18 @@ public record Point2D<T>(T X,
   public T ManhattanDistance(Point2D<T> other)
   {
     return T.Abs(other.X - X) + T.Abs(other.Y - Y);
+  }
+
+  public double EuclideanDistance(Point2D<T> other)
+  {
+    var dx = double.CreateChecked(other.X - X);
+    var dy = double.CreateChecked(other.Y - Y);
+    return Math.Sqrt(dx * dx + dy * dy);
+  }
+
+  public double DistanceTo(Point2D<T> other)
+  {
+    return EuclideanDistance(other);
   }
 
   public static IEnumerable<Point2D<T>> Range(Point2D<T> min, Point2D<T> max)
