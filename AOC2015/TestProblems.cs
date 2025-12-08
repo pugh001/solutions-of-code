@@ -25,7 +25,7 @@ public class TestProblems
     {
       string[] parts = line.Split('|');
       string day = parts[0].PadLeft(2, '0');
-      yield return new object[] { day, parts[1], parts[2] };
+      yield return [day, parts[1], parts[2]];
     }
   }
 
@@ -54,7 +54,7 @@ public class TestProblems
       throw new InvalidOperationException("Process method not found.");
     }
 
-    var result1 = (ValueTuple<string, string>)methodInfo.Invoke(dayInstance, new object[] { filePart1 });
+    var result1 = (ValueTuple<string, string>)methodInfo.Invoke(dayInstance, [filePart1]);
     _testOutputHelper.WriteLine($"Day {day} Part 1: {result1.Item1}");
 
     // Assert results
@@ -90,7 +90,7 @@ public class TestProblems
       throw new InvalidOperationException("Process method not found.");
     }
 
-    var result2 = (ValueTuple<string, string>)methodInfo.Invoke(dayInstance, new object[] { filePart2 });
+    var result2 = (ValueTuple<string, string>)methodInfo.Invoke(dayInstance, [filePart2]);
     _testOutputHelper.WriteLine($"Day {day} Part 2: {result2.Item2}");
 
     // Assert results

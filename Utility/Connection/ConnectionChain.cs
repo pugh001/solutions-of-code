@@ -4,7 +4,7 @@ public class ConnectionChain<T> where T : IDistanceCalculable<T>
 {
   public List<Connection<T>> Connections { get; set; } = new List<Connection<T>>();
   public HashSet<T> ConnectedPoints { get; set; } = new HashSet<T>();
-  public double TotalDistance => Connections.Sum(c => c.Distance);
+  public double TotalDistance => Connections.Sum(c => c.EuclideanDistance);
 
   public bool CanConnect(Connection<T> connection)
   {

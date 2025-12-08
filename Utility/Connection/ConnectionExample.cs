@@ -73,6 +73,6 @@ public class ConnectionExample
       }
     }
     
-    return connections.OrderBy(c => c.Distance).ToList();
+    return connections.OrderBy(c => c.EuclideanDistance).ToList();
   }
 }

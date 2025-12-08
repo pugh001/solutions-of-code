@@ -18,7 +18,7 @@ public class Solution
 
     var stopWatch = Stopwatch.StartNew();
     // Arrange
-    int[] nums = { -1, 0, 1, 2, -1, -4 };
+    int[] nums = [-1, 0, 1, 2, -1, -4];
     IList<IList<int>> expected = new List<IList<int>> { new List<int> { -1, -1, 2 }, new List<int> { -1, 0, 1 } };
 
     // Act
@@ -37,7 +37,7 @@ public class Solution
 
     var stopWatch = Stopwatch.StartNew();
     // Arrange
-    int[] nums = { 0, 1, 1 };
+    int[] nums = [0, 1, 1];
     IList<IList<int>> expected = new List<IList<int>>();
 
     // Act
@@ -56,7 +56,7 @@ public class Solution
 
     var stopWatch = Stopwatch.StartNew();
     // Arrange
-    int[] nums = { 0, 0, 0 };
+    int[] nums = [0, 0, 0];
     IList<IList<int>> expected = new List<IList<int>> { new List<int> { 0, 0, 0 } };
 
     // Act

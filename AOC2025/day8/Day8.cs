@@ -17,7 +17,7 @@ public class Day8
     // Calculate all possible connections using GetCombinations
     var allConnections = Algorithms.GetCombinations(space, 2)
       .Select(pair => new Connection<Coordinate3D>(pair[0], pair[1]))
-      .OrderBy(c => c.Distance)
+      .OrderBy(c => c.EuclideanDistance)
       .ToList();
 
     // Build connection chains using utility class

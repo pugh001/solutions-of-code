@@ -4,7 +4,7 @@ namespace AOC2024;
 
 public class Day24
 {
-  private static readonly List<string> instructions = new();
+  private static readonly List<string> instructions = [];
   private static readonly Dictionary<string, int> registers = new();
 
   private static readonly HashSet<(string x, string y, string type, string output)> gates = [];
@@ -50,7 +50,7 @@ public class Day24
       {
         if (processed.Contains(instruction)) continue;
 
-        string[]? parts = instruction.Split(new[] { " -> " }, StringSplitOptions.RemoveEmptyEntries);
+        string[]? parts = instruction.Split([" -> "], StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length != 2) continue;
 
         string? expression = parts[0].Trim();
@@ -82,7 +82,7 @@ public class Day24
   private static bool EvaluateExpression(string expression, string result)
   {
     int value = 0;
-    string[]? tokens = expression.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+    string[]? tokens = expression.Split([' '], StringSplitOptions.RemoveEmptyEntries);
 
     string op1 = tokens[0], op = tokens[1], op2 = tokens[2];
     if (!registers.TryGetValue(op1, out int val1) && !int.TryParse(op1, out val1)) return false;

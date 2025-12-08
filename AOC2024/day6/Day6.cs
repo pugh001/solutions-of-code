@@ -14,7 +14,7 @@ public class Day6
   private static long ProcessPart1(string[] data)
   {
     (char[,] grid, int guardRow, int guardCol) = InitializeGrid(data);
-    (int, int)[] deltas = { (-1, 0), (0, 1), (1, 0), (0, -1) };
+    (int, int)[] deltas = [(-1, 0), (0, 1), (1, 0), (0, -1)];
     int dirIndex = 0;
 
     // Simulate guard movement
@@ -71,7 +71,7 @@ public class Day6
     bool[,] reachable = new bool[grid.GetLength(0), grid.GetLength(1)];
     Queue<(int, int)> queue = new();
     queue.Enqueue((guardRow, guardCol));
-    (int, int)[] deltas = { (-1, 0), (0, 1), (1, 0), (0, -1) };
+    (int, int)[] deltas = [(-1, 0), (0, 1), (1, 0), (0, -1)];
 
     while (queue.Count > 0)
     {
@@ -94,12 +94,12 @@ public class Day6
 
   private static bool SimulateGuardMovement(int guardRow, int guardCol, char[,] grid)
   {
-    (int, int)[] deltas = { (-1, 0), (0, 1), (1, 0), (0, -1) };
+    (int, int)[] deltas = [(-1, 0), (0, 1), (1, 0), (0, -1)];
     int currentRow = guardRow;
     int currentCol = guardCol;
     int dirIndex = 0;
 
-    HashSet<int> visited = new();
+    HashSet<int> visited = [];
     while (true)
     {
       int newRow = currentRow + deltas[dirIndex].Item1;

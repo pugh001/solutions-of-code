@@ -154,13 +154,3 @@ public class LightGrid
     return x >= 0 && x < _size && y >= 0 && y < _size ? _brightness[x, y] : 0;
   }
 }
-
-/// <summary>
-/// Light operations enum
-/// </summary>
-public enum LightAction
-{
-  TurnOn,
-  TurnOff,
-  Toggle
-}

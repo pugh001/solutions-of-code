@@ -2,21 +2,45 @@ namespace Utility;
 
 public static class Letters
 {
+  // Pre-computed vowel lookup for O(1) access
+  private static readonly HashSet<char> VowelSet = ['a', 'e', 'i', 'o', 'u'];
+  
+  // Cache for disallowed character sets to avoid repeated HashSet creation
+  private static readonly Dictionary<string, HashSet<char>> DisallowedCache = new();
+  
   public static int CountVowels(string letters)
   {
+    int count = 0;
     if (string.IsNullOrEmpty(letters))
-      return 0;
-
-    const string vowels = "aeiou";
-    return letters.Count(c => vowels.Contains(c));
+      return count;
+    count += letters.Count(c => VowelSet.Contains(char.ToLower(c)));
+    return count;
   }
+  
   public static bool DoesItContainInvalidLetters(string letters, string disallowed)
   {
-    return !letters.Any(c => disallowed.Contains(c));
+    if (string.IsNullOrEmpty(letters) || string.IsNullOrEmpty(disallowed))
+      return true;
+
+    // Cache disallowed character sets for repeated calls
+    if (DisallowedCache.TryGetValue(disallowed, out var disallowedSet))
+      return letters.All(c => !disallowedSet.Contains(c));
+
+    disallowedSet = new HashSet<char>(disallowed);
+    DisallowedCache[disallowed] = disallowedSet;
+
+    // Early termination with O(1) lookup
+    return letters.All(c => !disallowedSet.Contains(c));
   }
   public static string AddLetterToString(string data)
   {
-    char[] letters = data.ToCharArray();
+    if (string.IsNullOrEmpty(data))
+      return "a";
+
+    // Use Span<char> for better performance with large strings
+    Span<char> letters = stackalloc char[data.Length];
+    data.AsSpan().CopyTo(letters);
+    
     int index = letters.Length - 1;
 
     // Start from the rightmost character and increment
@@ -32,28 +56,30 @@ public static class Letters
 
       letters[index] = 'a';
       index--; // Move to the previous position to carry over
-
     }
 
     return new string(letters);
   }
   public static bool DoesItContainStraight(string newPassword, int requiredInSequence = 3)
   {
-    for (int i = 0; i <= newPassword.Length - requiredInSequence; i++)
+    if (string.IsNullOrEmpty(newPassword) || newPassword.Length < requiredInSequence)
+      return false;
+
+    // Single pass algorithm - check sequence as we go
+    int currentSequenceLength = 1;
+    
+    for (int i = 1; i < newPassword.Length; i++)
     {
-      bool isSequential = true;
-
-      for (int j = 1; j < requiredInSequence; j++)
+      if (newPassword[i] == newPassword[i - 1] + 1)
       {
-        if (newPassword[i + j] == newPassword[i + j - 1] + 1)
-          continue;
-
-        isSequential = false;
-        break;
+        currentSequenceLength++;
+        if (currentSequenceLength >= requiredInSequence)
+          return true;
       }
-
-      if (isSequential)
-        return true;
+      else
+      {
+        currentSequenceLength = 1;
+      }
     }
 
     return false;
@@ -85,9 +111,14 @@ public static class Letters
   }
   public static bool IsRepeatedLetter(string letters)
   {
-    for (int i = 0; i < letters.Length - 1; i++)
+    if (string.IsNullOrEmpty(letters) || letters.Length < 2)
+      return false;
+
+    // Single pass with early termination
+    for (int i = 1; i < letters.Length; i++)
     {
-      if (letters[i] == letters[i + 1]) return true;
+      if (letters[i] == letters[i - 1]) 
+        return true;
     }
 
     return false;
@@ -97,18 +128,23 @@ public static class Letters
     if (string.IsNullOrEmpty(input) || input.Length < 4)
       return false;
 
-    var seenPairs = new HashSet<string>();
+    // Use integer-based pairs for better performance than string allocation
+    var seenPairs = new HashSet<int>();
 
     for (int i = 0; i < input.Length - 1; i++)
     {
-      string pair = input.Substring(i, 2);
+      // Create a hash from two characters to avoid string allocation
+      int pairHash = (input[i] << 8) | input[i + 1];
 
-      if (seenPairs.Contains(pair))
+      if (seenPairs.Contains(pairHash))
         return true;
 
-      // Add the current pair to the set, but exclude the pair starting at the previous index
-      if (i > 0)
-        seenPairs.Add(input.Substring(i - 1, 2));
+      // Add previous pair if it exists and we're not at the first position
+      if (i <= 0)
+        continue;
+
+      int prevPairHash = (input[i - 1] << 8) | input[i];
+      seenPairs.Add(prevPairHash);
     }
 
     return false;

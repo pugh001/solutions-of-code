@@ -136,13 +136,13 @@ public static class MoveDirections
     T defaultVal,
     bool includeDiagonals = false)
   {
-    List<T> res = new()
-    {
+    List<T> res =
+    [
       values.GetDirection(location, N, defaultVal),
       values.GetDirection(location, E, defaultVal),
       values.GetDirection(location, S, defaultVal),
       values.GetDirection(location, W, defaultVal)
-    };
+    ];
 
     if (includeDiagonals)
     {

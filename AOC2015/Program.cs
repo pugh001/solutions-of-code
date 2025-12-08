@@ -43,7 +43,7 @@ static internal class Program
         var stopWatch = Stopwatch.StartNew();
 
         // Invoke the Process method on the instance
-        object? result = processMethod.Invoke(dayInstance, new object[] { inputFilePath });
+        object? result = processMethod.Invoke(dayInstance, [inputFilePath]);
 
         stopWatch.Stop();
 

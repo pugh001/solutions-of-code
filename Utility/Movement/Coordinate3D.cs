@@ -4,11 +4,11 @@ public class Coordinate3D : IDistanceCalculable<Coordinate3D>
 {
 
   private static readonly Coordinate3D[] neighbors3D =
-  {
+  [
     (-1, -1, -1), (-1, -1, 0), (-1, -1, 1), (-1, 0, -1), (-1, 0, 0), (-1, 0, 1), (-1, 1, -1), (-1, 1, 0), (-1, 1, 1),
     (0, -1, -1), (0, -1, 0), (0, -1, 1), (0, 0, -1), (0, 0, 1), (0, 1, -1), (0, 1, 0), (0, 1, 1),
     (1, -1, -1), (1, -1, 0), (1, -1, 1), (1, 0, -1), (1, 0, 0), (1, 0, 1), (1, 1, -1), (1, 1, 0), (1, 1, 1)
-  };
+  ];
 
   public readonly int X;
   public readonly int Y;
@@ -29,8 +29,8 @@ public class Coordinate3D : IDistanceCalculable<Coordinate3D>
     Z = n[2];
   }
 
-  public List<Coordinate3D> Rotations => new()
-  {
+  public List<Coordinate3D> Rotations =>
+  [
     (X, Y, Z),
     (X, Z, -Y),
     (X, -Y, -Z),
@@ -55,7 +55,7 @@ public class Coordinate3D : IDistanceCalculable<Coordinate3D>
     (-Z, Y, X),
     (-Z, -X, Y),
     (-Z, -Y, -X)
-  };
+  ];
 
   public static implicit operator Coordinate3D((int x, int y, int z) a)
   {
@@ -110,10 +110,7 @@ public class Coordinate3D : IDistanceCalculable<Coordinate3D>
     return Math.Sqrt(X * X + Y * Y + Z * Z);
   }
 
-  public double DistanceTo(Coordinate3D other)
-  {
-    return EuclideanDistance(other);
-  }
+
 
   public override bool Equals(object obj)
   {

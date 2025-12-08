@@ -23,7 +23,7 @@ public static class MainUtilities
   {
     if (delimiter == "")
     {
-      List<int> result = new();
+      List<int> result = [];
       foreach (char c in str)
         if (int.TryParse(c.ToString(), out int n))
           result.Add(n);
@@ -104,7 +104,7 @@ public static class MainUtilities
   {
     if (delimiter == "")
     {
-      List<long> result = new();
+      List<long> result = [];
       foreach (char c in str)
         if (long.TryParse(c.ToString(), out long n))
           result.Add(n);
@@ -149,14 +149,14 @@ public static class MainUtilities
 
   public static List<string> SplitByNewline(this string input, bool blankLines = false, bool shouldTrim = true)
   {
-    return input.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
+    return input.Split(["\r\n", "\r", "\n"], StringSplitOptions.None)
       .Where(s => blankLines || !string.IsNullOrWhiteSpace(s)).Select(s => shouldTrim ?
         s.Trim() :
         s).ToList();
   }
   public static List<string> SplitByDoubleNewline(this string input, bool blankLines = false, bool shouldTrim = true)
   {
-    return input.Split(new[] { "\r\n\r\n", "\r\r", "\n\n" }, StringSplitOptions.None)
+    return input.Split(["\r\n\r\n", "\r\r", "\n\n"], StringSplitOptions.None)
       .Where(s => blankLines || !string.IsNullOrWhiteSpace(s)).Select(s => shouldTrim ?
         s.Trim() :
         s).ToList();
@@ -596,10 +596,7 @@ public static class MainUtilities
 
   private static List<Coordinate2D> ReconstructPath(Dictionary<Coordinate2D, Coordinate2D> cameFrom, Coordinate2D current)
   {
-    List<Coordinate2D> res = new()
-    {
-      current
-    };
+    List<Coordinate2D> res = [current];
     while (cameFrom.ContainsKey(current))
     {
       current = cameFrom[current];

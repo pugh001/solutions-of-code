@@ -101,11 +101,7 @@ public record Point2D<T>(T X,
     var dy = double.CreateChecked(other.Y - Y);
     return Math.Sqrt(dx * dx + dy * dy);
   }
-
-  public double DistanceTo(Point2D<T> other)
-  {
-    return EuclideanDistance(other);
-  }
+  
 
   public static IEnumerable<Point2D<T>> Range(Point2D<T> min, Point2D<T> max)
   {

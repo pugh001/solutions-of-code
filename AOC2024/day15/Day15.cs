@@ -6,8 +6,8 @@ public class Day15
 {
   private static (Dictionary<Coordinate2D, char> map, int maxX, int maxY) _map;
   private static (Dictionary<Coordinate2D, char> map, int maxX, int maxY) _map2;
-  private static List<List<Coordinate2D>> _boxesToMove = new();
-  private static List<Coordinate2D> _movedPositions = new();
+  private static List<List<Coordinate2D>> _boxesToMove = [];
+  private static List<Coordinate2D> _movedPositions = [];
   private static readonly Queue<char> Moves = new();
   private static string _movestring;
 
@@ -36,7 +36,7 @@ public class Day15
     var robotPosition = (0, 0);
     string instructions = "";
 
-    List<string> gridLines = new();
+    List<string> gridLines = [];
     bool instructionsStarted = false;
 
     foreach (string line in data)
@@ -365,8 +365,8 @@ public class Day15
           cur = next;
         }
 
-        _movedPositions = new List<Coordinate2D>();
-        _boxesToMove = new List<List<Coordinate2D>>();
+        _movedPositions = [];
+        _boxesToMove = [];
       }
       else if (_map2.map[next] == '.')
       {
@@ -411,14 +411,14 @@ public class Day15
             otherpart = next.MoveDirection(CompassDirection.W);
           }
 
-          _boxesToMove.Add(new List<Coordinate2D> { next, otherpart });
+          _boxesToMove.Add([next, otherpart]);
           canmove = TryMoveBox(dir, cur, otherpart.MoveDirection(dir), partTwo) &&
                     TryMoveBox(dir, cur, next.MoveDirection(dir), partTwo);
         }
         else
         {
           var nextbox = next.MoveDirection(dir);
-          _boxesToMove.Add(new List<Coordinate2D> { next, nextbox });
+          _boxesToMove.Add([next, nextbox]);
           canmove = TryMoveBox(dir, cur, nextbox.MoveDirection(dir), partTwo);
         }
       }

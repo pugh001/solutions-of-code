@@ -26,14 +26,14 @@ public class Map
   {
     var directions = new Dictionary<string, int[]>
     {
-      { "+u", new[] { position[0] - 1, position[1] } },
-      { "+d", new[] { position[0] + 1, position[1] } },
-      { "+l", new[] { position[0], position[1] - 1 } },
-      { "+r", new[] { position[0], position[1] + 1 } },
-      { "-ul", new[] { position[0] - 1, position[1] - 1 } },
-      { "-ur", new[] { position[0] - 1, position[1] + 1 } },
-      { "-dl", new[] { position[0] + 1, position[1] - 1 } },
-      { "-dr", new[] { position[0] + 1, position[1] + 1 } }
+      { "+u", [position[0] - 1, position[1]] },
+      { "+d", [position[0] + 1, position[1]] },
+      { "+l", [position[0], position[1] - 1] },
+      { "+r", [position[0], position[1] + 1] },
+      { "-ul", [position[0] - 1, position[1] - 1] },
+      { "-ur", [position[0] - 1, position[1] + 1] },
+      { "-dl", [position[0] + 1, position[1] - 1] },
+      { "-dr", [position[0] + 1, position[1] + 1] }
     };
 
     var result = new List<int[]>();

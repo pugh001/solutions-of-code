@@ -81,7 +81,7 @@ public class Day7
 
 
     // Generate all combinations of '+' and '*' with length 'length'
-    GenerateOperatorsRecursively(result, new List<char>(), length, _operators);
+    GenerateOperatorsRecursively(result, [], length, _operators);
 
     return result;
   }
@@ -91,7 +91,7 @@ public class Day7
   {
     if (remaining == 0)
     {
-      result.Add(new List<char>(current));
+      result.Add([..current]);
       return;
     }
 

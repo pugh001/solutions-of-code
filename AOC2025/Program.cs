@@ -23,7 +23,7 @@ static internal class Program
         Console.WriteLine("");
         Console.Write("Day " + day.ToString().PadLeft(2, ' ') + ":");
         var stopWatch = Stopwatch.StartNew();
-        Console.Write(dayInstance.GetType().GetMethod("Process").Invoke(dayInstance, new object[] { inputFilePath }));
+        Console.Write(dayInstance.GetType().GetMethod("Process").Invoke(dayInstance, [inputFilePath]));
         stopWatch.Stop();
         Console.Write($"  Time:  {stopWatch.Elapsed}");
       }

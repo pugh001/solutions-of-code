@@ -121,12 +121,7 @@ public class Coordinate2D : IDistanceCalculable<Coordinate2D>
   {
     return Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
   }
-
-  public double DistanceTo(Coordinate2D other)
-  {
-    return EuclideanDistance(other);
-  }
-
+  
   public override bool Equals(object obj)
   {
     if (obj == null) return false;

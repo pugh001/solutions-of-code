@@ -86,7 +86,7 @@ public class Graph
         return (cost, parents);
       }
 
-      var neighbors = Map.GetDirectionPositions(new[] { row, col }, "4")
+      var neighbors = Map.GetDirectionPositions([row, col], "4")
         .Where(pos => !visited.Contains((pos[0], pos[1])) && Map.OnBoard(pos));
 
       foreach (int[]? neighbor in neighbors)

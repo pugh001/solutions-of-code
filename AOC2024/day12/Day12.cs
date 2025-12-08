@@ -6,13 +6,13 @@ public class Day12
 {
   private static readonly Dictionary<(long, long), LineChecker> GridLine = new();
 
-  private static readonly int[][] Directions = new[]
-  {
-    new[] { 0, 1 }, // Right
-    new[] { 1, 0 }, // Down
-    new[] { 0, -1 }, // Left
-    new[] { -1, 0 } // Up
-  };
+  private static readonly int[][] Directions =
+  [
+    [0, 1], // Right
+    [1, 0], // Down
+    [0, -1], // Left
+    [-1, 0] // Up
+  ];
 
   private static readonly string DirectionList = "RDLU";
 
@@ -201,10 +201,4 @@ public class Day12
 
     return (regionCells.Count, perimeter);
   }
-}
-
-public class LineChecker
-{
-  public char Value { get; set; }
-  public string Visited { get; set; }
 }

@@ -31,7 +31,7 @@ public class Day16
 
     long sum = 0;
     //ShortestPath(Start, CompassDirection.N, 0, new List<Coordinate2D>());
-    moves.Enqueue((_start, CompassDirection.E, 0, new List<Coordinate2D> { _start }));
+    moves.Enqueue((_start, CompassDirection.E, 0, [_start]));
 
     while (moves.TryDequeue(out var move))
     {

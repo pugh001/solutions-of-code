@@ -22,5 +22,5 @@ public class Directions
     [-1, -1] // Up-left (Diagonal)
   ];
 
-  private (int, int)[] _deltas = { (-1, 0), (0, 1), (1, 0), (0, -1) };
+  private (int, int)[] _deltas = [(-1, 0), (0, 1), (1, 0), (0, -1)];
 }

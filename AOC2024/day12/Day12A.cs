@@ -79,7 +79,7 @@ public class Day12A
     char plantType = grid[startRow, startCol];
     int area = 0;
 
-    int[][]? directions = new[] { new[] { 0, 1 }, new[] { 1, 0 }, new[] { 0, -1 }, new[] { -1, 0 } };
+    int[][]? directions = [[0, 1], [1, 0], [0, -1], [-1, 0]];
     var queue = new Queue<(int, int)>();
     var regionCells = new List<(int, int)>();
 
@@ -210,16 +210,3 @@ public class Day12A
 }
 
 // Region class to hold the details of each region (plant type, area, and perimeter)
-public class Region
-{
-
-  public Region(char plantType)
-  {
-    PlantType = plantType;
-    Area = 0;
-    Perimeter = 0;
-  }
-  public char PlantType { get; }
-  public int Area { get; set; }
-  public int Perimeter { get; set; }
-}

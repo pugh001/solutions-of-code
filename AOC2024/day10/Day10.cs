@@ -34,12 +34,12 @@ public class Day10
 
     // Directions for right, down, left, up
     int[][] directions =
-    {
-      new[] { 0, 1 }, // Right
-      new[] { 1, 0 }, // Down
-      new[] { 0, -1 }, // Left
-      new[] { -1, 0 } // Up
-    };
+    [
+      [0, 1], // Right
+      [1, 0], // Down
+      [0, -1], // Left
+      [-1, 0] // Up
+    ];
 
     // Find all trailheads (cells with value '0')
     for (int r = 0; r < rowSize; r++)
@@ -119,12 +119,12 @@ public class Day10
 
     // Directions for right, down, left, up
     int[][] directions =
-    {
-      new[] { 0, 1 }, // Right
-      new[] { 1, 0 }, // Down
-      new[] { 0, -1 }, // Left
-      new[] { -1, 0 } // Up
-    };
+    [
+      [0, 1], // Right
+      [1, 0], // Down
+      [0, -1], // Left
+      [-1, 0] // Up
+    ];
 
     // Find all trailheads (cells with value '0')
     for (int r = 0; r < rowSize; r++)

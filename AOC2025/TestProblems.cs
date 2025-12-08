@@ -2,7 +2,7 @@ using Utility;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace AOC2024;
+namespace AOC2025;
 
 public class TestProblems
 {
@@ -16,7 +16,7 @@ public class TestProblems
   public static IEnumerable<object[]> GetTestCases()
   {
     string path = SetupInputFile.GetSolutionDirectory();
-    string testDataFile = Path.Combine(path, "AOC2024", "Answers", "TestData.txt");
+    string testDataFile = Path.Combine(path, "AOC2025", "Answers", "TestData.txt");
 
     var lines = File.ReadAllLines(testDataFile).Skip(1) // Skip header row
       .Where(line => !string.IsNullOrWhiteSpace(line));
@@ -25,7 +25,7 @@ public class TestProblems
     {
       string[] parts = line.Split('|');
       string day = parts[0].PadLeft(2, '0');
-      yield return new object[] { day, parts[1], parts[2] };
+      yield return [day, parts[1], parts[2]];
     }
   }
 
@@ -34,7 +34,7 @@ public class TestProblems
   public void TestPart1(string dayStr, string expectedAnswer1, string _)
   {
     int day = int.Parse(dayStr);
-    int year = 2024;
+    int year = 2025;
     (bool exists, string filePart1) = TestFiles.GetInputData(day, year, "part1Example.txt");
     if (!exists)
     {
@@ -54,7 +54,7 @@ public class TestProblems
       throw new InvalidOperationException("Process method not found.");
     }
 
-    var result1 = (ValueTuple<string, string>)methodInfo.Invoke(dayInstance, new object[] { filePart1 });
+    var result1 = (ValueTuple<string, string>)methodInfo.Invoke(dayInstance, [filePart1]);
     _testOutputHelper.WriteLine($"Day {day} Part 1: {result1.Item1}");
 
     // Assert results
@@ -66,7 +66,7 @@ public class TestProblems
   public void TestPart2(string dayStr, string _, string expectedAnswer2)
   {
     int day = int.Parse(dayStr);
-    int year = 2024;
+    int year = 2025;
     (bool exists, string filePart2) = TestFiles.GetInputData(day, year, "part2Example.txt");
     if (!exists)
     {
@@ -90,7 +90,7 @@ public class TestProblems
       throw new InvalidOperationException("Process method not found.");
     }
 
-    var result2 = (ValueTuple<string, string>)methodInfo.Invoke(dayInstance, new object[] { filePart2 });
+    var result2 = (ValueTuple<string, string>)methodInfo.Invoke(dayInstance, [filePart2]);
     _testOutputHelper.WriteLine($"Day {day} Part 2: {result2.Item2}");
 
     // Assert results
