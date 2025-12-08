@@ -100,6 +100,16 @@ public class Coordinate3D
     return Math.Abs(X) + Math.Abs(Y) + Math.Abs(Z);
   }
 
+  public double EuclideanDistance(Coordinate3D other)
+  {
+    return Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2) + Math.Pow(Z - other.Z, 2));
+  }
+
+  public double EuclideanMagnitude()
+  {
+    return Math.Sqrt(X * X + Y * Y + Z * Z);
+  }
+
   public override bool Equals(object obj)
   {
     if (obj.GetType() != typeof(Coordinate3D)) return false;
