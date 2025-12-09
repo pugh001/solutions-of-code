@@ -21,7 +21,12 @@ public static class GridSimulation
     while (true)
     {
       var positions = grid.FindAll(targetChar);
-      var positionsToRemove = positions.Where(shouldRemove).ToList();
+      var positionsToRemove = new List<Point2D<int>>();
+      foreach (var position in positions)
+      {
+        if (shouldRemove(position))
+          positionsToRemove.Add(position);
+      }
       
       pass++;
       

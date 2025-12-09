@@ -118,7 +118,13 @@ public class Grid
   /// </summary>
   public IEnumerable<Point2D<int>> GetNeighbors(Point2D<int> point)
   {
-    return point.Neighbours().Where(IsInBounds);
+    var result = new List<Point2D<int>>();
+    foreach (var neighbor in point.Neighbours())
+    {
+      if (IsInBounds(neighbor))
+        result.Add(neighbor);
+    }
+    return result;
   }
 
   /// <summary>
@@ -126,7 +132,13 @@ public class Grid
   /// </summary>
   public IEnumerable<Point2D<int>> GetAllNeighbors(Point2D<int> point)
   {
-    return point.Neighbours(true).Where(IsInBounds);
+    var result = new List<Point2D<int>>();
+    foreach (var neighbor in point.Neighbours(true))
+    {
+      if (IsInBounds(neighbor))
+        result.Add(neighbor);
+    }
+    return result;
   }
 
   /// <summary>
@@ -134,7 +146,13 @@ public class Grid
   /// </summary>
   public IEnumerable<Point2D<int>> GetNeighborsOfValue(Point2D<int> point, char value)
   {
-    return point.Neighbours().Where(neighbor => IsInBounds(neighbor) && this[neighbor] == value);
+    var result = new List<Point2D<int>>();
+    foreach (var neighbor in point.Neighbours())
+    {
+      if (IsInBounds(neighbor) && this[neighbor] == value)
+        result.Add(neighbor);
+    }
+    return result;
   }
 
   /// <summary>
@@ -142,7 +160,13 @@ public class Grid
   /// </summary>
   public IEnumerable<Point2D<int>> GetAllNeighborsOfValue(Point2D<int> point, char value)
   {
-    return point.Neighbours(true).Where(neighbor => IsInBounds(neighbor) && this[neighbor] == value);
+    var result = new List<Point2D<int>>();
+    foreach (var neighbor in point.Neighbours(true))
+    {
+      if (IsInBounds(neighbor) && this[neighbor] == value)
+        result.Add(neighbor);
+    }
+    return result;
   }
 
   /// <summary>

@@ -7,8 +7,15 @@ public class Day1 : IDay
   public (string, string) Process(string input)
   {
     string? data = SetupInputFile.OpenFile(input).First();
-    int bracketsClose = data.Count(x => x == ')');
-    int bracketsOpen = data.Count(x => x == '(');
+    
+    int bracketsClose = 0;
+    int bracketsOpen = 0;
+    foreach (char c in data)
+    {
+      if (c == ')') bracketsClose++;
+      if (c == '(') bracketsOpen++;
+    }
+    
     int resultPart1 = bracketsOpen - bracketsClose;
 
     int liftPosition = 0;

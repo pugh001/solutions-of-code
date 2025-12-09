@@ -8,7 +8,13 @@ public class Day22
 
   public (string, string) Process(string input)
   {
-    int[] data = SetupInputFile.OpenFile(input).Select(int.Parse).ToArray();
+    var lines = SetupInputFile.OpenFile(input);
+    var data = new int[lines.Count()];
+    int index = 0;
+    foreach (var line in lines)
+    {
+      data[index++] = int.Parse(line);
+    }
 
 
     var bigNumbers = new Dictionary<int, List<int>>();

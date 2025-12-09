@@ -18,10 +18,17 @@ public class TestProblems
     string path = SetupInputFile.GetSolutionDirectory();
     string testDataFile = Path.Combine(path, "AOC2025", "Answers", "TestData.txt");
 
-    var lines = File.ReadAllLines(testDataFile).Skip(1) // Skip header row
-      .Where(line => !string.IsNullOrWhiteSpace(line));
+    var allLines = File.ReadAllLines(testDataFile);
+    var lines = new List<string>();
+    
+    // Skip header row and filter non-empty lines
+    for (int i = 1; i < allLines.Length; i++)
+    {
+      if (!string.IsNullOrWhiteSpace(allLines[i]))
+        lines.Add(allLines[i]);
+    }
 
-    foreach (string line in lines.Reverse())
+    foreach (string line in lines.AsEnumerable().Reverse())
     {
       string[] parts = line.Split('|');
       string day = parts[0].PadLeft(2, '0');

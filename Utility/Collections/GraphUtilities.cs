@@ -11,7 +11,11 @@ public static partial class GraphUtilities
 {
   public static Dictionary<int, List<int>> BuildGraph(List<int> update, List<(int X, int Y)> rules)
   {
-    var graph = update.ToDictionary(page => page, page => new List<int>());
+    var graph = new Dictionary<int, List<int>>();
+    foreach (var page in update)
+    {
+      graph[page] = new List<int>();
+    }
 
     foreach ((int x, int y) in rules)
     {
@@ -26,7 +30,11 @@ public static partial class GraphUtilities
   
   public static List<int> TopologicalSort(Dictionary<int, List<int>> graph, List<int> nodes)
   {
-    var inDegree = graph.ToDictionary(kvp => kvp.Key, kvp => 0);
+    var inDegree = new Dictionary<int, int>();
+    foreach (var kvp in graph)
+    {
+      inDegree[kvp.Key] = 0;
+    }
 
     foreach (var neighbors in graph.Values)
     {
@@ -36,7 +44,13 @@ public static partial class GraphUtilities
       }
     }
 
-    var queue = new Queue<int>(nodes.Where(node => inDegree[node] == 0));
+    var queueItems = new List<int>();
+    foreach (var node in nodes)
+    {
+      if (inDegree[node] == 0)
+        queueItems.Add(node);
+    }
+    var queue = new Queue<int>(queueItems);
     var sorted = new List<int>();
 
     while (queue.Count > 0)

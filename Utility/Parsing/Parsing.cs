@@ -13,7 +13,12 @@ public static class Parsing
   public static List<int> ExtractIntegers(string text)
   {
     var matches = Regex.Matches(text, @"-?\d+");
-    return matches.Select(m => int.Parse(m.Value)).ToList();
+    var result = new List<int>(matches.Count);
+    foreach (Match match in matches)
+    {
+      result.Add(int.Parse(match.Value));
+    }
+    return result;
   }
 
   /// <summary>
@@ -22,7 +27,12 @@ public static class Parsing
   public static List<long> ExtractLongs(string text)
   {
     var matches = Regex.Matches(text, @"-?\d+");
-    return matches.Select(m => long.Parse(m.Value)).ToList();
+    var result = new List<long>(matches.Count);
+    foreach (Match match in matches)
+    {
+      result.Add(long.Parse(match.Value));
+    }
+    return result;
   }
 
   /// <summary>
@@ -31,7 +41,12 @@ public static class Parsing
   public static List<double> ExtractNumbers(string text)
   {
     var matches = Regex.Matches(text, @"-?\d+\.?\d*");
-    return matches.Select(m => double.Parse(m.Value)).ToList();
+    var result = new List<double>(matches.Count);
+    foreach (Match match in matches)
+    {
+      result.Add(double.Parse(match.Value));
+    }
+    return result;
   }
 
   /// <summary>

@@ -9,15 +9,21 @@ public class Day7
 
   public (string, string) Process(string input)
   {
-    var data = SetupInputFile.OpenFile(input).ToList();
+    var lines = SetupInputFile.OpenFile(input);
+    var data = new List<string>();
+    foreach (var line in lines)
+    {
+      data.Add(line);
+    }
     //Part 2 just adjust the input data and run again.
     return (ProcessLogic(data), "");
   }
   private static string ProcessLogic(List<string> data)
   {
 
-    foreach (string[]? parts in data.Select(action => action.Split(" -> ")))
+    foreach (string action in data)
     {
+      string[] parts = action.Split(" -> ");
       instructions[parts[1]] = parts[0];
     }
 

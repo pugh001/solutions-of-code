@@ -16,7 +16,12 @@ public static class MathGrid
     foreach (var line in lines)
     {
       var cleanedLine = Regex.Replace(line.Trim(), @" +", " ");
-      var columns = cleanedLine.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+      var columnArray = cleanedLine.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+      var columns = new List<string>();
+      foreach (var column in columnArray)
+      {
+        columns.Add(column);
+      }
       grid.Add(columns);
     }
     return grid;
@@ -63,7 +68,12 @@ public static class MathGrid
   {
     if (grid.Count == 0) return new List<int>();
     
-    int maxWidth = grid.Max(line => line.Length);
+    int maxWidth = 0;
+    foreach (var line in grid)
+    {
+      if (line.Length > maxWidth)
+        maxWidth = line.Length;
+    }
     var boundaries = new List<int>();
     
     for (int col = 0; col < maxWidth; col++)

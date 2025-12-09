@@ -33,7 +33,8 @@ public class MultiRange
     {
       if (_sorted == null)
       {
-        _sorted = _ranges.OrderBy(r => r.Start).ToList();
+        _sorted = new List<Range>(_ranges);
+        _sorted.Sort((a, b) => a.Start.CompareTo(b.Start));
       }
 
       return _sorted;
@@ -55,9 +56,31 @@ public class MultiRange
 
   public long Len => Ranges.Aggregate(1L, (a, b) => a += b.Len);
 
-  public long Sum => Ranges.Sum(range => range.Len);
+  public long Sum
+  {
+    get
+    {
+      long total = 0;
+      foreach (var range in Ranges)
+      {
+        total += range.Len;
+      }
+      return total;
+    }
+  }
 
-  public long UniqueSum => Merged.Sum(range => range.Len);
+  public long UniqueSum
+  {
+    get
+    {
+      long total = 0;
+      foreach (var range in Merged)
+      {
+        total += range.Len;
+      }
+      return total;
+    }
+  }
 
   public void AddRange(Range range)
   {
@@ -106,6 +129,11 @@ public class MultiRange
 
   public bool Contains(long value)
   {
-    return Ranges.Any(range => value >= range.Start && value <= range.End);
+    foreach (var range in Ranges)
+    {
+      if (value >= range.Start && value <= range.End)
+        return true;
+    }
+    return false;
   }
 }

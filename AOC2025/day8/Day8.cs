@@ -10,14 +10,21 @@ public class Day8
     var connectionsToProcess = 1000;
     if (input.Contains("Example")) connectionsToProcess = 10;
     
-    List<Coordinate3D> space = data.Select(line => line.Split(',').ToIntArray())
-      .Select(xyz => new Coordinate3D(xyz[0], xyz[1], xyz[2])).ToList();
+    List<Coordinate3D> space = new List<Coordinate3D>();
+    foreach (var line in data)
+    {
+      var coords = line.Split(',').ToIntArray();
+      space.Add(new Coordinate3D(coords[0], coords[1], coords[2]));
+    }
     
     // Calculate all possible connections using GetCombinations
-    var allConnections = Algorithms.GetCombinations(space, 2)
-      .Select(pair => new Connection<Coordinate3D>(pair[0], pair[1]))
-      .OrderBy(c => c.EuclideanDistance)
-      .ToList();
+    var combinations = Algorithms.GetCombinations(space, 2);
+    var allConnections = new List<Connection<Coordinate3D>>();
+    foreach (var pair in combinations)
+    {
+      allConnections.Add(new Connection<Coordinate3D>(pair[0], pair[1]));
+    }
+    allConnections.Sort((a, b) => a.EuclideanDistance.CompareTo(b.EuclideanDistance));
 
     // Build connection chains using utility class
     var (chains, _, _) = ConnectionChainBuilder.BuildChains(allConnections, space, connectionsToProcess);
@@ -38,7 +45,17 @@ public class Day8
         var connection = allConnections[i];
         bool wasProcessed = ConnectionChainBuilder.ProcessConnection(connection, workingChains, connectedCoordinates);
 
-        if (wasProcessed && workingChains.Count == 1 && connectedCoordinates.Values.All(c => c))
+        bool allCoordinatesConnected = true;
+        foreach (var connected in connectedCoordinates.Values)
+        {
+          if (!connected)
+          {
+            allCoordinatesConnected = false;
+            break;
+          }
+        }
+        
+        if (wasProcessed && workingChains.Count == 1 && allCoordinatesConnected)
         {
           part2Product = connection.PointA.X * connection.PointB.X;
           break;
@@ -56,7 +73,17 @@ public class Day8
       {
         bool wasProcessed = ConnectionChainBuilder.ProcessConnection(connection, workingChains, connectedCoordinates);
         
-        if (wasProcessed && workingChains.Count == 1 && connectedCoordinates.Values.All(c => c))
+        bool allCoordinatesConnected = true;
+        foreach (var connected in connectedCoordinates.Values)
+        {
+          if (!connected)
+          {
+            allCoordinatesConnected = false;
+            break;
+          }
+        }
+        
+        if (wasProcessed && workingChains.Count == 1 && allCoordinatesConnected)
         {
           part2Product = connection.PointA.X * connection.PointB.X;
           break;
@@ -69,7 +96,22 @@ public class Day8
 
   private static int CalculatePart1Product(List<ConnectionChain<Coordinate3D>> chains)
   {
-    var topChainsBySize = chains.OrderByDescending(c => c.ConnectedPoints.Count).Take(3).ToList();
-    return topChainsBySize.Select(c => c.ConnectedPoints.Count).Aggregate(1, (acc, count) => acc * count);
+    // Sort chains by size descending and take top 3
+    var sortedChains = new List<ConnectionChain<Coordinate3D>>(chains);
+    sortedChains.Sort((a, b) => b.ConnectedPoints.Count.CompareTo(a.ConnectedPoints.Count));
+    
+    var topChainsBySize = new List<ConnectionChain<Coordinate3D>>();
+    for (int i = 0; i < Math.Min(3, sortedChains.Count); i++)
+    {
+      topChainsBySize.Add(sortedChains[i]);
+    }
+    
+    // Calculate product
+    int product = 1;
+    foreach (var chain in topChainsBySize)
+    {
+      product *= chain.ConnectedPoints.Count;
+    }
+    return product;
   }
 }

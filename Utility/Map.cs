@@ -18,7 +18,12 @@ public class Map
   public List<char> GetDirectionValues(int[] position, string? indicators)
   {
     var positions = GetDirectionPositions(position, indicators);
-    return positions.Select(GetValueAtPosition).ToList();
+    var result = new List<char>(positions.Count);
+    foreach (var pos in positions)
+    {
+      result.Add(GetValueAtPosition(pos));
+    }
+    return result;
   }
 
   // Get positions in specified directions from a given position
@@ -50,13 +55,24 @@ public class Map
       if (indicators.Contains(key)) result.Add(directions[key]);
     }
 
-    return result.Where(OnBoard).ToList();
+    var filteredResult = new List<int[]>();
+    foreach (var pos in result)
+    {
+      if (OnBoard(pos))
+        filteredResult.Add(pos);
+    }
+    return filteredResult;
   }
 
   // Get all values in a specified column
   public List<char> GetColumnValues(int col)
   {
-    return Lines.Select(line => line[col]).ToList();
+    var result = new List<char>(Lines.Count);
+    foreach (var line in Lines)
+    {
+      result.Add(line[col]);
+    }
+    return result;
   }
 
   // Get all values in a specified row
@@ -80,8 +96,18 @@ public class Map
   // Find all positions with a specific character
   public List<int[]> FindAll(char target)
   {
-    return Enumerable.Range(0, Rows).SelectMany(row
-      => Enumerable.Range(0, Columns).Where(col => Lines[row][col] == target).Select(col => new[] { row, col })).ToList();
+    var result = new List<int[]>();
+    for (int row = 0; row < Rows; row++)
+    {
+      for (int col = 0; col < Columns; col++)
+      {
+        if (Lines[row][col] == target)
+        {
+          result.Add(new[] { row, col });
+        }
+      }
+    }
+    return result;
   }
 
   // Print the map to console

@@ -6,7 +6,12 @@ public class Day6
 {
   public (string, string) Process(string input)
   {
-    var data = SetupInputFile.OpenFile(input).ToList();
+    var lines = SetupInputFile.OpenFile(input);
+    var data = new List<string>();
+    foreach (var line in lines)
+    {
+      data.Add(line);
+    }
     
     var part1 = CalculatePart1(data);
     var part2 = CalculatePart2(data);
