@@ -7,6 +7,7 @@
         <Nullable>enable</Nullable>
         <IsTestProject>true</IsTestProject>
         <StartupObject>AOC2025.Program</StartupObject>
+        <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
     </PropertyGroup>
 
     <ItemGroup>
