@@ -1,5 +1,5 @@
-using Utility;
 using System.Text.RegularExpressions;
+using Utility;
 
 namespace AOC2025;
 
@@ -11,7 +11,7 @@ public class Day10
     long part2 = 0;
     var data = SetupInputFile.OpenFile(input);
 
-    foreach (var line in data)
+    foreach (string line in data)
     {
       // Parse targetState as binary integer
       int target = Target(line, out int bitLength);
@@ -45,14 +45,14 @@ public class Day10
     int minSteps = -1;
     while (queue.Count > 0)
     {
-      var (state, steps) = queue.Dequeue();
+      (int state, int steps) = queue.Dequeue();
       if (state == target)
       {
         minSteps = steps;
         break;
       }
 
-      foreach (var btn in buttons)
+      foreach (int btn in buttons)
       {
         int next = state ^ btn;
         if (visited.Contains(next))
@@ -77,9 +77,9 @@ public class Day10
     {
       int btn = 0;
       var nums = m.Groups[1].Value.Split(',').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => int.Parse(s.Trim()));
-      foreach (var idx in nums)
+      foreach (int idx in nums)
       {
-        btn |= (1 << (bitLength - idx - 1));
+        btn |= 1 << bitLength - idx - 1;
       }
 
       buttons.Add(btn);
@@ -99,7 +99,7 @@ public class Day10
     for (int i = 0; i < bitLength; i++)
     {
       if (targetStr[i] == '#')
-        target |= (1 << (bitLength - i - 1));
+        target |= 1 << bitLength - i - 1;
     }
 
     return target;
@@ -133,5 +133,4 @@ public class Day10
     var solver = new LinearSystemSolver(goal, buttonEffects);
     return solver.Solve();
   }
-  
 }

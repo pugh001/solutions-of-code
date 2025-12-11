@@ -1,6 +1,7 @@
 using Utility;
 
 namespace AOC2025;
+
 //Day  9:(4767418746, 1461987144)  Time:  00:00:01.3956224
 public class Day9
 {
@@ -12,7 +13,7 @@ public class Day9
     var points = data.Where(line => !string.IsNullOrWhiteSpace(line)).Select(Point2D<long>.Parse).ToList();
 
     // Part 1: Find the pair of points with the maximum Manhattan distance
-    var (pointA, pointB, maxDistance) = GeometryUtility.FindMaxManhattanDistancePair(points);
+    (var pointA, var pointB, long maxDistance) = GeometryUtility.FindMaxManhattanDistancePair(points);
 
     // Calculate the area of the axis-aligned bounding rectangle
     long rectangleArea = GeometryUtility.CalculateAxisAlignedBoundingRectangleArea(pointA, pointB);
@@ -23,5 +24,3 @@ public class Day9
     return (rectangleArea.ToString(), part2Area.ToString());
   }
 }
-
-

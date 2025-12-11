@@ -1,7 +1,7 @@
 namespace Utility;
 
 /// <summary>
-/// Light operations enum
+///   Light operations enum
 /// </summary>
 public enum LightAction
 {

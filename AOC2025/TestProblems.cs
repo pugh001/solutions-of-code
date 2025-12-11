@@ -18,9 +18,9 @@ public class TestProblems
     string path = SetupInputFile.GetSolutionDirectory();
     string testDataFile = Path.Combine(path, "AOC2025", "Answers", "TestData.txt");
 
-    var allLines = File.ReadAllLines(testDataFile);
+    string[] allLines = File.ReadAllLines(testDataFile);
     var lines = new List<string>();
-    
+
     // Skip header row and filter non-empty lines
     for (int i = 1; i < allLines.Length; i++)
     {

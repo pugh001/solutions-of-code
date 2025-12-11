@@ -179,9 +179,9 @@ public static class CollectionExtensions
 
     return keyList;
   }
-  
+
   /// <summary>
-  /// Convert collection to dictionary with default value for missing keys
+  ///   Convert collection to dictionary with default value for missing keys
   /// </summary>
   /// <typeparam name="TSource">Source element type</typeparam>
   /// <typeparam name="TKey">Key type</typeparam>
@@ -191,11 +191,10 @@ public static class CollectionExtensions
   /// <param name="valueSelector">Value selector function</param>
   /// <param name="defaultValue">Default value for missing keys</param>
   /// <returns>Dictionary with default value support</returns>
-  public static Dictionary<TKey, TValue> ToDictionaryWithDefault<TSource, TKey, TValue>(
-      this IEnumerable<TSource> source,
-      Func<TSource, TKey> keySelector,
-      Func<TSource, TValue> valueSelector,
-      TValue defaultValue) where TKey : notnull
+  public static Dictionary<TKey, TValue> ToDictionaryWithDefault<TSource, TKey, TValue>(this IEnumerable<TSource> source,
+    Func<TSource, TKey> keySelector,
+    Func<TSource, TValue> valueSelector,
+    TValue defaultValue) where TKey : notnull
   {
     // Return a regular dictionary - default value functionality would need to be handled separately
     return source.ToDictionary(keySelector, valueSelector);

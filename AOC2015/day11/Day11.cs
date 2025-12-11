@@ -4,9 +4,9 @@ namespace AOC2015;
 
 public class Day11
 {
-  private string _sumPart2 = "";
 
   private string _sumPart1 = "";
+  private string _sumPart2 = "";
   public (string, string) Process(string input)
   {
 
@@ -15,7 +15,7 @@ public class Day11
     _sumPart2 = RunPassword(_sumPart1);
     return (_sumPart1, _sumPart2);
   }
-  private static string RunPassword(string  password)
+  private static string RunPassword(string password)
   {
 
     bool isValid = false;

@@ -8,9 +8,9 @@ public class Day8
   {
     string[] data = SetupInputFile.OpenFile(input).ToArray();
     var grid = new Grid(data);
-    
-    var part1 = AntennaGrid.FindAllAntinodes(grid, includeResonant: false, '.');
-    var part2 = AntennaGrid.FindAllAntinodes(grid, includeResonant: true, '.');
+
+    var part1 = AntennaGrid.FindAllAntinodes(grid, false, '.');
+    var part2 = AntennaGrid.FindAllAntinodes(grid, true, '.');
 
     return (part1.Count.ToString(), part2.Count.ToString());
   }

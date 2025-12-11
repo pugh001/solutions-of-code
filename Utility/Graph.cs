@@ -1,11 +1,9 @@
 // Specialized Graph class for pathfinding and maze analysis
 
-using System.Drawing;
-
 namespace Utility;
 
 /// <summary>
-/// Graph class specialized for maze/pathfinding problems with start/end points
+///   Graph class specialized for maze/pathfinding problems with start/end points
 /// </summary>
 public class Graph
 {
@@ -112,7 +110,7 @@ public class Graph
       .ToList();
   }
   /// <summary>
-  /// Builds a graph from a list of nodes and dependency rules
+  ///   Builds a graph from a list of nodes and dependency rules
   /// </summary>
   /// <typeparam name="T">Type of graph nodes</typeparam>
   /// <param name="nodes">Collection of nodes to include in graph</param>
@@ -141,7 +139,7 @@ public class Graph
   }
 
   /// <summary>
-  /// Finds all paths from start node to end node using DFS traversal.
+  ///   Finds all paths from start node to end node using DFS traversal.
   /// </summary>
   /// <typeparam name="T">Type of graph nodes</typeparam>
   /// <param name="graph">Graph as adjacency list</param>
@@ -149,9 +147,9 @@ public class Graph
   /// <param name="end">End node</param>
   /// <returns>List of paths, each path is a list of nodes from start to end</returns>
   /// <example>
-  /// var graph = Graph.BuildGraph(new[] {"A", "B", "C", "D"}, new[] { ("A", "B"), ("A", "C"), ("B", "D"), ("C", "D") });
-  /// var allPaths = Graph.FindAllPaths(graph, "A", "D");
-  /// // allPaths will be: [ ["A", "B", "D"], ["A", "C", "D"] ]
+  ///   var graph = Graph.BuildGraph(new[] {"A", "B", "C", "D"}, new[] { ("A", "B"), ("A", "C"), ("B", "D"), ("C", "D") });
+  ///   var allPaths = Graph.FindAllPaths(graph, "A", "D");
+  ///   // allPaths will be: [ ["A", "B", "D"], ["A", "C", "D"] ]
   /// </example>
   public static List<List<T>> FindAllPaths<T>(Dictionary<T, List<T>> graph, T start, T end) where T : notnull
   {
@@ -165,7 +163,7 @@ public class Graph
     where T : notnull
   {
     path.Add(current);
-    
+
     if (current.Equals(end))
     {
       result.Add(new List<T>(path));
@@ -184,7 +182,7 @@ public class Graph
     path.RemoveAt(path.Count - 1);
   }
   /// <summary>
-  /// Counts all paths from start to end with memoization for performance
+  ///   Counts all paths from start to end with memoization for performance
   /// </summary>
   /// <typeparam name="T">Type of graph nodes</typeparam>
   /// <param name="graph">Graph as adjacency list</param>
@@ -195,21 +193,24 @@ public class Graph
   {
     var memo = new Dictionary<(T current, string pathKey), int>();
     var currentPath = new HashSet<T>();
-    
+
     return CountPathsDfs(graph, start, end, currentPath, memo);
   }
 
-  private static int CountPathsDfs<T>(Dictionary<T, List<T>> graph, T current, T end, HashSet<T> currentPath, Dictionary<(T, string), int> memo)
-    where T : notnull
+  private static int CountPathsDfs<T>(Dictionary<T, List<T>> graph,
+    T current,
+    T end,
+    HashSet<T> currentPath,
+    Dictionary<(T, string), int> memo) where T : notnull
   {
     // Check for cycles - if we've already visited this node in current path
     if (currentPath.Contains(current))
       return 0;
 
     // Create memoization key based on current node and visited path
-    var pathKey = string.Join(",", currentPath.OrderBy(x => x));
+    string pathKey = string.Join(",", currentPath.OrderBy(x => x));
     var key = (current, pathKey);
-    
+
     if (memo.TryGetValue(key, out int cachedResult))
       return cachedResult;
 
@@ -233,7 +234,7 @@ public class Graph
   }
 
   /// <summary>
-  /// Counts paths from start to end that pass through specific required nodes
+  ///   Counts paths from start to end that pass through specific required nodes
   /// </summary>
   /// <typeparam name="T">Type of graph nodes</typeparam>
   /// <param name="graph">Graph as adjacency list</param>
@@ -241,25 +242,29 @@ public class Graph
   /// <param name="end">End node</param>
   /// <param name="requiredNodes">Nodes that must be visited</param>
   /// <returns>Number of paths passing through all required nodes</returns>
-  public static int CountPathsWithRequiredNodes<T>(Dictionary<T, List<T>> graph, T start, T end, params T[] requiredNodes) where T : notnull
+  public static int CountPathsWithRequiredNodes<T>(Dictionary<T, List<T>> graph, T start, T end, params T[] requiredNodes)
+    where T : notnull
   {
     var memo = new Dictionary<(T current, string pathKey, string visitedKey), int>();
     var currentPath = new HashSet<T>();
     var visitedRequired = new HashSet<T>();
-    
+
     return CountPathsWithRequiredDfs(graph, start, end, requiredNodes.ToHashSet(), currentPath, visitedRequired, memo);
   }
 
   /// <summary>
-  /// Counts paths from start to any end node that contains endPattern, visiting nodes containing all required patterns
-  /// Optimized for problems where you need to visit any node containing specific substrings (like "dac" and "fft")
+  ///   Counts paths from start to any end node that contains endPattern, visiting nodes containing all required patterns
+  ///   Optimized for problems where you need to visit any node containing specific substrings (like "dac" and "fft")
   /// </summary>
   /// <param name="graph">Graph as adjacency list</param>
   /// <param name="start">Start node</param>
   /// <param name="endPattern">Pattern that end nodes must contain</param>
   /// <param name="requiredPatterns">Patterns that must be visited during the path</param>
   /// <returns>Number of valid paths</returns>
-  public static int CountPathsWithPatterns(Dictionary<string, List<string>> graph, string start, string endPattern, params string[] requiredPatterns)
+  public static int CountPathsWithPatterns(Dictionary<string, List<string>> graph,
+    string start,
+    string endPattern,
+    params string[] requiredPatterns)
   {
     // Find all possible end nodes
     var endNodes = graph.Keys.Where(node => node.Contains(endPattern)).ToHashSet();
@@ -268,12 +273,16 @@ public class Graph
     // Use a more efficient state representation
     var memo = new Dictionary<(string current, int visitedMask), int>();
     var requiredPatternsList = requiredPatterns.ToList();
-    
+
     return CountPathsWithPatternsDfs(graph, start, endNodes, requiredPatternsList, new HashSet<string>(), 0, memo);
   }
 
-  private static int CountPathsWithPatternsDfs(Dictionary<string, List<string>> graph, string current, 
-    HashSet<string> endNodes, List<string> requiredPatterns, HashSet<string> currentPath, int visitedMask, 
+  private static int CountPathsWithPatternsDfs(Dictionary<string, List<string>> graph,
+    string current,
+    HashSet<string> endNodes,
+    List<string> requiredPatterns,
+    HashSet<string> currentPath,
+    int visitedMask,
     Dictionary<(string, int), int> memo)
   {
     // Check for cycles
@@ -290,7 +299,7 @@ public class Graph
     {
       if (current.Contains(requiredPatterns[i]))
       {
-        newVisitedMask |= (1 << i);
+        newVisitedMask |= 1 << i;
       }
     }
 
@@ -299,7 +308,9 @@ public class Graph
     {
       // Check if all required patterns have been visited
       int allRequiredMask = (1 << requiredPatterns.Count) - 1;
-      return (newVisitedMask == allRequiredMask) ? 1 : 0;
+      return newVisitedMask == allRequiredMask ?
+        1 :
+        0;
     }
 
     currentPath.Add(current);
@@ -307,7 +318,7 @@ public class Graph
 
     if (graph.TryGetValue(current, out var neighbors))
     {
-      foreach (var neighbor in neighbors)
+      foreach (string neighbor in neighbors)
       {
         totalPaths += CountPathsWithPatternsDfs(graph, neighbor, endNodes, requiredPatterns, currentPath, newVisitedMask, memo);
       }
@@ -319,35 +330,35 @@ public class Graph
   }
 
   /// <summary>
-  /// Highly optimized algorithm for counting paths from start to nodes containing endPattern,
-  /// that visit at least one node containing each required pattern.
-  /// Uses dynamic programming with bitmasks for O(N * 2^k) complexity instead of exponential.
+  ///   Highly optimized algorithm for counting paths from start to nodes containing endPattern,
+  ///   that visit at least one node containing each required pattern.
+  ///   Uses dynamic programming with bitmasks for O(N * 2^k) complexity instead of exponential.
   /// </summary>
   /// <param name="graph">Graph as adjacency list</param>
   /// <param name="start">Start node for path traversal</param>
   /// <param name="endPattern">Pattern that end nodes must contain (e.g., "out")</param>
   /// <param name="requiredPatterns">Patterns that must be visited (e.g., ["dac", "fft"])</param>
   /// <returns>Number of valid paths that visit all required patterns</returns>
-  public static long CountPathsOptimized(Dictionary<string, List<string>> graph, string start, string endPattern, params string[] requiredPatterns)
+  public static long CountPathsOptimized(Dictionary<string, List<string>> graph,
+    string start,
+    string endPattern,
+    params string[] requiredPatterns)
   {
     // STEP 1: Collect all nodes in the graph (both sources and destinations)
     // This is necessary because destination nodes like "out" may not appear as keys
     var allNodes = new HashSet<string>(graph.Keys);
-    foreach (var neighbors in graph.Values)
+    foreach (string? neighbor in graph.Values.SelectMany(neighbors => neighbors))
     {
-      foreach (var neighbor in neighbors)
-      {
-        allNodes.Add(neighbor);
-      }
+      allNodes.Add(neighbor);
     }
-    
+
     // STEP 2: Pre-compute pattern masks for efficient lookup
     // Each node gets a bitmask indicating which required patterns it contains
     // For example: if node "dac123" contains "dac", bit 0 is set
     var nodePatternMask = new Dictionary<string, int>();
     var endNodes = new HashSet<string>();
-    
-    foreach (var node in allNodes)
+
+    foreach (string node in allNodes)
     {
       int mask = 0;
       // Check each required pattern and set corresponding bit if found
@@ -355,34 +366,35 @@ public class Graph
       {
         if (node.Contains(requiredPatterns[i]))
         {
-          mask |= (1 << i); // Set bit i if pattern i is found
+          mask |= 1 << i; // Set bit i if pattern i is found
         }
       }
+
       nodePatternMask[node] = mask;
-      
+
       // Also track which nodes are valid end points
       if (node.Contains(endPattern))
       {
         endNodes.Add(node);
       }
     }
-    
+
     // STEP 3: Initialize dynamic programming structures
     // memo[node][visitedMask] = number of paths from node with visitedMask patterns seen
     var memo = new Dictionary<(string, int), long>();
     var visited = new HashSet<string>(); // For cycle detection
-    
+
     // Create mask representing "all required patterns visited"
     // For 2 patterns: allRequiredMask = 11 (binary) = 3 (decimal)
     int allRequiredMask = (1 << requiredPatterns.Length) - 1;
-    
+
     // STEP 4: Start DFS with empty pattern mask
     return DfsLinear(graph, start, endNodes, nodePatternMask, allRequiredMask, visited, 0, memo);
   }
-  
+
   /// <summary>
-  /// Core DFS algorithm with memoization for counting valid paths.
-  /// Uses bitmasks to efficiently track which required patterns have been visited.
+  ///   Core DFS algorithm with memoization for counting valid paths.
+  ///   Uses bitmasks to efficiently track which required patterns have been visited.
   /// </summary>
   /// <param name="graph">Adjacency list representation of the graph</param>
   /// <param name="current">Current node being processed</param>
@@ -393,53 +405,63 @@ public class Graph
   /// <param name="currentMask">Bitmask of patterns visited so far in current path</param>
   /// <param name="memo">Memoization cache: (node, visitedMask) -> path count</param>
   /// <returns>Number of valid paths from current node with current pattern state</returns>
-  private static long DfsLinear(Dictionary<string, List<string>> graph, string current, 
-    HashSet<string> endNodes, Dictionary<string, int> nodePatternMask, int allRequiredMask,
-    HashSet<string> visited, int currentMask, Dictionary<(string, int), long> memo)
+  private static long DfsLinear(Dictionary<string, List<string>> graph,
+    string current,
+    HashSet<string> endNodes,
+    Dictionary<string, int> nodePatternMask,
+    int allRequiredMask,
+    HashSet<string> visited,
+    int currentMask,
+    Dictionary<(string, int), long> memo)
   {
     // CYCLE DETECTION: If we've already visited this node in the current path, it's a cycle
     if (visited.Contains(current))
       return 0;
-    
+
     // UPDATE PATTERN MASK: Add any new patterns found at current node
     // Use bitwise OR to combine current mask with this node's pattern mask
     int newMask = currentMask | nodePatternMask[current];
-    
+
     // MEMOIZATION CHECK: Have we already computed paths from this (node, pattern state)?
     var key = (current, newMask);
     if (memo.TryGetValue(key, out long cached))
       return cached;
-    
+
     // BASE CASE: If we've reached an end node, check if all patterns were visited
     if (endNodes.Contains(current))
     {
       // Return 1 if newMask equals allRequiredMask (all patterns visited), 0 otherwise
-      return (newMask == allRequiredMask) ? 1 : 0;
+      return newMask == allRequiredMask ?
+        1 :
+        0;
     }
-    
+
     // RECURSIVE EXPLORATION: Mark current node as visited and explore neighbors
     visited.Add(current);
     long total = 0;
-    
+
     // Explore all neighbors, passing the updated pattern mask
     if (graph.TryGetValue(current, out var neighbors))
     {
-      foreach (var neighbor in neighbors)
-      {
-        total += DfsLinear(graph, neighbor, endNodes, nodePatternMask, allRequiredMask, visited, newMask, memo);
-      }
+      total += neighbors.Sum(neighbor
+        => DfsLinear(graph, neighbor, endNodes, nodePatternMask, allRequiredMask, visited, newMask, memo));
     }
-    
+
     // BACKTRACK: Remove current node from visited set for other paths
     visited.Remove(current);
-    
+
     // MEMOIZE RESULT: Cache the result for this (node, pattern state) combination
     memo[key] = total;
     return total;
   }
 
-  private static long DfsOptimized(Dictionary<string, List<string>> graph, string current, HashSet<string> endNodes,
-    Dictionary<string, HashSet<string>> patternNodes, string[] requiredPatterns, HashSet<string> visited, int mask,
+  private static long DfsOptimized(Dictionary<string, List<string>> graph,
+    string current,
+    HashSet<string> endNodes,
+    Dictionary<string, HashSet<string>> patternNodes,
+    string[] requiredPatterns,
+    HashSet<string> visited,
+    int mask,
     Dictionary<(string, int), long> dp)
   {
     if (visited.Contains(current))
@@ -451,7 +473,7 @@ public class Graph
     {
       if (patternNodes[requiredPatterns[i]].Contains(current))
       {
-        newMask |= (1 << i);
+        newMask |= 1 << i;
       }
     }
 
@@ -463,7 +485,9 @@ public class Graph
     if (endNodes.Contains(current))
     {
       int allRequired = (1 << requiredPatterns.Length) - 1;
-      return (newMask == allRequired) ? 1 : 0;
+      return newMask == allRequired ?
+        1 :
+        0;
     }
 
     visited.Add(current);
@@ -471,7 +495,7 @@ public class Graph
 
     if (graph.TryGetValue(current, out var neighbors))
     {
-      foreach (var neighbor in neighbors)
+      foreach (string neighbor in neighbors)
       {
         total += DfsOptimized(graph, neighbor, endNodes, patternNodes, requiredPatterns, visited, newMask, dp);
       }
@@ -482,19 +506,23 @@ public class Graph
     return total;
   }
 
-  private static int CountPathsWithRequiredDfs<T>(Dictionary<T, List<T>> graph, T current, T end, HashSet<T> requiredNodes, 
-    HashSet<T> currentPath, HashSet<T> visitedRequired, Dictionary<(T, string, string), int> memo)
-    where T : notnull
+  private static int CountPathsWithRequiredDfs<T>(Dictionary<T, List<T>> graph,
+    T current,
+    T end,
+    HashSet<T> requiredNodes,
+    HashSet<T> currentPath,
+    HashSet<T> visitedRequired,
+    Dictionary<(T, string, string), int> memo) where T : notnull
   {
     // Check for cycles
     if (currentPath.Contains(current))
       return 0;
 
     // Create memoization keys
-    var pathKey = string.Join(",", currentPath.OrderBy(x => x));
-    var visitedKey = string.Join(",", visitedRequired.OrderBy(x => x));
+    string pathKey = string.Join(",", currentPath.OrderBy(x => x));
+    string visitedKey = string.Join(",", visitedRequired.OrderBy(x => x));
     var key = (current, pathKey, visitedKey);
-    
+
     if (memo.TryGetValue(key, out int cachedResult))
       return cachedResult;
 
@@ -506,7 +534,9 @@ public class Graph
     if (current.Equals(end))
     {
       // Only count if all required nodes were visited
-      return requiredNodes.IsSubsetOf(newVisitedRequired) ? 1 : 0;
+      return requiredNodes.IsSubsetOf(newVisitedRequired) ?
+        1 :
+        0;
     }
 
     currentPath.Add(current);
@@ -531,7 +561,7 @@ public class Graph
     return visit!.All(item => pathOn.Contains(item));
   }
   /// <summary>
-  /// Performs topological sort on a graph using Kahn's algorithm
+  ///   Performs topological sort on a graph using Kahn's algorithm
   /// </summary>
   /// <typeparam name="T">Type of graph nodes</typeparam>
   /// <param name="graph">Graph as adjacency list</param>
@@ -595,7 +625,7 @@ public class Graph
   }
 
   /// <summary>
-  /// Performs depth-first search traversal
+  ///   Performs depth-first search traversal
   /// </summary>
   /// <typeparam name="T">Type of graph nodes</typeparam>
   /// <param name="graph">Graph as adjacency list</param>
@@ -636,7 +666,7 @@ public class Graph
   }
 
   /// <summary>
-  /// Performs breadth-first search traversal
+  ///   Performs breadth-first search traversal
   /// </summary>
   /// <typeparam name="T">Type of graph nodes</typeparam>
   /// <param name="graph">Graph as adjacency list</param>
@@ -672,7 +702,7 @@ public class Graph
   }
 
   /// <summary>
-  /// Performs grid-based DFS with customizable validation and result collection
+  ///   Performs grid-based DFS with customizable validation and result collection
   /// </summary>
   /// <typeparam name="T">Type to collect as results</typeparam>
   /// <param name="grid">2D grid to traverse</param>
@@ -683,8 +713,7 @@ public class Graph
   /// <param name="shouldCollect">Function to determine if current position should be collected</param>
   /// <param name="shouldContinue">Function to determine if DFS should continue from current position</param>
   /// <returns>Set of collected results</returns>
-  public static HashSet<T> GridDfs<T>(
-    char[,] grid,
+  public static HashSet<T> GridDfs<T>(char[,] grid,
     int startRow,
     int startCol,
     int[][] directions,
@@ -694,13 +723,13 @@ public class Graph
   {
     var visited = new HashSet<(int, int)>();
     var results = new HashSet<T>();
-    
+
     GridDfsRecursive(grid, startRow, startCol, directions, isValidMove, shouldCollect, shouldContinue, visited, results);
     return results;
   }
 
   /// <summary>
-  /// Counts distinct paths in a grid using DFS with backtracking
+  ///   Counts distinct paths in a grid using DFS with backtracking
   /// </summary>
   /// <param name="grid">2D grid to traverse</param>
   /// <param name="startRow">Starting row position</param>
@@ -709,8 +738,7 @@ public class Graph
   /// <param name="isValidMove">Function to validate if a move is allowed</param>
   /// <param name="isEndCondition">Function to check if we've reached an end state</param>
   /// <returns>Number of distinct paths to end conditions</returns>
-  public static long CountGridPaths(
-    char[,] grid,
+  public static long CountGridPaths(char[,] grid,
     int startRow,
     int startCol,
     int[][] directions,
@@ -721,8 +749,7 @@ public class Graph
     return CountGridPathsRecursive(grid, startRow, startCol, directions, isValidMove, isEndCondition, visitedPaths);
   }
 
-  private static void GridDfsRecursive<T>(
-    char[,] grid,
+  private static void GridDfsRecursive<T>(char[,] grid,
     int row,
     int col,
     int[][] directions,
@@ -749,7 +776,7 @@ public class Graph
       return;
 
     // Explore neighbors
-    foreach (var direction in directions)
+    foreach (int[] direction in directions)
     {
       int newRow = row + direction[0];
       int newCol = col + direction[1];
@@ -761,8 +788,7 @@ public class Graph
     }
   }
 
-  private static long CountGridPathsRecursive(
-    char[,] grid,
+  private static long CountGridPathsRecursive(char[,] grid,
     int row,
     int col,
     int[][] directions,
@@ -775,7 +801,7 @@ public class Graph
 
     long distinctPaths = 0;
 
-    foreach (var direction in directions)
+    foreach (int[] direction in directions)
     {
       int newRow = row + direction[0];
       int newCol = col + direction[1];
@@ -792,7 +818,7 @@ public class Graph
   }
 
   /// <summary>
-  /// Checks if the graph contains cycles using DFS
+  ///   Checks if the graph contains cycles using DFS
   /// </summary>
   /// <typeparam name="T">Type of graph nodes</typeparam>
   /// <param name="graph">Graph as adjacency list</param>
@@ -839,5 +865,4 @@ public class Graph
     recursionStack.Remove(node);
     return false;
   }
-
 }

@@ -11,10 +11,11 @@ public class Day7
   {
     var lines = SetupInputFile.OpenFile(input);
     var data = new List<string>();
-    foreach (var line in lines)
+    foreach (string line in lines)
     {
       data.Add(line);
     }
+
     //Part 2 just adjust the input data and run again.
     return (ProcessLogic(data), "");
   }

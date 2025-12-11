@@ -2,8 +2,8 @@ namespace Utility;
 
 public class ConnectionChain<T> where T : IDistanceCalculable<T>
 {
-  public List<Connection<T>> Connections { get; set; } = new List<Connection<T>>();
-  public HashSet<T> ConnectedPoints { get; set; } = new HashSet<T>();
+  public List<Connection<T>> Connections { get; set; } = new();
+  public HashSet<T> ConnectedPoints { get; set; } = new();
   public double TotalDistance => Connections.Sum(c => c.EuclideanDistance);
 
   public bool CanConnect(Connection<T> connection)
@@ -11,7 +11,7 @@ public class ConnectionChain<T> where T : IDistanceCalculable<T>
     // Can connect if one of the points is already in the chain and the other isn't, OR if it's the first connection
     bool hasPointA = ConnectedPoints.Contains(connection.PointA);
     bool hasPointB = ConnectedPoints.Contains(connection.PointB);
-    return (hasPointA && !hasPointB) || (!hasPointA && hasPointB) || ConnectedPoints.Count == 0;
+    return hasPointA && !hasPointB || !hasPointA && hasPointB || ConnectedPoints.Count == 0;
   }
 
   public void AddConnection(Connection<T> connection)

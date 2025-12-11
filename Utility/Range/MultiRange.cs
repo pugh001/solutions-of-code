@@ -65,6 +65,7 @@ public class MultiRange
       {
         total += range.Len;
       }
+
       return total;
     }
   }
@@ -78,6 +79,7 @@ public class MultiRange
       {
         total += range.Len;
       }
+
       return total;
     }
   }
@@ -134,6 +136,7 @@ public class MultiRange
       if (value >= range.Start && value <= range.End)
         return true;
     }
+
     return false;
   }
 }

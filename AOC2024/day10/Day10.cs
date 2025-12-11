@@ -6,144 +6,87 @@ public class Day10
 {
   public (string, string) Process(string input)
   {
-    // Load and parse input data
+    // Load and parse input data using Grid utility
     string[] data = SetupInputFile.OpenFile(input).ToArray();
+    var grid = new Grid(data);
 
-    int rowSize = data.Length;
-    int colSize = data[0].Length;
-    char[,] grid = new char[rowSize, colSize];
-
-    for (int r = 0; r < rowSize; r++)
-    {
-      for (int c = 0; c < colSize; c++)
-      {
-        grid[r, c] = data[r][c];
-      }
-    }
-
-    long resultPart1 = ProcessGridPart1(grid, rowSize, colSize);
-    long resultPart2 = ProcessGridPart2(grid, rowSize, colSize);
+    long resultPart1 = ProcessGridPart1(grid);
+    long resultPart2 = ProcessGridPart2(grid);
     return (resultPart1.ToString(), resultPart2.ToString());
 
 
   }
-  private static long ProcessGridPart1(char[,] grid, int rowSize, int colSize)
+  private static long ProcessGridPart1(Grid grid)
   {
-    var trailheads = new List<(int, int)>();
+    // Find all trailheads (cells with value '0') using Grid utility
+    var trailheads = grid.FindAll('0');
     long totalScore = 0;
 
-    // Directions for right, down, left, up
-    int[][] directions =
-    [
-      [0, 1], // Right
-      [1, 0], // Down
-      [0, -1], // Left
-      [-1, 0] // Up
-    ];
-
-    // Find all trailheads (cells with value '0')
-    for (int r = 0; r < rowSize; r++)
-    {
-      for (int c = 0; c < colSize; c++)
-      {
-        if (grid[r, c] == '0')
-          trailheads.Add((r, c));
-      }
-    }
-
-    // Explore each trailhead using utility Grid DFS
+    // Explore each trailhead
     foreach (var trailhead in trailheads)
     {
-      var reachableNines = new HashSet<(int, int)>();
-      var visited = new HashSet<(int, int)>();
-      
+      var reachableNines = new HashSet<Point2D<int>>();
+      var visited = new HashSet<Point2D<int>>();
+
       // Use custom method that collects 9s
-      CollectReachableNines(grid, trailhead.Item1, trailhead.Item2, directions, visited, reachableNines);
+      CollectReachableNines(grid, trailhead, visited, reachableNines);
       totalScore += reachableNines.Count;
     }
 
     return totalScore;
   }
 
-  private static long ProcessGridPart2(char[,] grid, int rowSize, int colSize)
+  private static long ProcessGridPart2(Grid grid)
   {
-    var trailheads = new List<(int, int)>();
+    // Find all trailheads (cells with value '0') using Grid utility
+    var trailheads = grid.FindAll('0');
     long totalRating = 0;
 
-    // Directions for right, down, left, up
-    int[][] directions =
-    [
-      [0, 1], // Right
-      [1, 0], // Down
-      [0, -1], // Left
-      [-1, 0] // Up
-    ];
-
-    // Find all trailheads (cells with value '0')
-    for (int r = 0; r < rowSize; r++)
-    {
-      for (int c = 0; c < colSize; c++)
-      {
-        if (grid[r, c] == '0')
-          trailheads.Add((r, c));
-      }
-    }
-
-    // Count distinct paths for each trailhead using utility Grid DFS
+    // Count distinct paths for each trailhead using PathFinding utility
     foreach (var trailhead in trailheads)
     {
-      totalRating += Graph.CountGridPaths(
-        grid,
-        trailhead.Item1,
-        trailhead.Item2,
-        directions,
-        IsValidMove,
-        (g, r, c) => g[r, c] == '9' // End condition: reached height 9
-      );
+      totalRating += PathFinding.CountDistinctPaths(grid, trailhead, (current, next) => IsValidMove(grid, next, current),
+        position => grid[position] == '9');
     }
 
     return totalRating;
   }
 
-  private static bool IsValidMove(char[,] grid, int newRow, int newCol, int currentRow, int currentCol)
+  private static bool IsValidMove(Grid grid, Point2D<int> newPos, Point2D<int> currentPos)
   {
-    int rowSize = grid.GetLength(0);
-    int colSize = grid.GetLength(1);
-
-    // Check bounds
-    if (newRow < 0 || newRow >= rowSize || newCol < 0 || newCol >= colSize)
+    // Check bounds using Grid utility
+    if (!grid.IsInBounds(newPos))
       return false;
 
     // Height constraints (must increase by exactly 1)
-    int currentHeight = grid[currentRow, currentCol] - '0';
-    int newHeight = grid[newRow, newCol] - '0';
+    int currentHeight = grid[currentPos] - '0';
+    int newHeight = grid[newPos] - '0';
 
     return newHeight == currentHeight + 1;
   }
 
-  private static void CollectReachableNines(char[,] grid, int row, int col, int[][] directions, 
-    HashSet<(int, int)> visited, HashSet<(int, int)> reachableNines)
+  private static void CollectReachableNines(Grid grid,
+    Point2D<int> position,
+    HashSet<Point2D<int>> visited,
+    HashSet<Point2D<int>> reachableNines)
   {
-    if (visited.Contains((row, col)))
+    if (visited.Contains(position))
       return;
 
-    visited.Add((row, col));
+    visited.Add(position);
 
-    if (grid[row, col] == '9')
+    if (grid[position] == '9')
     {
-      reachableNines.Add((row, col));
+      reachableNines.Add(position);
       return;
     }
 
-    // Explore neighbors
-    foreach (var direction in directions)
+    // Explore neighbors using Grid utility
+    foreach (var neighbor in grid.GetNeighbors(position))
     {
-      int newRow = row + direction[0];
-      int newCol = col + direction[1];
-
-      if (IsValidMove(grid, newRow, newCol, row, col))
+      if (IsValidMove(grid, neighbor, position))
       {
-        CollectReachableNines(grid, newRow, newCol, directions, visited, reachableNines);
+        CollectReachableNines(grid, neighbor, visited, reachableNines);
       }
     }
   }

@@ -5,14 +5,14 @@
 namespace Utility;
 
 /// <summary>
-/// Graph utilities for topological sorting and graph construction
+///   Graph utilities for topological sorting and graph construction
 /// </summary>
-public static partial class GraphUtilities
+public static class GraphUtilities
 {
   public static Dictionary<int, List<int>> BuildGraph(List<int> update, List<(int X, int Y)> rules)
   {
     var graph = new Dictionary<int, List<int>>();
-    foreach (var page in update)
+    foreach (int page in update)
     {
       graph[page] = new List<int>();
     }
@@ -27,7 +27,7 @@ public static partial class GraphUtilities
 
     return graph;
   }
-  
+
   public static List<int> TopologicalSort(Dictionary<int, List<int>> graph, List<int> nodes)
   {
     var inDegree = new Dictionary<int, int>();
@@ -45,11 +45,12 @@ public static partial class GraphUtilities
     }
 
     var queueItems = new List<int>();
-    foreach (var node in nodes)
+    foreach (int node in nodes)
     {
       if (inDegree[node] == 0)
         queueItems.Add(node);
     }
+
     var queue = new Queue<int>(queueItems);
     var sorted = new List<int>();
 

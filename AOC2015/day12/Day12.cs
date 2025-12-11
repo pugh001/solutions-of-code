@@ -5,9 +5,9 @@ namespace AOC2015;
 
 public class Day12
 {
-  private long _sumPart2 = 0;
 
-  private long _sumPart1 = 0;
+  private long _sumPart1;
+  private long _sumPart2;
   public (string, string) Process(string input)
   {
 
@@ -47,19 +47,19 @@ public class Day12
         // Check if any property value equals the skip value
         foreach (var prop in element.EnumerateObject())
         {
-          if (prop.Value.ValueKind == JsonValueKind.String && 
-              prop.Value.GetString() == skip)
+          if (prop.Value.ValueKind == JsonValueKind.String && prop.Value.GetString() == skip)
           {
             // Skip this entire object if any property value matches skip
             return numbers;
           }
         }
-        
+
         // If no property value matches skip, traverse all properties
         foreach (var prop in element.EnumerateObject())
         {
           numbers = Traverse(prop.Value, numbers, skip);
         }
+
         break;
 
       // strings, null, true/false are ignored on purpose

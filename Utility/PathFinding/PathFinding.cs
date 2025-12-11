@@ -289,4 +289,56 @@ public static class PathFinding
 
     return FloodFill(start, point => grid.IsInBounds(point) && grid[point] == targetChar);
   }
+
+  /// <summary>
+  ///   Counts all distinct paths from start to any position that satisfies the end condition
+  ///   Uses backtracking to explore all possible paths without revisiting nodes in the same path
+  /// </summary>
+  /// <param name="start">Starting position</param>
+  /// <param name="isValidMove">Function to validate if a move from current to next position is allowed</param>
+  /// <param name="isEndCondition">Function to check if current position satisfies the end condition</param>
+  /// <param name="getNeighbors">Function to get valid neighbors of current position</param>
+  /// <param name="visitedPaths">Set to track visited positions in current path (for backtracking)</param>
+  /// <returns>Number of distinct valid paths</returns>
+  public static long CountDistinctPaths(Point2D<int> start,
+    Func<Point2D<int>, Point2D<int>, bool> isValidMove,
+    Func<Point2D<int>, bool> isEndCondition,
+    Func<Point2D<int>, IEnumerable<Point2D<int>>> getNeighbors,
+    HashSet<Point2D<int>>? visitedPaths = null)
+  {
+    visitedPaths ??= new HashSet<Point2D<int>>();
+
+    if (isEndCondition(start))
+      return 1;
+
+    long distinctPaths = 0;
+
+    foreach (var neighbor in getNeighbors(start))
+    {
+      if (isValidMove(start, neighbor) && !visitedPaths.Contains(neighbor))
+      {
+        visitedPaths.Add(neighbor);
+        distinctPaths += CountDistinctPaths(neighbor, isValidMove, isEndCondition, getNeighbors, visitedPaths);
+        visitedPaths.Remove(neighbor);
+      }
+    }
+
+    return distinctPaths;
+  }
+
+  /// <summary>
+  ///   Counts all distinct paths in a grid from start to positions satisfying end condition
+  /// </summary>
+  /// <param name="grid">The grid to traverse</param>
+  /// <param name="start">Starting position</param>
+  /// <param name="isValidMove">Function to validate moves between adjacent positions</param>
+  /// <param name="isEndCondition">Function to check if position satisfies end condition</param>
+  /// <returns>Number of distinct valid paths</returns>
+  public static long CountDistinctPaths(Grid grid,
+    Point2D<int> start,
+    Func<Point2D<int>, Point2D<int>, bool> isValidMove,
+    Func<Point2D<int>, bool> isEndCondition)
+  {
+    return CountDistinctPaths(start, isValidMove, isEndCondition, grid.GetNeighbors);
+  }
 }

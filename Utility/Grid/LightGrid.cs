@@ -3,51 +3,50 @@ using System.Text.RegularExpressions;
 namespace Utility;
 
 /// <summary>
-/// Utility for managing light grids with on/off and brightness operations
+///   Utility for managing light grids with on/off and brightness operations
 /// </summary>
 public class LightGrid
 {
-  private readonly bool[,] _lights;
   private readonly int[,] _brightness;
-  private readonly int _size;
+  private readonly bool[,] _lights;
 
   public LightGrid(int size = 1000)
   {
-    _size = size;
+    Size = size;
     _lights = new bool[size, size];
     _brightness = new int[size, size];
   }
 
-  public int Size => _size;
+  public int Size { get; }
 
   /// <summary>
-  /// Applies light operations based on instruction string
+  ///   Applies light operations based on instruction string
   /// </summary>
   public void ApplyInstruction(string instruction)
   {
-    var (action, startX, startY, endX, endY) = ParseInstruction(instruction);
+    (var action, int startX, int startY, int endX, int endY) = ParseInstruction(instruction);
     ApplyOperation(startX, startY, endX, endY, action);
   }
 
   /// <summary>
-  /// Applies multiple instructions
+  ///   Applies multiple instructions
   /// </summary>
   public void ApplyInstructions(IEnumerable<string> instructions)
   {
-    foreach (var instruction in instructions)
+    foreach (string instruction in instructions)
     {
       ApplyInstruction(instruction);
     }
   }
 
   /// <summary>
-  /// Parses instruction string to extract action and coordinates
+  ///   Parses instruction string to extract action and coordinates
   /// </summary>
   public static (LightAction action, int startX, int startY, int endX, int endY) ParseInstruction(string instruction)
   {
     var regex = new Regex(@".* (\d+),(\d+) through (\d+),(\d+)");
     var match = regex.Match(instruction);
-    
+
     if (!match.Success)
       throw new ArgumentException($"Invalid instruction format: {instruction}");
 
@@ -68,7 +67,7 @@ public class LightGrid
   }
 
   /// <summary>
-  /// Applies operation to a rectangular region
+  ///   Applies operation to a rectangular region
   /// </summary>
   public void ApplyOperation(int startX, int startY, int endX, int endY, LightAction action)
   {
@@ -82,11 +81,11 @@ public class LightGrid
   }
 
   /// <summary>
-  /// Applies action to a single light
+  ///   Applies action to a single light
   /// </summary>
   private void ApplyToLight(int x, int y, LightAction action)
   {
-    if (x < 0 || x >= _size || y < 0 || y >= _size)
+    if (x < 0 || x >= Size || y < 0 || y >= Size)
       return;
 
     switch (action)
@@ -107,50 +106,54 @@ public class LightGrid
   }
 
   /// <summary>
-  /// Counts the number of lights that are on
+  ///   Counts the number of lights that are on
   /// </summary>
   public int CountLightsOn()
   {
     int count = 0;
-    for (int x = 0; x < _size; x++)
+    for (int x = 0; x < Size; x++)
     {
-      for (int y = 0; y < _size; y++)
+      for (int y = 0; y < Size; y++)
       {
         if (_lights[x, y]) count++;
       }
     }
+
     return count;
   }
 
   /// <summary>
-  /// Calculates total brightness of all lights
+  ///   Calculates total brightness of all lights
   /// </summary>
   public long CalculateTotalBrightness()
   {
     long total = 0;
-    for (int x = 0; x < _size; x++)
+    for (int x = 0; x < Size; x++)
     {
-      for (int y = 0; y < _size; y++)
+      for (int y = 0; y < Size; y++)
       {
         total += _brightness[x, y];
       }
     }
+
     return total;
   }
 
   /// <summary>
-  /// Gets the state of a specific light
+  ///   Gets the state of a specific light
   /// </summary>
   public bool IsLightOn(int x, int y)
   {
-    return x >= 0 && x < _size && y >= 0 && y < _size && _lights[x, y];
+    return x >= 0 && x < Size && y >= 0 && y < Size && _lights[x, y];
   }
 
   /// <summary>
-  /// Gets the brightness of a specific light
+  ///   Gets the brightness of a specific light
   /// </summary>
   public int GetBrightness(int x, int y)
   {
-    return x >= 0 && x < _size && y >= 0 && y < _size ? _brightness[x, y] : 0;
+    return x >= 0 && x < Size && y >= 0 && y < Size ?
+      _brightness[x, y] :
+      0;
   }
 }

@@ -408,21 +408,26 @@ weighted graphs
 
 ## LinearSystemSolver Class
 
-Solves systems of linear equations with integer coefficients, used for button-effect puzzles (e.g., Advent of Code Day 10).
+Solves systems of linear equations with integer coefficients, used for button-effect puzzles (e.g., Advent of Code Day
+10).
 
 **Constructor:**
+
 - `LinearSystemSolver(List<int> goal, List<List<int>> buttonEffects)`
-  - `goal`: Target values for each equation
-  - `buttonEffects`: List of which equations each button affects
+    - `goal`: Target values for each equation
+    - `buttonEffects`: List of which equations each button affects
 
 **Public Methods:**
+
 - `int Solve()` — Returns the minimum number of button presses to reach the goal, or 0 if unsolvable.
 
 **Private Methods:**
+
 - `BuildCoefficientMatrix(List<List<int>> buttonEffects)` — Builds the coefficient matrix for the system.
 - `PerformGaussianElimination()` — Reduces the matrix to row-echelon form using integer arithmetic.
 - `FindPivotRow(int startRow, int column)` — Finds the next pivot row in a column.
-- `EliminateColumn(MatrixRowOperations rowOps, int pivotRow, int pivotColumn)` — Eliminates a column using the pivot row.
+- `EliminateColumn(MatrixRowOperations rowOps, int pivotRow, int pivotColumn)` — Eliminates a column using the pivot
+  row.
 - `ShouldSkipRow(int rowIndex, int pivotRow, int pivotColumn)` — Checks if a row should be skipped during elimination.
 - `IdentifyFreeVariables()` — Identifies variables not bound by pivots (free variables).
 - `CalculateSearchBound()` — Determines the maximum value to try for free variables.
@@ -433,7 +438,8 @@ Solves systems of linear equations with integer coefficients, used for button-ef
 - `SearchFreeVariableValues(int freeVarIndex)` — Iterates through possible values for a free variable.
 - `TrySolvePivotVariables()` — Attempts to solve for pivot variables given current free variable assignments.
 - `TrySolvePivotVariable(int rowIndex, out long value)` — Solves a single pivot variable.
-- `CalculateAdjustedRightHandSide(int rowIndex, int pivotVarIndex)` — Calculates the right-hand side for a pivot variable.
+- `CalculateAdjustedRightHandSide(int rowIndex, int pivotVarIndex)` — Calculates the right-hand side for a pivot
+  variable.
 - `VerifySolution()` — Checks if the current solution satisfies all equations.
 - `CalculateEquationSum(int equationIndex)` — Calculates the sum for a single equation.
 
@@ -442,9 +448,11 @@ Solves systems of linear equations with integer coefficients, used for button-ef
 Encapsulates row operations for Gaussian elimination on integer matrices.
 
 **Constructor:**
+
 - `MatrixRowOperations(long[,] matrix, long[] rightHandSide, int columnCount)`
 
 **Methods:**
+
 - `SwapRows(int row1, int row2)` — Swaps two rows in the matrix and right-hand side.
 - `EliminateRow(int targetRow, int pivotRow, int pivotColumn)` — Performs row elimination using the pivot row.
 - `ReduceRowByGcd(int rowIndex)` — Reduces all coefficients in a row by their greatest common divisor.
@@ -453,6 +461,8 @@ Encapsulates row operations for Gaussian elimination on integer matrices.
 ---
 
 **Note:**
+
 - All method names are chosen to clearly reflect their intent and purpose.
 - Matrix row operations are consolidated in a dedicated class to avoid duplication and improve clarity.
-- The solver is designed for integer systems and uses brute-force search for free variables, with a configurable iteration limit.
+- The solver is designed for integer systems and uses brute-force search for free variables, with a configurable
+  iteration limit.

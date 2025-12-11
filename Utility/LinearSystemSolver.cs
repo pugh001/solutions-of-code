@@ -1,43 +1,54 @@
-
 // Utility namespace for helper classes
+
 namespace Utility;
 
-
 /// <summary>
-/// Solves a system of linear equations where each variable (button) can affect multiple equations (lights/goals).
-/// Designed for problems like "pressing buttons to reach a goal state" (e.g., puzzles).
+///   Solves a system of linear equations where each variable (button) can affect multiple equations (lights/goals).
+///   Designed for problems like "pressing buttons to reach a goal state" (e.g., puzzles).
 /// </summary>
 public class LinearSystemSolver
 {
   // Maximum number of search iterations to avoid infinite loops
   private const long MaxIterations = 50_000_000;
+
   // List of which equations (e.g., lights) each variable (button) affects
   private readonly List<List<int>> _buttonEffects;
+
   // Coefficient matrix for the system of equations
   private readonly long[,] _coefficientMatrix;
+
   // Number of equations (e.g., number of lights)
   private readonly int _equationCount;
+
   // Indices of variables that are free (not determined by Gaussian elimination)
   private readonly List<int> _freeVariables;
+
   // The target state for each equation (e.g., desired light state)
   private readonly List<int> _goal;
+
   // Maximum value to try for each free variable during brute-force search
   private readonly int _maxFreeVarValue;
+
   // For each row, the index of the pivot variable (or -1 if none)
   private readonly int[] _pivotColumn;
+
   // Right-hand side of the equations
   private readonly long[] _rightHandSide;
+
   // Current solution vector (number of presses for each button)
   private readonly long[] _solution;
+
   // Number of variables (e.g., number of buttons)
   private readonly int _variableCount;
+
   // Best (minimal) solution found so far
   private long _bestSolution;
+
   // Number of search iterations performed
   private long _iterations;
 
   /// <summary>
-  /// Initializes the solver with the goal state and the effects of each button.
+  ///   Initializes the solver with the goal state and the effects of each button.
   /// </summary>
   /// <param name="goal">Target values for each equation (e.g., desired light states)</param>
   /// <param name="buttonEffects">For each button, a list of equations it affects</param>
@@ -66,7 +77,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Builds the coefficient matrix from the button effects list.
+  ///   Builds the coefficient matrix from the button effects list.
   /// </summary>
   private long[,] BuildCoefficientMatrix(List<List<int>> buttonEffects)
   {
@@ -81,7 +92,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Attempts to solve the system for the minimal total button presses.
+  ///   Attempts to solve the system for the minimal total button presses.
   /// </summary>
   /// <returns>Minimal number of presses, or 0 if no solution found</returns>
   public int Solve()
@@ -94,7 +105,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Performs Gaussian elimination to reduce the system to row-echelon form.
+  ///   Performs Gaussian elimination to reduce the system to row-echelon form.
   /// </summary>
   private void PerformGaussianElimination()
   {
@@ -125,7 +136,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Finds the first row with a nonzero entry in the given column, starting from startRow.
+  ///   Finds the first row with a nonzero entry in the given column, starting from startRow.
   /// </summary>
   private int FindPivotRow(int startRow, int column)
   {
@@ -137,7 +148,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Eliminates the pivotColumn in all rows except the pivotRow.
+  ///   Eliminates the pivotColumn in all rows except the pivotRow.
   /// </summary>
   private void EliminateColumn(MatrixRowOperations rowOps, int pivotRow, int pivotColumn)
   {
@@ -152,7 +163,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Determines if a row should be skipped during elimination (if it's the pivot row or already zero in the pivot column).
+  ///   Determines if a row should be skipped during elimination (if it's the pivot row or already zero in the pivot column).
   /// </summary>
   private bool ShouldSkipRow(int rowIndex, int pivotRow, int pivotColumn)
   {
@@ -160,7 +171,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Identifies which variables are free (not determined by a pivot in any row).
+  ///   Identifies which variables are free (not determined by a pivot in any row).
   /// </summary>
   private void IdentifyFreeVariables()
   {
@@ -177,7 +188,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Calculates the upper bound for the value of each free variable to limit brute-force search.
+  ///   Calculates the upper bound for the value of each free variable to limit brute-force search.
   /// </summary>
   private int CalculateSearchBound()
   {
@@ -196,7 +207,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Recursively searches all possible values for free variables to find the minimal solution.
+  ///   Recursively searches all possible values for free variables to find the minimal solution.
   /// </summary>
   private void Search(int freeVarIndex)
   {
@@ -213,7 +224,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Returns true if the search should stop (iteration limit reached).
+  ///   Returns true if the search should stop (iteration limit reached).
   /// </summary>
   private bool ShouldStopSearch()
   {
@@ -222,7 +233,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Returns true if all free variables have been assigned.
+  ///   Returns true if all free variables have been assigned.
   /// </summary>
   private bool IsSearchComplete(int freeVarIndex)
   {
@@ -230,7 +241,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// If the current assignment is valid, update the best solution found so far.
+  ///   If the current assignment is valid, update the best solution found so far.
   /// </summary>
   private void TryUpdateBestSolution()
   {
@@ -245,7 +256,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Tries all possible values for the current free variable and recurses.
+  ///   Tries all possible values for the current free variable and recurses.
   /// </summary>
   private void SearchFreeVariableValues(int freeVarIndex)
   {
@@ -262,7 +273,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Attempts to solve for all pivot variables given the current free variable assignments.
+  ///   Attempts to solve for all pivot variables given the current free variable assignments.
   /// </summary>
   private bool TrySolvePivotVariables()
   {
@@ -279,7 +290,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Solves for the pivot variable in the given row, if possible.
+  ///   Solves for the pivot variable in the given row, if possible.
   /// </summary>
   private bool TrySolvePivotVariable(int rowIndex, out long value)
   {
@@ -306,7 +317,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Calculates the right-hand side for a row, subtracting the effect of all variables except the pivot.
+  ///   Calculates the right-hand side for a row, subtracting the effect of all variables except the pivot.
   /// </summary>
   private long CalculateAdjustedRightHandSide(int rowIndex, int pivotVarIndex)
   {
@@ -320,7 +331,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Checks if the current solution satisfies all equations.
+  ///   Checks if the current solution satisfies all equations.
   /// </summary>
   private bool VerifySolution()
   {
@@ -336,7 +347,7 @@ public class LinearSystemSolver
   }
 
   /// <summary>
-  /// Calculates the sum for a given equation using the current solution.
+  ///   Calculates the sum for a given equation using the current solution.
   /// </summary>
   private long CalculateEquationSum(int equationIndex)
   {

@@ -55,7 +55,7 @@ public static class MathUtilities
       b :
       FindGcd(b, a % b);
   }
-  
+
   public static long FindLcm(long a, long b)
   {
     return a * b / FindGcd(a, b);
@@ -119,7 +119,7 @@ public static class MathUtilities
         yield return l;
     }
   }
-  
+
   private static IEnumerable<long> GetNumber(long start, long end, long minHalf, long maxHalf)
   {
     for (long half = minHalf; half <= maxHalf; half++)
@@ -134,7 +134,7 @@ public static class MathUtilities
       }
     }
   }
-  
+
   private static long MinMaxHalf(long endOrstart, int digits, int startDigits, int halfDigits, long minHalf, string option)
   {
     if (digits != startDigits)
@@ -149,10 +149,10 @@ public static class MathUtilities
       Math.Max(minHalf, startHalf) :
       Math.Min(minHalf, startHalf);
   }
-  
+
   /// <summary>
-  /// Finds the highest (numerically largest) subsequence in a collection that meets specified criteria
-  /// If multiple subsequences of the same length meet criteria, returns the one with highest numeric value
+  ///   Finds the highest (numerically largest) subsequence in a collection that meets specified criteria
+  ///   If multiple subsequences of the same length meet criteria, returns the one with highest numeric value
   /// </summary>
   /// <typeparam name="T">Type of elements in the collection</typeparam>
   /// <param name="collection">The collection to analyze</param>
@@ -163,26 +163,26 @@ public static class MathUtilities
     var items = collection.ToList();
     var bestSubsequence = Enumerable.Empty<T>();
     long bestNumericValue = long.MinValue;
-    
+
     // Try all possible subsequences, starting with longest
     for (int length = items.Count; length >= 1; length--)
     {
-      var foundValidSequenceThisLength = false;
+      bool foundValidSequenceThisLength = false;
       var bestForThisLength = Enumerable.Empty<T>();
-      var bestNumericForThisLength = long.MinValue;
-      
+      long bestNumericForThisLength = long.MinValue;
+
       for (int start = 0; start <= items.Count - length; start++)
       {
         var subsequence = items.Skip(start).Take(length);
         if (predicate(subsequence))
         {
           foundValidSequenceThisLength = true;
-          
+
           // Compare all subsequences of the same length to find the numerically highest
           if (typeof(T) == typeof(char))
           {
-            var numericString = string.Concat(subsequence.Cast<char>());
-            if (long.TryParse(numericString, out var numericValue))
+            string numericString = string.Concat(subsequence.Cast<char>());
+            if (long.TryParse(numericString, out long numericValue))
             {
               if (!bestForThisLength.Any() || numericValue > bestNumericForThisLength)
               {
@@ -201,7 +201,7 @@ public static class MathUtilities
           }
         }
       }
-      
+
       // If we found valid subsequences of this length, use the best one and stop (prioritize longest first)
       if (foundValidSequenceThisLength)
       {
@@ -209,12 +209,12 @@ public static class MathUtilities
         break;
       }
     }
-    
+
     return bestSubsequence;
   }
-  
+
   /// <summary>
-  /// Checks if a sequence contains any repeated contiguous subsequences
+  ///   Checks if a sequence contains any repeated contiguous subsequences
   /// </summary>
   /// <typeparam name="T">Type of elements in the sequence</typeparam>
   /// <param name="sequence">The sequence to check</param>
@@ -223,19 +223,19 @@ public static class MathUtilities
   public static bool HasRepeatedSequence<T>(IEnumerable<T> sequence, int minLength = 2) where T : IEquatable<T>
   {
     var items = sequence.ToList();
-    
+
     // Check for repeated subsequences of various lengths
     for (int length = minLength; length <= items.Count / 2; length++)
     {
       for (int start = 0; start <= items.Count - length * 2; start++)
       {
         var firstSubsequence = items.Skip(start).Take(length);
-        
+
         // Check if this subsequence appears again later in the sequence
         for (int nextStart = start + length; nextStart <= items.Count - length; nextStart++)
         {
           var secondSubsequence = items.Skip(nextStart).Take(length);
-          
+
           if (firstSubsequence.SequenceEqual(secondSubsequence))
           {
             return true;
@@ -243,7 +243,7 @@ public static class MathUtilities
         }
       }
     }
-    
+
     return false;
   }
 }

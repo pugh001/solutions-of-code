@@ -19,10 +19,11 @@ public class Map
   {
     var positions = GetDirectionPositions(position, indicators);
     var result = new List<char>(positions.Count);
-    foreach (var pos in positions)
+    foreach (int[] pos in positions)
     {
       result.Add(GetValueAtPosition(pos));
     }
+
     return result;
   }
 
@@ -56,11 +57,12 @@ public class Map
     }
 
     var filteredResult = new List<int[]>();
-    foreach (var pos in result)
+    foreach (int[] pos in result)
     {
       if (OnBoard(pos))
         filteredResult.Add(pos);
     }
+
     return filteredResult;
   }
 
@@ -68,10 +70,11 @@ public class Map
   public List<char> GetColumnValues(int col)
   {
     var result = new List<char>(Lines.Count);
-    foreach (var line in Lines)
+    foreach (string line in Lines)
     {
       result.Add(line[col]);
     }
+
     return result;
   }
 
@@ -107,6 +110,7 @@ public class Map
         }
       }
     }
+
     return result;
   }
 

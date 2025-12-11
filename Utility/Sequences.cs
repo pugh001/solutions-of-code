@@ -1,13 +1,13 @@
 ﻿namespace Utility;
 
 /// <summary>
-/// Core utilities that serve as the foundation for other utility classes.
-/// Contains wrapper methods for backward compatibility and essential methods that don't belong in specialized folders.
+///   Core utilities that serve as the foundation for other utility classes.
+///   Contains wrapper methods for backward compatibility and essential methods that don't belong in specialized folders.
 /// </summary>
 public static class Sequences
 {
   /// <summary>
-  /// Gets the highest subsequence of specified length from a string using greedy algorithm
+  ///   Gets the highest subsequence of specified length from a string using greedy algorithm
   /// </summary>
   public static string GetHighestSubsequence(string input, int targetLength)
   {
@@ -38,7 +38,7 @@ public static class Sequences
   }
 
   /// <summary>
-  /// Checks if a number string has repeated sequences (entire string formed by repeating pattern)
+  ///   Checks if a number string has repeated sequences (entire string formed by repeating pattern)
   /// </summary>
   public static bool HasRepeatedSequence(string numberStr)
   {
@@ -65,7 +65,7 @@ public static class Sequences
 
     return false; // No repeated pattern found
   }
-  
+
   private static bool CheckRepeats(string numberStr, int repetitions, int patternLength, string pattern)
   {
     bool isRepeated = true;

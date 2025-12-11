@@ -27,6 +27,11 @@ public class Coordinate2D : IDistanceCalculable<Coordinate2D>
     Y = int.Parse(t[1]);
   }
 
+  public double EuclideanDistance(Coordinate2D other)
+  {
+    return Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
+  }
+
   public Coordinate2D RotateCw(int degrees, Coordinate2D center)
   {
     var offset = center - this;
@@ -117,11 +122,6 @@ public class Coordinate2D : IDistanceCalculable<Coordinate2D>
     return x + y;
   }
 
-  public double EuclideanDistance(Coordinate2D other)
-  {
-    return Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
-  }
-  
   public override bool Equals(object obj)
   {
     if (obj == null) return false;

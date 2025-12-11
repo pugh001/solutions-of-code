@@ -8,9 +8,9 @@ public class Day4
   public (string, string) Process(string input)
   {
     var grid = new Grid(File.ReadAllText(input).Split('\n'));
-    
-    var removalCondition = GridSimulation.CreateNeighborCountCondition(grid, '@', 4, includeDiagonals: true);
-    var (firstPassRemovals, totalRemovals) = GridSimulation.RunSimulation(grid, removalCondition);
+
+    var removalCondition = GridSimulation.CreateNeighborCountCondition(grid, '@', 4, true);
+    (int firstPassRemovals, int totalRemovals) = GridSimulation.RunSimulation(grid, removalCondition);
 
     return (firstPassRemovals.ToString(), totalRemovals.ToString());
   }

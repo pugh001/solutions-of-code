@@ -9,7 +9,7 @@ public class Day8
   {
     var lines = SetupInputFile.OpenFile(input);
     var data = new List<string>();
-    foreach (var line in lines)
+    foreach (string line in lines)
     {
       data.Add(line);
     }
@@ -21,7 +21,7 @@ public class Day8
       literal = code.Length;
       unescapedStr = Regex.Unescape(code);
       unescape = unescapedStr.Length - 2;
-      
+
       int backslashCount = 0;
       int quoteCount = 0;
       foreach (char c in code)
@@ -29,7 +29,7 @@ public class Day8
         if (c == '\\') backslashCount++;
         if (c == '"') quoteCount++;
       }
-      
+
       encoded = literal + backslashCount + quoteCount + 2;
       result2 += encoded - literal;
       result += literal - unescape;

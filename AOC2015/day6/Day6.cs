@@ -8,11 +8,11 @@ public class Day6
   {
     var data = SetupInputFile.OpenFile(input).ToList();
     var lightGrid = new LightGrid();
-    
+
     lightGrid.ApplyInstructions(data);
-    
-    var lightsOn = lightGrid.CountLightsOn();
-    var totalBrightness = lightGrid.CalculateTotalBrightness();
+
+    int lightsOn = lightGrid.CountLightsOn();
+    long totalBrightness = lightGrid.CalculateTotalBrightness();
 
     return (lightsOn.ToString(), totalBrightness.ToString());
   }

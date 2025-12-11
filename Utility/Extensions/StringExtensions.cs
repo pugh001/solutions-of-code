@@ -21,7 +21,7 @@ public static class StringExtensions
   }
 
   /// <summary>
-  /// Joins enumerable to string with separator
+  ///   Joins enumerable to string with separator
   /// </summary>
   /// <typeparam name="T">Type of elements</typeparam>
   /// <param name="source">Source enumerable</param>
@@ -34,12 +34,12 @@ public static class StringExtensions
 
   public static List<string> SplitByNewline(this string input, bool blankLines = false, bool shouldTrim = true)
   {
-    return input.Split(["\r\n", "\r", "\n"], StringSplitOptions.None)
-      .Where(s => blankLines || !string.IsNullOrWhiteSpace(s)).Select(s => shouldTrim ?
+    return input.Split(["\r\n", "\r", "\n"], StringSplitOptions.None).Where(s => blankLines || !string.IsNullOrWhiteSpace(s))
+      .Select(s => shouldTrim ?
         s.Trim() :
         s).ToList();
   }
-  
+
   public static List<string> SplitByDoubleNewline(this string input, bool blankLines = false, bool shouldTrim = true)
   {
     return input.Split(["\r\n\r\n", "\r\r", "\n\n"], StringSplitOptions.None)
@@ -165,7 +165,7 @@ public static class StringExtensions
 
     return false; // No repeated pattern found
   }
-  
+
   private static bool CheckRepeats(string numberStr, int repetitions, int patternLength, string pattern)
   {
     bool isRepeated = true;

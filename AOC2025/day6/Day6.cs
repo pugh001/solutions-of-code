@@ -8,13 +8,13 @@ public class Day6
   {
     var lines = SetupInputFile.OpenFile(input);
     var data = new List<string>();
-    foreach (var line in lines)
+    foreach (string line in lines)
     {
       data.Add(line);
     }
-    
-    var part1 = CalculatePart1(data);
-    var part2 = CalculatePart2(data);
+
+    long part1 = CalculatePart1(data);
+    long part2 = CalculatePart2(data);
 
     return (part1.ToString(), part2.ToString());
   }

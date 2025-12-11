@@ -18,6 +18,7 @@ public static class Parsing
     {
       result.Add(int.Parse(match.Value));
     }
+
     return result;
   }
 
@@ -32,6 +33,7 @@ public static class Parsing
     {
       result.Add(long.Parse(match.Value));
     }
+
     return result;
   }
 
@@ -46,6 +48,7 @@ public static class Parsing
     {
       result.Add(double.Parse(match.Value));
     }
+
     return result;
   }
 

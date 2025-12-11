@@ -124,6 +124,7 @@ public class Grid
       if (IsInBounds(neighbor))
         result.Add(neighbor);
     }
+
     return result;
   }
 
@@ -138,6 +139,7 @@ public class Grid
       if (IsInBounds(neighbor))
         result.Add(neighbor);
     }
+
     return result;
   }
 
@@ -152,6 +154,7 @@ public class Grid
       if (IsInBounds(neighbor) && this[neighbor] == value)
         result.Add(neighbor);
     }
+
     return result;
   }
 
@@ -166,6 +169,7 @@ public class Grid
       if (IsInBounds(neighbor) && this[neighbor] == value)
         result.Add(neighbor);
     }
+
     return result;
   }
 
@@ -184,12 +188,13 @@ public class Grid
   {
     if (row < 0 || row >= Rows)
       throw new ArgumentOutOfRangeException(nameof(row));
-      
+
     var sb = new StringBuilder(Cols);
     for (int c = 0; c < Cols; c++)
     {
       sb.Append(_grid[row, c]);
     }
+
     return sb.ToString();
   }
 
@@ -224,7 +229,7 @@ public class Grid
   {
     var excludeSet = new HashSet<char>(exclude);
     var unique = new HashSet<char>();
-    
+
     for (int r = 0; r < Rows; r++)
     {
       for (int c = 0; c < Cols; c++)
@@ -234,7 +239,7 @@ public class Grid
           unique.Add(ch);
       }
     }
-    
+
     return unique;
   }
 

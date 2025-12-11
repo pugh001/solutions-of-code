@@ -1,9 +1,7 @@
-using Utility;
-
 namespace Utility;
 
 /// <summary>
-/// Example demonstrating how to use the generic Connection classes with different coordinate types
+///   Example demonstrating how to use the generic Connection classes with different coordinate types
 /// </summary>
 public class ConnectionExample
 {
@@ -35,7 +33,7 @@ public class ConnectionExample
 
     var allConnections2D = GetAllConnections(coordinates2D);
     var (chains2D, _, _) = ConnectionChainBuilder.BuildChains(allConnections2D, coordinates2D);
-    
+
     Console.WriteLine($"\n2D Chains built: {chains2D.Count}");
     foreach (var chain in chains2D)
     {
@@ -50,7 +48,7 @@ public class ConnectionExample
 
     var allConnectionsGeneric = GetAllConnections(pointsGeneric);
     var (chainsGeneric, _, _) = ConnectionChainBuilder.BuildChains(allConnectionsGeneric, pointsGeneric);
-    
+
     Console.WriteLine($"\nGeneric Point2D Chains built: {chainsGeneric.Count}");
     foreach (var chain in chainsGeneric)
     {
@@ -59,12 +57,12 @@ public class ConnectionExample
   }
 
   /// <summary>
-  /// Helper method to generate all possible connections between points
+  ///   Helper method to generate all possible connections between points
   /// </summary>
   private static List<Connection<T>> GetAllConnections<T>(List<T> points) where T : IDistanceCalculable<T>
   {
     var connections = new List<Connection<T>>();
-    
+
     for (int i = 0; i < points.Count; i++)
     {
       for (int j = i + 1; j < points.Count; j++)
@@ -72,7 +70,7 @@ public class ConnectionExample
         connections.Add(new Connection<T>(points[i], points[j]));
       }
     }
-    
+
     return connections.OrderBy(c => c.EuclideanDistance).ToList();
   }
 }

@@ -22,6 +22,13 @@ public record Point2D<T>(T X,
     return T.Sign(dy);
   }
 
+  public double EuclideanDistance(Point2D<T> other)
+  {
+    double dx = double.CreateChecked(other.X - X);
+    double dy = double.CreateChecked(other.Y - Y);
+    return Math.Sqrt(dx * dx + dy * dy);
+  }
+
   public override string ToString()
   {
     return $"{X},{Y}";
@@ -95,13 +102,6 @@ public record Point2D<T>(T X,
     return T.Abs(other.X - X) + T.Abs(other.Y - Y);
   }
 
-  public double EuclideanDistance(Point2D<T> other)
-  {
-    var dx = double.CreateChecked(other.X - X);
-    var dy = double.CreateChecked(other.Y - Y);
-    return Math.Sqrt(dx * dx + dy * dy);
-  }
-  
 
   public static IEnumerable<Point2D<T>> Range(Point2D<T> min, Point2D<T> max)
   {

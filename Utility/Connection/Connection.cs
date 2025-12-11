@@ -1,6 +1,7 @@
 namespace Utility;
 
-public class Connection<T>(T pointA, T pointB) where T : IDistanceCalculable<T>
+public class Connection<T>(T pointA,
+  T pointB) where T : IDistanceCalculable<T>
 {
   public T PointA { get; set; } = pointA;
   public T PointB { get; set; } = pointB;
