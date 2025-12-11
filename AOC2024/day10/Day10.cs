@@ -51,67 +51,20 @@ public class Day10
       }
     }
 
-    // Explore each trailhead
+    // Explore each trailhead using utility Grid DFS
     foreach (var trailhead in trailheads)
     {
-      var visited = new HashSet<(int, int)>(); // Track visited cells
-      var reachableNines = new HashSet<(int, int)>(); // Track reachable 9s
-      Dfs(grid, trailhead.Item1, trailhead.Item2, visited, reachableNines, directions);
-      totalScore += reachableNines.Count; // Add the score for this trailhead
+      var reachableNines = new HashSet<(int, int)>();
+      var visited = new HashSet<(int, int)>();
+      
+      // Use custom method that collects 9s
+      CollectReachableNines(grid, trailhead.Item1, trailhead.Item2, directions, visited, reachableNines);
+      totalScore += reachableNines.Count;
     }
 
     return totalScore;
   }
 
-  private static void Dfs(char[,] grid,
-    int row,
-    int col,
-    HashSet<(int, int)> visited,
-    HashSet<(int, int)> reachableNines,
-    int[][] directions)
-  {
-    if (visited.Contains((row, col)))
-      return; // Already visited
-
-    visited.Add((row, col));
-
-    int currentHeight = grid[row, col] - '0'; // Convert char to int
-
-    // Check if this is a height of 9
-    if (currentHeight == 9)
-    {
-      reachableNines.Add((row, col));
-      return; // No further exploration needed
-    }
-
-    // Explore neighbors
-    foreach (int[]? direction in directions)
-    {
-      int newRow = row + direction[0];
-      int newCol = col + direction[1];
-
-      if (IsValidMove(grid, newRow, newCol, row, col))
-      {
-        Dfs(grid, newRow, newCol, visited, reachableNines, directions);
-      }
-    }
-  }
-
-  private static bool IsValidMove(char[,] grid, int newRow, int newCol, int currentRow, int currentCol)
-  {
-    int rowSize = grid.GetLength(0);
-    int colSize = grid.GetLength(1);
-
-    // Check bounds
-    if (newRow < 0 || newRow >= rowSize || newCol < 0 || newCol >= colSize)
-      return false;
-
-    // Height constraints (must increase by exactly 1)
-    int currentHeight = grid[currentRow, currentCol] - '0';
-    int newHeight = grid[newRow, newCol] - '0';
-
-    return newHeight == currentHeight + 1;
-  }
   private static long ProcessGridPart2(char[,] grid, int rowSize, int colSize)
   {
     var trailheads = new List<(int, int)>();
@@ -136,45 +89,62 @@ public class Day10
       }
     }
 
-    // Explore each trailhead
+    // Count distinct paths for each trailhead using utility Grid DFS
     foreach (var trailhead in trailheads)
     {
-      var visitedPaths = new HashSet<(int, int)>(); // Track visited cells for distinct paths
-      totalRating += CountDistinctTrails(grid, trailhead.Item1, trailhead.Item2, directions, visitedPaths);
+      totalRating += Graph.CountGridPaths(
+        grid,
+        trailhead.Item1,
+        trailhead.Item2,
+        directions,
+        IsValidMove,
+        (g, r, c) => g[r, c] == '9' // End condition: reached height 9
+      );
     }
 
     return totalRating;
   }
 
-  private static long CountDistinctTrails(char[,] grid, int row, int col, int[][] directions, HashSet<(int, int)> visitedPaths)
+  private static bool IsValidMove(char[,] grid, int newRow, int newCol, int currentRow, int currentCol)
   {
-    int currentHeight = grid[row, col] - '0';
+    int rowSize = grid.GetLength(0);
+    int colSize = grid.GetLength(1);
 
-    // Base case: If the height is 9, we've found a complete trail
-    if (currentHeight == 9)
-      return 1;
+    // Check bounds
+    if (newRow < 0 || newRow >= rowSize || newCol < 0 || newCol >= colSize)
+      return false;
 
-    long distinctTrails = 0;
+    // Height constraints (must increase by exactly 1)
+    int currentHeight = grid[currentRow, currentCol] - '0';
+    int newHeight = grid[newRow, newCol] - '0';
 
-    foreach (int[]? direction in directions)
+    return newHeight == currentHeight + 1;
+  }
+
+  private static void CollectReachableNines(char[,] grid, int row, int col, int[][] directions, 
+    HashSet<(int, int)> visited, HashSet<(int, int)> reachableNines)
+  {
+    if (visited.Contains((row, col)))
+      return;
+
+    visited.Add((row, col));
+
+    if (grid[row, col] == '9')
+    {
+      reachableNines.Add((row, col));
+      return;
+    }
+
+    // Explore neighbors
+    foreach (var direction in directions)
     {
       int newRow = row + direction[0];
       int newCol = col + direction[1];
 
-      // Check if the move is valid and hasn't been visited on this trail
-      if (IsValidMove(grid, newRow, newCol, row, col) && !visitedPaths.Contains((newRow, newCol)))
+      if (IsValidMove(grid, newRow, newCol, row, col))
       {
-        // Mark this cell as visited
-        visitedPaths.Add((newRow, newCol));
-
-        // Recursively count distinct trails from the next position
-        distinctTrails += CountDistinctTrails(grid, newRow, newCol, directions, visitedPaths);
-
-        // Backtrack: Unmark the cell as visited for other paths
-        visitedPaths.Remove((newRow, newCol));
+        CollectReachableNines(grid, newRow, newCol, directions, visited, reachableNines);
       }
     }
-
-    return distinctTrails;
   }
 }

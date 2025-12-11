@@ -672,6 +672,126 @@ public class Graph
   }
 
   /// <summary>
+  /// Performs grid-based DFS with customizable validation and result collection
+  /// </summary>
+  /// <typeparam name="T">Type to collect as results</typeparam>
+  /// <param name="grid">2D grid to traverse</param>
+  /// <param name="startRow">Starting row position</param>
+  /// <param name="startCol">Starting column position</param>
+  /// <param name="directions">Array of direction vectors for movement</param>
+  /// <param name="isValidMove">Function to validate if a move is allowed</param>
+  /// <param name="shouldCollect">Function to determine if current position should be collected</param>
+  /// <param name="shouldContinue">Function to determine if DFS should continue from current position</param>
+  /// <returns>Set of collected results</returns>
+  public static HashSet<T> GridDfs<T>(
+    char[,] grid,
+    int startRow,
+    int startCol,
+    int[][] directions,
+    Func<char[,], int, int, int, int, bool> isValidMove,
+    Func<char[,], int, int, T?> shouldCollect,
+    Func<char[,], int, int, bool> shouldContinue) where T : notnull
+  {
+    var visited = new HashSet<(int, int)>();
+    var results = new HashSet<T>();
+    
+    GridDfsRecursive(grid, startRow, startCol, directions, isValidMove, shouldCollect, shouldContinue, visited, results);
+    return results;
+  }
+
+  /// <summary>
+  /// Counts distinct paths in a grid using DFS with backtracking
+  /// </summary>
+  /// <param name="grid">2D grid to traverse</param>
+  /// <param name="startRow">Starting row position</param>
+  /// <param name="startCol">Starting column position</param>
+  /// <param name="directions">Array of direction vectors for movement</param>
+  /// <param name="isValidMove">Function to validate if a move is allowed</param>
+  /// <param name="isEndCondition">Function to check if we've reached an end state</param>
+  /// <returns>Number of distinct paths to end conditions</returns>
+  public static long CountGridPaths(
+    char[,] grid,
+    int startRow,
+    int startCol,
+    int[][] directions,
+    Func<char[,], int, int, int, int, bool> isValidMove,
+    Func<char[,], int, int, bool> isEndCondition)
+  {
+    var visitedPaths = new HashSet<(int, int)>();
+    return CountGridPathsRecursive(grid, startRow, startCol, directions, isValidMove, isEndCondition, visitedPaths);
+  }
+
+  private static void GridDfsRecursive<T>(
+    char[,] grid,
+    int row,
+    int col,
+    int[][] directions,
+    Func<char[,], int, int, int, int, bool> isValidMove,
+    Func<char[,], int, int, T?> shouldCollect,
+    Func<char[,], int, int, bool> shouldContinue,
+    HashSet<(int, int)> visited,
+    HashSet<T> results) where T : notnull
+  {
+    if (visited.Contains((row, col)))
+      return;
+
+    visited.Add((row, col));
+
+    // Check if we should collect this position
+    var collectResult = shouldCollect(grid, row, col);
+    if (collectResult != null)
+    {
+      results.Add(collectResult);
+    }
+
+    // Check if we should continue exploring from this position
+    if (!shouldContinue(grid, row, col))
+      return;
+
+    // Explore neighbors
+    foreach (var direction in directions)
+    {
+      int newRow = row + direction[0];
+      int newCol = col + direction[1];
+
+      if (isValidMove(grid, newRow, newCol, row, col))
+      {
+        GridDfsRecursive(grid, newRow, newCol, directions, isValidMove, shouldCollect, shouldContinue, visited, results);
+      }
+    }
+  }
+
+  private static long CountGridPathsRecursive(
+    char[,] grid,
+    int row,
+    int col,
+    int[][] directions,
+    Func<char[,], int, int, int, int, bool> isValidMove,
+    Func<char[,], int, int, bool> isEndCondition,
+    HashSet<(int, int)> visitedPaths)
+  {
+    if (isEndCondition(grid, row, col))
+      return 1;
+
+    long distinctPaths = 0;
+
+    foreach (var direction in directions)
+    {
+      int newRow = row + direction[0];
+      int newCol = col + direction[1];
+
+      if (isValidMove(grid, newRow, newCol, row, col) && !visitedPaths.Contains((newRow, newCol)))
+      {
+        visitedPaths.Add((newRow, newCol));
+        distinctPaths += CountGridPathsRecursive(grid, newRow, newCol, directions, isValidMove, isEndCondition, visitedPaths);
+        visitedPaths.Remove((newRow, newCol));
+      }
+    }
+
+    return distinctPaths;
+  }
+
+  /// <summary>
   /// Checks if the graph contains cycles using DFS
   /// </summary>
   /// <typeparam name="T">Type of graph nodes</typeparam>

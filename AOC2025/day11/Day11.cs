@@ -11,6 +11,8 @@ public class Day11
   {
     int part1 = 0;
     long part2 = 0;
+    bool isPartOne = false || input.Contains("part1Example");
+
     var data = SetupInputFile.OpenFile(input);
     var graph = new Dictionary<string, List<string>>();
 
@@ -31,7 +33,7 @@ public class Day11
     
     // Use the optimized method for counting paths through nodes containing specific patterns
     // This handles multiple instances of dac/fft nodes efficiently
-    part2 = Graph.CountPathsOptimized(graph, "svr", "out", "dac", "fft");
+    if (!isPartOne) part2 = Graph.CountPathsOptimized(graph, "svr", "out", "dac", "fft");
     return (part1.ToString(), part2.ToString());
   }
 }
