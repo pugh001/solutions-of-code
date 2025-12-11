@@ -22,22 +22,22 @@ public static class Letters
     return count;
   }
 
-  public static bool DoesItContainInvalidLetters(string letters, string disallowed)
+  public static bool ContainsDisallowed(string s, HashSet<char> disallowed, out int position)
   {
-    if (string.IsNullOrEmpty(letters) || string.IsNullOrEmpty(disallowed))
-      return true;
-
-    // Cache disallowed character sets for repeated calls
-    if (!DisallowedCache.TryGetValue(disallowed, out var disallowedSet))
+    position = 0;
+    foreach (char c in s)
     {
-      disallowedSet = new HashSet<char>(disallowed);
-      DisallowedCache[disallowed] = disallowedSet;
+      // Normalize to lowercase for comparison
+      char lower = (char)(c | 32);
+      if (disallowed.Contains(lower))
+        return true;
+
+      position++;
     }
 
-    // Return false if any invalid letter is present (early exit)
-    return letters.All(t => !disallowedSet.Contains(t));
+    return false;
   }
-  public static string AddLetterToString(string data)
+  public static string AddLetterToString(string data, HashSet<char> disallowed )
   {
     if (string.IsNullOrEmpty(data))
       return "a";
@@ -51,7 +51,7 @@ public static class Letters
       letters[index]++;
 
       // Skip forbidden letters
-      while (letters[index] == 'i' || letters[index] == 'o' || letters[index] == 'l')
+      while (disallowed.Contains(letters[index]))
       {
         letters[index]++;
       }
@@ -70,25 +70,22 @@ public static class Letters
   public static bool DoesItContainStraight(string newPassword, int requiredInSequence = 3)
   {
     if (string.IsNullOrEmpty(newPassword) || newPassword.Length < requiredInSequence)
-      return false;
+        return false;
 
-    // Single pass algorithm - check sequence as we go
-    int currentSequenceLength = 1;
-
-    for (int i = 1; i < newPassword.Length; i++)
+    for (int i = 0; i <= newPassword.Length - requiredInSequence; i++)
     {
-      if (newPassword[i] == newPassword[i - 1] + 1)
-      {
-        currentSequenceLength++;
-        if (currentSequenceLength >= requiredInSequence)
-          return true;
-      }
-      else
-      {
-        currentSequenceLength = 1;
-      }
-    }
+        bool isStraight = true;
+        for (int j = 1; j < requiredInSequence; j++)
+        {
+          if (newPassword[i + j] == newPassword[i + j - 1] + 1)
+            continue;
 
+          isStraight = false;
+          break;
+        }
+        if (isStraight)
+            return true;
+    }
     return false;
   }
   public static bool DoesItContainNoneOverlappingDifferentPairs(string inputString)
