@@ -7,10 +7,10 @@ namespace Utility;
 /// </summary>
 public static class PolygonUtility
 {
-    /// <summary>
-    ///   Determines if a point is inside or on the boundary of a rectilinear polygon
-    /// </summary>
-    public static bool IsPointInOrOnRectilinearPolygon<T>(Point2D<T> point, IList<Point2D<T>> corners) where T : INumber<T>
+  /// <summary>
+  ///   Determines if a point is inside or on the boundary of a rectilinear polygon
+  /// </summary>
+  public static bool IsPointInOrOnRectilinearPolygon<T>(Point2D<T> point, IList<Point2D<T>> corners) where T : INumber<T>
   {
     // Quick boundary check first
     if (IsPointOnPolygonBoundary(point, corners))
@@ -22,10 +22,10 @@ public static class PolygonUtility
     return IsPointInsidePolygon(point, corners);
   }
 
-    /// <summary>
-    ///   Checks if a point lies on the boundary of a rectilinear polygon
-    /// </summary>
-    public static bool IsPointOnPolygonBoundary<T>(Point2D<T> point, IList<Point2D<T>> corners) where T : INumber<T>
+  /// <summary>
+  ///   Checks if a point lies on the boundary of a rectilinear polygon
+  /// </summary>
+  public static bool IsPointOnPolygonBoundary<T>(Point2D<T> point, IList<Point2D<T>> corners) where T : INumber<T>
   {
     for (int i = 0; i < corners.Count; i++)
     {
@@ -41,10 +41,10 @@ public static class PolygonUtility
     return false;
   }
 
-    /// <summary>
-    ///   Checks if a point lies on a rectilinear edge (horizontal or vertical line)
-    /// </summary>
-    public static bool IsPointOnRectilinearEdge<T>(Point2D<T> point, Point2D<T> start, Point2D<T> end) where T : INumber<T>
+  /// <summary>
+  ///   Checks if a point lies on a rectilinear edge (horizontal or vertical line)
+  /// </summary>
+  public static bool IsPointOnRectilinearEdge<T>(Point2D<T> point, Point2D<T> start, Point2D<T> end) where T : INumber<T>
   {
     // Check if point is on vertical edge
     if (start.X == end.X && point.X == start.X)
@@ -73,10 +73,10 @@ public static class PolygonUtility
     return false;
   }
 
-    /// <summary>
-    ///   Uses ray casting to determine if a point is inside a polygon
-    /// </summary>
-    public static bool IsPointInsidePolygon<T>(Point2D<T> point, IList<Point2D<T>> corners) where T : INumber<T>
+  /// <summary>
+  ///   Uses ray casting to determine if a point is inside a polygon
+  /// </summary>
+  public static bool IsPointInsidePolygon<T>(Point2D<T> point, IList<Point2D<T>> corners) where T : INumber<T>
   {
     int intersections = 0;
 
@@ -105,10 +105,10 @@ public static class PolygonUtility
     return intersections % 2 == 1;
   }
 
-    /// <summary>
-    ///   Checks if a rectilinear edge cuts through the interior of a rectangle
-    /// </summary>
-    public static bool DoesRectilinearEdgeIntersectRectangleInterior<T>(Point2D<T> start, Point2D<T> end, Rectangle<T> rectangle)
+  /// <summary>
+  ///   Checks if a rectilinear edge cuts through the interior of a rectangle
+  /// </summary>
+  public static bool DoesRectilinearEdgeIntersectRectangleInterior<T>(Point2D<T> start, Point2D<T> end, Rectangle<T> rectangle)
     where T : INumber<T>
   {
     // For vertical edge
@@ -144,10 +144,10 @@ public static class PolygonUtility
     return false;
   }
 
-    /// <summary>
-    ///   Checks if a rectangle fits entirely within a rectilinear polygon
-    /// </summary>
-    public static bool IsRectangleInRectilinearPolygon<T>(Rectangle<T> rectangle, IList<Point2D<T>> polygonCorners)
+  /// <summary>
+  ///   Checks if a rectangle fits entirely within a rectilinear polygon
+  /// </summary>
+  public static bool IsRectangleInRectilinearPolygon<T>(Rectangle<T> rectangle, IList<Point2D<T>> polygonCorners)
     where T : INumber<T>
   {
     // Check if all 4 corners are valid (inside or on boundary)
@@ -174,10 +174,10 @@ public static class PolygonUtility
     return true;
   }
 
-    /// <summary>
-    ///   Finds the largest rectangle that fits entirely within a polygon
-    /// </summary>
-    public static T FindLargestRectangleArea<T>(IList<Point2D<T>> polygonCorners) where T : INumber<T>
+  /// <summary>
+  ///   Finds the largest rectangle that fits entirely within a polygon
+  /// </summary>
+  public static T FindLargestRectangleArea<T>(IList<Point2D<T>> polygonCorners) where T : INumber<T>
   {
     var maxArea = T.Zero;
 

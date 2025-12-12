@@ -5,20 +5,18 @@ public static class Letters
   // Pre-computed vowel lookup for O(1) access
   private static readonly HashSet<char> VowelSet = ['a', 'e', 'i', 'o', 'u'];
 
-  // Cache for disallowed character sets to avoid repeated HashSet creation
-  private static readonly Dictionary<string, HashSet<char>> DisallowedCache = new();
-
   public static int CountVowels(string letters)
   {
     int count = 0;
     if (string.IsNullOrEmpty(letters))
       return count;
 
-    for (int i = 0; i < letters.Length; i++)
+    foreach (char t in letters)
     {
-      if (VowelSet.Contains(char.ToLower(letters[i])))
+      if (VowelSet.Contains(char.ToLower(t)))
         count++;
     }
+
     return count;
   }
 
@@ -37,7 +35,7 @@ public static class Letters
 
     return false;
   }
-  public static string AddLetterToString(string data, HashSet<char> disallowed )
+  public static string AddLetterToString(string data, HashSet<char> disallowed)
   {
     if (string.IsNullOrEmpty(data))
       return "a";
@@ -70,22 +68,24 @@ public static class Letters
   public static bool DoesItContainStraight(string newPassword, int requiredInSequence = 3)
   {
     if (string.IsNullOrEmpty(newPassword) || newPassword.Length < requiredInSequence)
-        return false;
+      return false;
 
     for (int i = 0; i <= newPassword.Length - requiredInSequence; i++)
     {
-        bool isStraight = true;
-        for (int j = 1; j < requiredInSequence; j++)
-        {
-          if (newPassword[i + j] == newPassword[i + j - 1] + 1)
-            continue;
+      bool isStraight = true;
+      for (int j = 1; j < requiredInSequence; j++)
+      {
+        if (newPassword[i + j] == newPassword[i + j - 1] + 1)
+          continue;
 
-          isStraight = false;
-          break;
-        }
-        if (isStraight)
-            return true;
+        isStraight = false;
+        break;
+      }
+
+      if (isStraight)
+        return true;
     }
+
     return false;
   }
   public static bool DoesItContainNoneOverlappingDifferentPairs(string inputString)
@@ -147,6 +147,7 @@ public static class Letters
         pairIndices[pairHash] = i;
       }
     }
+
     return false;
   }
 }
