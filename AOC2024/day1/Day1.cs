@@ -12,9 +12,13 @@ public class Day1
     var list1 = new List<long>();
     var list2 = new List<long>();
 
+    // Each input line is expected to contain at least two numbers
     foreach (string line in data)
     {
       var numbers = Parsing.ExtractLongs(line);
+      if (numbers.Count < 2)
+        throw new ArgumentException($"Expected at least two numbers per line but got: '{line}'");
+
       list1.Add(numbers[0]);
       list2.Add(numbers[1]);
     }

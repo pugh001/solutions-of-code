@@ -14,7 +14,7 @@ public class Day6
   private static long ProcessPart1(string[] data)
   {
     (char[,] grid, int guardRow, int guardCol) = InitializeGrid(data);
-    (int, int)[] deltas = [(-1, 0), (0, 1), (1, 0), (0, -1)];
+    var deltas = new[] { (-1, 0), (0, 1), (1, 0), (0, -1) };
     int dirIndex = 0;
 
     // Simulate guard movement
@@ -39,7 +39,12 @@ public class Day6
         break;
     }
 
-    return grid.Cast<char>().LongCount(cell => cell == 'X');
+    long count = 0;
+    foreach (char ch in grid)
+      if (ch == 'X')
+        count++;
+
+    return count;
   }
 
   private static (char[,], int, int) InitializeGrid(string[] data)
@@ -71,7 +76,7 @@ public class Day6
     bool[,] reachable = new bool[grid.GetLength(0), grid.GetLength(1)];
     Queue<(int, int)> queue = new();
     queue.Enqueue((guardRow, guardCol));
-    (int, int)[] deltas = [(-1, 0), (0, 1), (1, 0), (0, -1)];
+    var deltas = new[] { (-1, 0), (0, 1), (1, 0), (0, -1) };
 
     while (queue.Count > 0)
     {
@@ -83,7 +88,8 @@ public class Day6
 
       foreach ((int dr, int dc) in deltas)
       {
-        int newRow = row + dr, newCol = col + dc;
+        int newRow = row + dr;
+        int newCol = col + dc;
         if (!IsOutOfBounds(newRow, newCol, grid) && grid[newRow, newCol] == '.' && !reachable[newRow, newCol])
           queue.Enqueue((newRow, newCol));
       }
@@ -94,12 +100,12 @@ public class Day6
 
   private static bool SimulateGuardMovement(int guardRow, int guardCol, char[,] grid)
   {
-    (int, int)[] deltas = [(-1, 0), (0, 1), (1, 0), (0, -1)];
+    var deltas = new[] { (-1, 0), (0, 1), (1, 0), (0, -1) };
     int currentRow = guardRow;
     int currentCol = guardCol;
     int dirIndex = 0;
 
-    HashSet<int> visited = [];
+    var visited = new HashSet<int>();
     while (true)
     {
       int newRow = currentRow + deltas[dirIndex].Item1;
@@ -121,7 +127,7 @@ public class Day6
       }
 
       // Check for loop using a compact state representation
-      int state = currentRow << 16 | currentCol << 8 | dirIndex;
+      int state = (currentRow & 0xFFFF) << 16 | (currentCol & 0xFF) << 8 | dirIndex & 0xFF;
       if (!visited.Add(state))
         return true; // Loop detected
     }

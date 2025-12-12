@@ -1,5 +1,24 @@
 # Utility Project - Public Methods Reference
 
+## Folder Structure Overview (2025 Reorganization)
+
+* **Core/**: Main entry points and foundational types (Graph, Map, LinearSystemSolver, etc.)
+* **Math/**: Math utilities, matrix operations, sequences, and number theory
+* **DataStructures/**: Collections, graphs, connection chains, and extended dictionaries
+* **Algorithms/**: General algorithms (sorting, searching, combinatorics, etc.)
+* **Extensions/**: Extension methods for collections, strings, maps, etc.
+* **Parsing/**: Parsing helpers, regex utilities, and text extraction
+* **Grid/**: Grid and grid simulation utilities
+* **PathFinding/**: Pathfinding algorithms (A*, Dijkstra, BFS, flood fill)
+* **Files/**: File setup and test file helpers
+* **Letters/**: Letter and string pattern utilities
+* **Movement/**: Coordinate and direction utilities (2D, 3D, 4D)
+* **Points/**: Point and geometry utilities
+* **Range/**: Range and multi-range utilities
+* **StringMap/**: StringMap and related helpers
+
+All folders are now at the top level of the Utility project for easy discoverability. No namespace changes are required for usage.
+
 ## Terminology Summary
 
 **BFS (Breadth-First Search)** - Graph traversal algorithm that explores nodes level by level, guarantees shortest path

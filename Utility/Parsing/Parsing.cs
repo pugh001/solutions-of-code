@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Utility;
@@ -7,17 +8,18 @@ namespace Utility;
 /// </summary>
 public static class Parsing
 {
+  private static readonly Regex _intRegex = new("-?\\d+", RegexOptions.Compiled);
+  private static readonly Regex _numberRegex = new("-?\\d+\\.?\\d*", RegexOptions.Compiled);
+
   /// <summary>
   ///   Extracts all integers from a string
   /// </summary>
   public static List<int> ExtractIntegers(string text)
   {
-    var matches = Regex.Matches(text, @"-?\d+");
+    var matches = _intRegex.Matches(text);
     var result = new List<int>(matches.Count);
     foreach (Match match in matches)
-    {
-      result.Add(int.Parse(match.Value));
-    }
+      result.Add(int.Parse(match.Value, CultureInfo.InvariantCulture));
 
     return result;
   }
@@ -27,12 +29,10 @@ public static class Parsing
   /// </summary>
   public static List<long> ExtractLongs(string text)
   {
-    var matches = Regex.Matches(text, @"-?\d+");
+    var matches = _intRegex.Matches(text);
     var result = new List<long>(matches.Count);
     foreach (Match match in matches)
-    {
-      result.Add(long.Parse(match.Value));
-    }
+      result.Add(long.Parse(match.Value, CultureInfo.InvariantCulture));
 
     return result;
   }
@@ -42,14 +42,28 @@ public static class Parsing
   /// </summary>
   public static List<double> ExtractNumbers(string text)
   {
-    var matches = Regex.Matches(text, @"-?\d+\.?\d*");
+    var matches = _numberRegex.Matches(text);
     var result = new List<double>(matches.Count);
     foreach (Match match in matches)
-    {
-      result.Add(double.Parse(match.Value));
-    }
+      result.Add(double.Parse(match.Value, CultureInfo.InvariantCulture));
 
     return result;
+  }
+
+  /// <summary>
+  ///   Attempts to extract a single long integer from a string and returns success state.
+  /// </summary>
+  public static bool TryExtractFirstLong(string text, out long value)
+  {
+    var m = _intRegex.Match(text);
+    if (!m.Success)
+    {
+      value = 0;
+      return false;
+    }
+
+    value = long.Parse(m.Value, CultureInfo.InvariantCulture);
+    return true;
   }
 
   /// <summary>
